@@ -1,10 +1,10 @@
 INSERT INTO Languages (id, name, isinspire, isdefault) VALUES ('fre','français', 'y', 'n');
 
 -- Take care to table ID (related to other loc files)
-INSERT INTO CswServerCapabilitiesInfo (idfield, langid, field, label) VALUES (21, 'fre', 'title', '');
-INSERT INTO CswServerCapabilitiesInfo (idfield, langid, field, label) VALUES (22, 'fre', 'abstract', '');
-INSERT INTO CswServerCapabilitiesInfo (idfield, langid, field, label) VALUES (23, 'fre', 'fees', '');
-INSERT INTO CswServerCapabilitiesInfo (idfield, langid, field, label) VALUES (24, 'fre', 'accessConstraints', '');
+INSERT INTO CswServerCapabilitiesInfo (idfield, langid, field, label) VALUES (21, 'fre', 'title', 'Service de découverte du Parc National ...');
+INSERT INTO CswServerCapabilitiesInfo (idfield, langid, field, label) VALUES (22, 'fre', 'abstract', 'Ce service réalise un recensement des données sur le territoire du parc.');
+INSERT INTO CswServerCapabilitiesInfo (idfield, langid, field, label) VALUES (23, 'fre', 'fees', 'None');
+INSERT INTO CswServerCapabilitiesInfo (idfield, langid, field, label) VALUES (24, 'fre', 'accessConstraints', 'None');
 
 INSERT INTO CategoriesDes (iddes, langid, label) VALUES (2,'fre','Jeux de données');
 INSERT INTO CategoriesDes (iddes, langid, label) VALUES (1,'fre','Cartes & graphiques');
@@ -23,7 +23,7 @@ INSERT INTO CategoriesDes (iddes, langid, label) VALUES (13,'fre','Echantillons 
 INSERT INTO GroupsDes (iddes, langid, label) VALUES (-1,'fre','Invité');
 INSERT INTO GroupsDes (iddes, langid, label) VALUES (0,'fre','Intranet');
 INSERT INTO GroupsDes (iddes, langid, label) VALUES (1,'fre','Tous');
-INSERT INTO GroupsDes (iddes, langid, label) VALUES (2,'fre','Groupe exemple');
+INSERT INTO GroupsDes (iddes, langid, label) VALUES (2,'fre','Groupe par défaut');
 
 INSERT INTO IsoLanguagesDes  (iddes, langid, label) VALUES (1,'fre','Afar');
 INSERT INTO IsoLanguagesDes  (iddes, langid, label) VALUES (2,'fre','Abkhaze');

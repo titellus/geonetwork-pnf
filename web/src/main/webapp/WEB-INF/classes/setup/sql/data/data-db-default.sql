@@ -655,3 +655,16 @@ INSERT INTO HarvesterSettings (id, parentid, name, value) VALUES  (1,NULL,'harve
 INSERT INTO Users (id, username, password, name, surname, profile, kind, organisation, security, authtype) VALUES  (1,'admin','46e44386069f7cf0d4f2a420b9a2383a612f316e2024b0fe84052b0b96c479a23e8a0be8b90fb8c2','admin','admin',0,'','','','');
 INSERT INTO Address (id, address, city, country, state, zip) VALUES  (1, '', '', '', '', '');
 INSERT INTO UserAddress (userid, addressid) VALUES  (1, 1);
+
+
+INSERT INTO users (id, kind, lastlogindate, name, organisation, profile, authtype, nodeid,
+  password, security, surname, username) VALUES (297, NULL, NULL, 'Administrateur du catalogue',
+  'Parc National ...', 4, NULL, 'pnf',
+  'd573664f57e4cb9d8091a6ea3308446c2c6b61fa208851cd4cbfee161a5b54a9575d957f8156ca9b', '',
+  NULL, 'cswcontact');
+INSERT INTO email (user_id, email) VALUES (297, 'contact-sig@parcnational.fr');
+INSERT INTO address (id, address, city, country, state, zip) VALUES (298, NULL, NULL, 'FRANCE', NULL, NULL);
+INSERT INTO useraddress (userid, addressid) VALUES (297, 298);
+
+
+
