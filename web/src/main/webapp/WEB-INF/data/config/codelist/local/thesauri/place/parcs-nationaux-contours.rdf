@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:gml="http://www.opengis.net/gml#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:skos="http://www.w3.org/2004/02/skos/core#">
-  <skos:ConceptScheme rdf:about="http://registry.parcsnationaux.fr/commune">
+  <skos:ConceptScheme rdf:about="http://registry.parcsnationaux.fr/parcs">
     <dc:title xml:lang="fr">Contours des Parcs</dc:title>
     <dcterms:issued>2014-08-08</dcterms:issued>
   </skos:ConceptScheme>
