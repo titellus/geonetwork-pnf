@@ -45,7 +45,7 @@
 			<body>
 				<div id="loading-mask"></div>
 				<div id="loading">
-					<div class="loading-indicator">Loading ...</div>
+					<div class="loading-indicator">Chargement en cours ...</div>
 				</div>
 				
 				<div id="header">
