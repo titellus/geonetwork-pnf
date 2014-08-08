@@ -41,9 +41,9 @@ cp web/target/geonetwork.war $CATALINA_HOME/webapps/catalogue.war
 export CATALOGUE_DIR=/app/tomcat
 export JAVA_OPTS="$JAVA_OPTS -Xms1g -Xmx2g -XX:MaxPermSize=512m \
               -Dgeonetwork.dir=$CATALOGUE_DIR/data/ \
-              -Dgeonetwork.schema.dir=$CATALOGUE_DIR/webapp/catalogue/WEB-INF/data/config/schema_plugins \
-              -Dgeonetwork.resources.dir=$CATALOGUE_DIR/webapp/catalogue \
-              -Dgeonetwork.codeList.dir=$CATALOGUE_DIR/webapp/catalogue/WEB-INF/data/config/codelist"
+              -Dgeonetwork.schema.dir=$CATALOGUE_DIR/webapps/catalogue/WEB-INF/data/config/schema_plugins \
+              -Dgeonetwork.resources.dir=$CATALOGUE_DIR/webapps/catalogue \
+              -Dgeonetwork.codeList.dir=$CATALOGUE_DIR/webapps/catalogue/WEB-INF/data/config/codelist"
 ```
 * Importer ou créer les bases de données
 
@@ -86,7 +86,7 @@ cd WEB-INF/node-utils
 ./node-mgr.sh www-data www-data pnf jdbc:postgresql://localhost:5432/catalogue_pnf postgres
 ```
  * option 2 : configuration manuelle
-  * WEB-INF/config-node.xml
+  * Ajouter un fichier portant l'identifiant du noeud dans WEB-INF/config-node
 ```
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:context="http://www.springframework.org/schema/context"
