@@ -1,0 +1,3374 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:gml="http://www.opengis.net/gml#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:skos="http://www.w3.org/2004/02/skos/core#">
+  <skos:ConceptScheme rdf:about="http://registry.parcsnationaux.fr/commune">
+    <dc:title xml:lang="fr">Communes</dc:title>
+    <dcterms:issued>2014-08-08</dcterms:issued>
+  </skos:ConceptScheme>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#30009">
+    <skos:prefLabel xml:lang="fr">Alzon (30009)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.405187 43.925009</gml:lowerCorner>
+        <gml:upperCorner>3.488098 44.023003</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#30329">
+    <skos:prefLabel xml:lang="fr">Thoiras (30329)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.879006 44.034476</gml:lowerCorner>
+        <gml:upperCorner>3.970671 44.094785</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#30051">
+    <skos:prefLabel xml:lang="fr">Branoux-les-Taillades (30051)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.944823 44.206445</gml:lowerCorner>
+        <gml:upperCorner>4.019555 44.252054</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#30120">
+    <skos:prefLabel xml:lang="fr">Gagnières (30120)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>4.092169 44.293789</gml:lowerCorner>
+        <gml:upperCorner>4.142923 44.337592</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#30203">
+    <skos:prefLabel xml:lang="fr">Portes (30203)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.997255 44.240166</gml:lowerCorner>
+        <gml:upperCorner>4.068415 44.285549</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#30153">
+    <skos:prefLabel xml:lang="fr">Malons-et-Elze (30153)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.971043 44.38451</gml:lowerCorner>
+        <gml:upperCorner>4.068431 44.45966</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#30171">
+    <skos:prefLabel xml:lang="fr">Molières-sur-Cèze (30171)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>4.12362 44.246829</gml:lowerCorner>
+        <gml:upperCorner>4.183083 44.276498</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#30216">
+    <skos:prefLabel xml:lang="fr">Robiac-Rochessadoule (30216)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>4.056108 44.248738</gml:lowerCorner>
+        <gml:upperCorner>4.130119 44.285585</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#30044">
+    <skos:prefLabel xml:lang="fr">Bonnevaux (30044)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>4.017369 44.351473</gml:lowerCorner>
+        <gml:upperCorner>4.057338 44.393311</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#30194">
+    <skos:prefLabel xml:lang="fr">Peyremale (30194)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>4.035956 44.277498</gml:lowerCorner>
+        <gml:upperCorner>4.080158 44.320291</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#30130">
+    <skos:prefLabel xml:lang="fr">Génolhac (30130)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.911312 44.3055</gml:lowerCorner>
+        <gml:upperCorner>3.984994 44.372622</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#30090">
+    <skos:prefLabel xml:lang="fr">Concoules (30090)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.88572 44.343882</gml:lowerCorner>
+        <gml:upperCorner>3.985391 44.392949</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#30079">
+    <skos:prefLabel xml:lang="fr">Chambon (30079)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.975445 44.284059</gml:lowerCorner>
+        <gml:upperCorner>4.05558 44.323546</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#30345">
+    <skos:prefLabel xml:lang="fr">La Vernarède (30345)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.988011 44.269365</gml:lowerCorner>
+        <gml:upperCorner>4.027456 44.298564</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#30316">
+    <skos:prefLabel xml:lang="fr">Sénéchas (30316)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.977536 44.313339</gml:lowerCorner>
+        <gml:upperCorner>4.049602 44.36971</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#30022">
+    <skos:prefLabel xml:lang="fr">Aujac (30022)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.979151 44.329678</gml:lowerCorner>
+        <gml:upperCorner>4.054663 44.382191</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#30080">
+    <skos:prefLabel xml:lang="fr">Chamborigaud (30080)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.92286 44.277135</gml:lowerCorner>
+        <gml:upperCorner>4.009393 44.328863</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#30037">
+    <skos:prefLabel xml:lang="fr">Bessèges (30037)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>4.066299 44.272814</gml:lowerCorner>
+        <gml:upperCorner>4.147709 44.304906</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#30201">
+    <skos:prefLabel xml:lang="fr">Ponteils-et-Brésis (30201)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.900415 44.375526</gml:lowerCorner>
+        <gml:upperCorner>4.019633 44.429752</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#30052">
+    <skos:prefLabel xml:lang="fr">Bréau-et-Salagosse (30052)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.531319 43.981593</gml:lowerCorner>
+        <gml:upperCorner>3.58481 44.07945</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#30170">
+    <skos:prefLabel xml:lang="fr">Molières-Cavaillac (30170)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.5443 43.959907</gml:lowerCorner>
+        <gml:upperCorner>3.597358 43.984172</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#30105">
+    <skos:prefLabel xml:lang="fr">Dourbies (30105)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.399518 44.02247</gml:lowerCorner>
+        <gml:upperCorner>3.591677 44.110372</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#30016">
+    <skos:prefLabel xml:lang="fr">Arre (30016)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.501612 43.935631</gml:lowerCorner>
+        <gml:upperCorner>3.549909 43.981231</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#30332">
+    <skos:prefLabel xml:lang="fr">Trèves (30332)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.328914 44.024606</gml:lowerCorner>
+        <gml:upperCorner>3.444978 44.099737</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#30350">
+    <skos:prefLabel xml:lang="fr">Le Vigan (30350)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.59186 43.955635</gml:lowerCorner>
+        <gml:upperCorner>3.675435 44.00868</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#30074">
+    <skos:prefLabel xml:lang="fr">Causse-Bégon (30074)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.332658 44.049912</gml:lowerCorner>
+        <gml:upperCorner>3.379802 44.078046</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#30139">
+    <skos:prefLabel xml:lang="fr">Lanuéjols (30139)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.313917 44.077082</gml:lowerCorner>
+        <gml:upperCorner>3.438794 44.170966</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#30269">
+    <skos:prefLabel xml:lang="fr">Saint-Jean-du-Gard (30269)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.820222 44.072409</gml:lowerCorner>
+        <gml:upperCorner>3.938975 44.147165</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#30172">
+    <skos:prefLabel xml:lang="fr">Monoblet (30172)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.835953 43.970909</gml:lowerCorner>
+        <gml:upperCorner>3.926844 44.023222</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#30246">
+    <skos:prefLabel xml:lang="fr">Sainte-Croix-de-Caderle (30246)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.84034 44.052585</gml:lowerCorner>
+        <gml:upperCorner>3.89459 44.080585</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#30195">
+    <skos:prefLabel xml:lang="fr">Peyrolles (30195)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.809973 44.080585</gml:lowerCorner>
+        <gml:upperCorner>3.845746 44.132472</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#30323">
+    <skos:prefLabel xml:lang="fr">Soustelle (30323)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.964763 44.148425</gml:lowerCorner>
+        <gml:upperCorner>4.027439 44.189383</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#30129">
+    <skos:prefLabel xml:lang="fr">Générargues (30129)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.964797 44.06312</gml:lowerCorner>
+        <gml:upperCorner>4.023453 44.096222</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#30298">
+    <skos:prefLabel xml:lang="fr">Saint-Sébastien-d'Aigrefeuille (30298)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.964223 44.090149</gml:lowerCorner>
+        <gml:upperCorner>4.018894 44.143027</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#30094">
+    <skos:prefLabel xml:lang="fr">Corbès (30094)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.938868 44.063066</gml:lowerCorner>
+        <gml:upperCorner>3.970556 44.085461</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#30137">
+    <skos:prefLabel xml:lang="fr">Lamelouze (30137)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.936506 44.171555</gml:lowerCorner>
+        <gml:upperCorner>3.984746 44.216884</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#30010">
+    <skos:prefLabel xml:lang="fr">Anduze (30010)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.940453 44.032533</gml:lowerCorner>
+        <gml:upperCorner>4.012654 44.075553</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#30017">
+    <skos:prefLabel xml:lang="fr">Arrigas (30017)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.453789 43.95554</gml:lowerCorner>
+        <gml:upperCorner>3.507457 44.02979</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#30025">
+    <skos:prefLabel xml:lang="fr">Aumessas (30025)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.483975 43.974637</gml:lowerCorner>
+        <gml:upperCorner>3.541232 44.040071</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#30038">
+    <skos:prefLabel xml:lang="fr">Bez-et-Esparon (30038)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.509776 43.963451</gml:lowerCorner>
+        <gml:upperCorner>3.561489 43.994878</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#30190">
+    <skos:prefLabel xml:lang="fr">Notre-Dame-de-la-Rouvière (30190)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.6671 44.035586</gml:lowerCorner>
+        <gml:upperCorner>3.754174 44.084888</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#30325">
+    <skos:prefLabel xml:lang="fr">Sumène (30325)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.674338 43.958215</gml:lowerCorner>
+        <gml:upperCorner>3.806968 44.02238</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#30291">
+    <skos:prefLabel xml:lang="fr">Saint-Paul-la-Coste (30291)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.921957 44.124962</gml:lowerCorner>
+        <gml:upperCorner>4.014723 44.182335</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#30239">
+    <skos:prefLabel xml:lang="fr">Sainte-Cécile-d'Andorge (30239)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.933723 44.228426</gml:lowerCorner>
+        <gml:upperCorner>4.018938 44.286458</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#30045">
+    <skos:prefLabel xml:lang="fr">Bordezac (30045)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>4.0591 44.296904</gml:lowerCorner>
+        <gml:upperCorner>4.109416 44.334876</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#30097">
+    <skos:prefLabel xml:lang="fr">Courry (30097)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>4.137838 44.288058</gml:lowerCorner>
+        <gml:upperCorner>4.186487 44.318</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#30167">
+    <skos:prefLabel xml:lang="fr">Meyrannes (30167)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>4.134975 44.261708</gml:lowerCorner>
+        <gml:upperCorner>4.187322 44.291535</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#30152">
+    <skos:prefLabel xml:lang="fr">Les Mages (30152)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>4.153006 44.204999</gml:lowerCorner>
+        <gml:upperCorner>4.20438 44.249309</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#30227">
+    <skos:prefLabel xml:lang="fr">Saint-Ambroix (30227)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>4.161638 44.224379</gml:lowerCorner>
+        <gml:upperCorner>4.220887 44.273448</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#30154">
+    <skos:prefLabel xml:lang="fr">Mandagout (30154)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.60118 44.003284</gml:lowerCorner>
+        <gml:upperCorner>3.653849 44.048208</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#30099">
+    <skos:prefLabel xml:lang="fr">Cros (30099)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.786175 43.975347</gml:lowerCorner>
+        <gml:upperCorner>3.854654 44.028838</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#30272">
+    <skos:prefLabel xml:lang="fr">Saint-Julien-de-la-Nef (30272)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.664664 43.937408</gml:lowerCorner>
+        <gml:upperCorner>3.702754 43.988776</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#30220">
+    <skos:prefLabel xml:lang="fr">Roquedur (30220)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.632665 43.955438</gml:lowerCorner>
+        <gml:upperCorner>3.691351 43.996623</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#30026">
+    <skos:prefLabel xml:lang="fr">Avèze (30026)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.583434 43.959857</gml:lowerCorner>
+        <gml:upperCorner>3.614954 43.989776</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#30268">
+    <skos:prefLabel xml:lang="fr">Saint-Jean-de-Valériscle (30268)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>4.119229 44.214682</gml:lowerCorner>
+        <gml:upperCorner>4.157519 44.250896</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#30339">
+    <skos:prefLabel xml:lang="fr">Valleraugue (30339)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.500151 44.042837</gml:lowerCorner>
+        <gml:upperCorner>3.728296 44.126337</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#30253">
+    <skos:prefLabel xml:lang="fr">Saint-Florent-sur-Auzonnet (30253)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>4.083306 44.215666</gml:lowerCorner>
+        <gml:upperCorner>4.13004 44.26435</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#30157">
+    <skos:prefLabel xml:lang="fr">Mars (30157)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.535657 43.991246</gml:lowerCorner>
+        <gml:upperCorner>3.566258 44.013162</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#30024">
+    <skos:prefLabel xml:lang="fr">Aulas (30024)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.574376 43.982648</gml:lowerCorner>
+        <gml:upperCorner>3.604865 44.00847</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#30015">
+    <skos:prefLabel xml:lang="fr">Arphy (30015)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.562281 44.004238</gml:lowerCorner>
+        <gml:upperCorner>3.612695 44.078595</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#30297">
+    <skos:prefLabel xml:lang="fr">Saint-Sauveur-Camprieu (30297)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.428448 44.080068</gml:lowerCorner>
+        <gml:upperCorner>3.541519 44.130441</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#30236">
+    <skos:prefLabel xml:lang="fr">Saint-Bonnet-de-Salendrinque (30236)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.860054 44.022406</gml:lowerCorner>
+        <gml:upperCorner>3.886973 44.050413</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#30077">
+    <skos:prefLabel xml:lang="fr">Cendras (30077)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>4.008251 44.133269</gml:lowerCorner>
+        <gml:upperCorner>4.063661 44.172951</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#30108">
+    <skos:prefLabel xml:lang="fr">L'Estréchure (30108)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.747524 44.074004</gml:lowerCorner>
+        <gml:upperCorner>3.822825 44.129136</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#30310">
+    <skos:prefLabel xml:lang="fr">Saumane (30310)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.741362 44.093798</gml:lowerCorner>
+        <gml:upperCorner>3.797252 44.141889</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#30322">
+    <skos:prefLabel xml:lang="fr">Soudorgues (30322)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.752357 44.043447</gml:lowerCorner>
+        <gml:upperCorner>3.856244 44.096246</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#30296">
+    <skos:prefLabel xml:lang="fr">Saint-Roman-de-Codières (30296)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.742138 43.987553</gml:lowerCorner>
+        <gml:upperCorner>3.811131 44.041521</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#30087">
+    <skos:prefLabel xml:lang="fr">Colognac (30087)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.781787 44.014644</gml:lowerCorner>
+        <gml:upperCorner>3.853216 44.051023</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#30140">
+    <skos:prefLabel xml:lang="fr">Lasalle (30140)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.815165 44.017276</gml:lowerCorner>
+        <gml:upperCorner>3.884927 44.063289</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#30229">
+    <skos:prefLabel xml:lang="fr">Saint-André-de-Majencoules (30229)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.644283 43.9946</gml:lowerCorner>
+        <gml:upperCorner>3.724866 44.054308</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#30283">
+    <skos:prefLabel xml:lang="fr">Saint-Martial (30283)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.712133 44.010919</gml:lowerCorner>
+        <gml:upperCorner>3.782705 44.066673</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#30198">
+    <skos:prefLabel xml:lang="fr">Les Plantiers (30198)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.650505 44.077584</gml:lowerCorner>
+        <gml:upperCorner>3.762012 44.133444</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#30231">
+    <skos:prefLabel xml:lang="fr">Saint-André-de-Valborgne (30231)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.626101 44.113491</gml:lowerCorner>
+        <gml:upperCorner>3.773586 44.186543</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#30168">
+    <skos:prefLabel xml:lang="fr">Mialet (30168)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.894314 44.081692</gml:lowerCorner>
+        <gml:upperCorner>3.974775 44.163375</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#30159">
+    <skos:prefLabel xml:lang="fr">Le Martinet (30159)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>4.058169 44.229629</gml:lowerCorner>
+        <gml:upperCorner>4.110561 44.275385</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#48117">
+    <skos:prefLabel xml:lang="fr">Pourcharesses (48117)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.846408 44.389364</gml:lowerCorner>
+        <gml:upperCorner>3.935679 44.493188</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#48016">
+    <skos:prefLabel xml:lang="fr">Balsièges (48016)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.411861 44.431204</gml:lowerCorner>
+        <gml:upperCorner>3.475248 44.522787</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#48195">
+    <skos:prefLabel xml:lang="fr">Les Vignes (48195)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.213223 44.231503</gml:lowerCorner>
+        <gml:upperCorner>3.290776 44.299159</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#48015">
+    <skos:prefLabel xml:lang="fr">Pied-de-Borne (48015)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.938591 44.426357</gml:lowerCorner>
+        <gml:upperCorner>3.99837 44.541398</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#48144">
+    <skos:prefLabel xml:lang="fr">Sainte-Croix-Vallée-Française (48144)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.714587 44.150496</gml:lowerCorner>
+        <gml:upperCorner>3.775838 44.22301</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#48164">
+    <skos:prefLabel xml:lang="fr">Saint-Julien-du-Tournel (48164)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.627396 44.446848</gml:lowerCorner>
+        <gml:upperCorner>3.738286 44.547742</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#48050">
+    <skos:prefLabel xml:lang="fr">Cocurès (48050)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.603803 44.343775</gml:lowerCorner>
+        <gml:upperCorner>3.638475 44.364439</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#48147">
+    <skos:prefLabel xml:lang="fr">Saint-Étienne-du-Valdonnez (48147)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.4959 44.41418</gml:lowerCorner>
+        <gml:upperCorner>3.666228 44.475561</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#48141">
+    <skos:prefLabel xml:lang="fr">Mas-Saint-Chély (48141)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.343491 44.271048</gml:lowerCorner>
+        <gml:upperCorner>3.476068 44.357753</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#48172">
+    <skos:prefLabel xml:lang="fr">Saint-Maurice-de-Ventalon (48172)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.763701 44.30129</gml:lowerCorner>
+        <gml:upperCorner>3.866442 44.379952</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#48162">
+    <skos:prefLabel xml:lang="fr">Saint-Julien-d'Arpaon (48162)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.627251 44.276238</gml:lowerCorner>
+        <gml:upperCorner>3.735188 44.320012</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#48066">
+    <skos:prefLabel xml:lang="fr">Fraissinet-de-Lozère (48066)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.666473 44.356916</gml:lowerCorner>
+        <gml:upperCorner>3.743219 44.435452</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#48004">
+    <skos:prefLabel xml:lang="fr">Altier (48004)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.80817 44.405367</gml:lowerCorner>
+        <gml:upperCorner>3.903615 44.508575</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#48119">
+    <skos:prefLabel xml:lang="fr">Prévenchères (48119)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.84379 44.454891</gml:lowerCorner>
+        <gml:upperCorner>3.979971 44.573835</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#48152">
+    <skos:prefLabel xml:lang="fr">Saint-Frézal-de-Ventalon (48152)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.827833 44.276166</gml:lowerCorner>
+        <gml:upperCorner>3.909259 44.31876</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#48163">
+    <skos:prefLabel xml:lang="fr">Saint-Julien-des-Points (48163)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.946765 44.246857</gml:lowerCorner>
+        <gml:upperCorner>3.97551 44.272083</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#48135">
+    <skos:prefLabel xml:lang="fr">Saint-André-Capcèze (48135)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.917543 44.399585</gml:lowerCorner>
+        <gml:upperCorner>3.971601 44.433874</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#48198">
+    <skos:prefLabel xml:lang="fr">Villefort (48198)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.907917 44.425876</gml:lowerCorner>
+        <gml:upperCorner>3.95067 44.459947</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#48067">
+    <skos:prefLabel xml:lang="fr">Gabriac (48067)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.683538 44.163957</gml:lowerCorner>
+        <gml:upperCorner>3.737274 44.200227</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#48146">
+    <skos:prefLabel xml:lang="fr">Sainte-Enimie (48146)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.335118 44.311834</gml:lowerCorner>
+        <gml:upperCorner>3.486117 44.440962</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#48122">
+    <skos:prefLabel xml:lang="fr">Quézac (48122)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.467807 44.328888</gml:lowerCorner>
+        <gml:upperCorner>3.579652 44.38365</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#48075">
+    <skos:prefLabel xml:lang="fr">Ispagnac (48075)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.467757 44.359685</gml:lowerCorner>
+        <gml:upperCorner>3.595249 44.442077</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#48137">
+    <skos:prefLabel xml:lang="fr">Saint-Bauzile (48137)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.454783 44.432698</gml:lowerCorner>
+        <gml:upperCorner>3.539044 44.507634</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#48101">
+    <skos:prefLabel xml:lang="fr">Montbrun (48101)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.467668 44.286017</gml:lowerCorner>
+        <gml:upperCorner>3.558417 44.351463</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#48030">
+    <skos:prefLabel xml:lang="fr">Brenoux (48030)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.507621 44.466355</gml:lowerCorner>
+        <gml:upperCorner>3.558704 44.508064</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#48157">
+    <skos:prefLabel xml:lang="fr">Sainte-Hélène (48157)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.58079 44.50412</gml:lowerCorner>
+        <gml:upperCorner>3.623782 44.534046</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#48154">
+    <skos:prefLabel xml:lang="fr">Saint-Georges-de-Lévéjac (48154)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.18257 44.290295</gml:lowerCorner>
+        <gml:upperCorner>3.288061 44.385868</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#48088">
+    <skos:prefLabel xml:lang="fr">La Malène (48088)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.271417 44.262839</gml:lowerCorner>
+        <gml:upperCorner>3.36142 44.351757</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#48085">
+    <skos:prefLabel xml:lang="fr">Laval-du-Tarn (48085)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.306634 44.327367</gml:lowerCorner>
+        <gml:upperCorner>3.395578 44.425008</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#48022">
+    <skos:prefLabel xml:lang="fr">Bédouès (48022)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.576067 44.321431</gml:lowerCorner>
+        <gml:upperCorner>3.706982 44.374512</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#48097">
+    <skos:prefLabel xml:lang="fr">Moissac-Vallée-Française (48097)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.751987 44.127385</gml:lowerCorner>
+        <gml:upperCorner>3.832099 44.189969</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#48148">
+    <skos:prefLabel xml:lang="fr">Saint-Étienne-Vallée-Française (48148)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.785872 44.126229</gml:lowerCorner>
+        <gml:upperCorner>3.912515 44.221052</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#48061">
+    <skos:prefLabel xml:lang="fr">Florac (48061)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.545179 44.279007</gml:lowerCorner>
+        <gml:upperCorner>3.630904 44.3588</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#48193">
+    <skos:prefLabel xml:lang="fr">Vebron (48193)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.469203 44.201746</gml:lowerCorner>
+        <gml:upperCorner>3.629042 44.30091</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#48065">
+    <skos:prefLabel xml:lang="fr">Fraissinet-de-Fourques (48065)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.497518 44.178643</gml:lowerCorner>
+        <gml:upperCorner>3.574872 44.23535</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#48130">
+    <skos:prefLabel xml:lang="fr">Rousses (48130)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.532187 44.161379</gml:lowerCorner>
+        <gml:upperCorner>3.607139 44.226944</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#48074">
+    <skos:prefLabel xml:lang="fr">Hures-la-Parade (48074)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.286395 44.200385</gml:lowerCorner>
+        <gml:upperCorner>3.483802 44.295379</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#48176">
+    <skos:prefLabel xml:lang="fr">Saint-Pierre-des-Tripiers (48176)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.219167 44.189799</gml:lowerCorner>
+        <gml:upperCorner>3.330672 44.258749</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#48131">
+    <skos:prefLabel xml:lang="fr">Le Rozier (48131)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.202487 44.189651</gml:lowerCorner>
+        <gml:upperCorner>3.231232 44.204665</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#48115">
+    <skos:prefLabel xml:lang="fr">Le Pompidou (48115)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.618258 44.173331</gml:lowerCorner>
+        <gml:upperCorner>3.708885 44.240481</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#48036">
+    <skos:prefLabel xml:lang="fr">Cassagnas (48036)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.677132 44.240108</gml:lowerCorner>
+        <gml:upperCorner>3.781081 44.320449</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#48054">
+    <skos:prefLabel xml:lang="fr">Cubiérettes (48054)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.770963 44.417134</gml:lowerCorner>
+        <gml:upperCorner>3.803215 44.472561</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#48053">
+    <skos:prefLabel xml:lang="fr">Cubières (48053)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.738072 44.418328</gml:lowerCorner>
+        <gml:upperCorner>3.842978 44.525302</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#48186">
+    <skos:prefLabel xml:lang="fr">La Salle-Prunet (48186)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.602651 44.292588</gml:lowerCorner>
+        <gml:upperCorner>3.708439 44.340634</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#48019">
+    <skos:prefLabel xml:lang="fr">Barre-des-Cévennes (48019)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.624828 44.21829</gml:lowerCorner>
+        <gml:upperCorner>3.724372 44.291843</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#48166">
+    <skos:prefLabel xml:lang="fr">Saint-Laurent-de-Trèves (48166)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.553405 44.246732</gml:lowerCorner>
+        <gml:upperCorner>3.65566 44.294696</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#48037">
+    <skos:prefLabel xml:lang="fr">Chadenet (48037)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.617349 44.48148</gml:lowerCorner>
+        <gml:upperCorner>3.66559 44.534718</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#48028">
+    <skos:prefLabel xml:lang="fr">Les Bondons (48028)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.584855 44.357126</gml:lowerCorner>
+        <gml:upperCorner>3.687846 44.441339</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#48116">
+    <skos:prefLabel xml:lang="fr">Le Pont-de-Montvert (48116)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.672164 44.314908</gml:lowerCorner>
+        <gml:upperCorner>3.888892 44.427413</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#48093">
+    <skos:prefLabel xml:lang="fr">Mas-d'Orcières (48093)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.656587 44.421214</gml:lowerCorner>
+        <gml:upperCorner>3.768196 44.498693</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#48014">
+    <skos:prefLabel xml:lang="fr">Bagnols-les-Bains (48014)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.653837 44.499769</gml:lowerCorner>
+        <gml:upperCorner>3.674848 44.524527</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#48134">
+    <skos:prefLabel xml:lang="fr">Saint-Andéol-de-Clerguemort (48134)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.877065 44.278587</gml:lowerCorner>
+        <gml:upperCorner>3.924941 44.313814</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#48194">
+    <skos:prefLabel xml:lang="fr">Vialas (48194)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.833634 44.305125</gml:lowerCorner>
+        <gml:upperCorner>3.952429 44.388088</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#48027">
+    <skos:prefLabel xml:lang="fr">Le Bleymard (48027)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.714673 44.475703</gml:lowerCorner>
+        <gml:upperCorner>3.776272 44.53923</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#48155">
+    <skos:prefLabel xml:lang="fr">Saint-Germain-de-Calberte (48155)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.765715 44.188078</gml:lowerCorner>
+        <gml:upperCorner>3.877621 44.264498</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#48171">
+    <skos:prefLabel xml:lang="fr">Saint-Martin-de-Lansuscle (48171)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.717718 44.190362</gml:lowerCorner>
+        <gml:upperCorner>3.78085 44.247576</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#48081">
+    <skos:prefLabel xml:lang="fr">Lanuéjols (48081)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.525569 44.459331</gml:lowerCorner>
+        <gml:upperCorner>3.633927 44.519718</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#48020">
+    <skos:prefLabel xml:lang="fr">Bassurels (48020)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.549439 44.115324</gml:lowerCorner>
+        <gml:upperCorner>3.653243 44.210047</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#48096">
+    <skos:prefLabel xml:lang="fr">Meyrueis (48096)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.357412 44.109584</gml:lowerCorner>
+        <gml:upperCorner>3.57136 44.234956</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#48136">
+    <skos:prefLabel xml:lang="fr">Saint-André-de-Lancize (48136)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.754543 44.227007</gml:lowerCorner>
+        <gml:upperCorner>3.843646 44.320801</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#48051">
+    <skos:prefLabel xml:lang="fr">Le Collet-de-Dèze (48051)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.886213 44.216103</gml:lowerCorner>
+        <gml:upperCorner>3.955569 44.300819</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#48173">
+    <skos:prefLabel xml:lang="fr">Saint-Michel-de-Dèze (48173)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.84634 44.223027</gml:lowerCorner>
+        <gml:upperCorner>3.915569 44.271034</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#48158">
+    <skos:prefLabel xml:lang="fr">Saint-Hilaire-de-Lavit (48158)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.828047 44.233968</gml:lowerCorner>
+        <gml:upperCorner>3.882205 44.270203</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#48178">
+    <skos:prefLabel xml:lang="fr">Saint-Privat-de-Vallongue (48178)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.7804 44.258327</gml:lowerCorner>
+        <gml:upperCorner>3.887701 44.318746</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#48069">
+    <skos:prefLabel xml:lang="fr">Gatuzières (48069)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.446865 44.132847</gml:lowerCorner>
+        <gml:upperCorner>3.568993 44.242684</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#48098">
+    <skos:prefLabel xml:lang="fr">Molezon (48098)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.653572 44.190998</gml:lowerCorner>
+        <gml:upperCorner>3.728485 44.239254</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#48170">
+    <skos:prefLabel xml:lang="fr">Saint-Martin-de-Boubaux (48170)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.876619 44.158609</gml:lowerCorner>
+        <gml:upperCorner>3.976972 44.22689</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#07163">
+    <skos:prefLabel xml:lang="fr">Montselgues (07163)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.959587 44.460139</gml:lowerCorner>
+        <gml:upperCorner>4.047891 44.586564</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#07266">
+    <skos:prefLabel xml:lang="fr">Sainte-Marguerite-Lafigère (07266)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.976643 44.453552</gml:lowerCorner>
+        <gml:upperCorner>4.01835 44.519578</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#07135">
+    <skos:prefLabel xml:lang="fr">Laval-d'Aurelle (07135)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.948374 44.552565</gml:lowerCorner>
+        <gml:upperCorner>4.000691 44.592999</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#07024">
+    <skos:prefLabel xml:lang="fr">Banne (07024)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>4.09297 44.326916</gml:lowerCorner>
+        <gml:upperCorner>4.19955 44.392604</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#07280">
+    <skos:prefLabel xml:lang="fr">Saint-Paul-le-Jeune (07280)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>4.124597 44.312051</gml:lowerCorner>
+        <gml:upperCorner>4.189909 44.354415</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#07284">
+    <skos:prefLabel xml:lang="fr">Saint-Pierre-Saint-Jean (07284)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>4.063941 44.441086</gml:lowerCorner>
+        <gml:upperCorner>4.130199 44.515968</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#07147">
+    <skos:prefLabel xml:lang="fr">Malarce-sur-la-Thines (07147)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>4.008952 44.432403</gml:lowerCorner>
+        <gml:upperCorner>4.093416 44.523074</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#07334">
+    <skos:prefLabel xml:lang="fr">Les Vans (07334)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>4.040218 44.359243</gml:lowerCorner>
+        <gml:upperCorner>4.188761 44.417474</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#07148">
+    <skos:prefLabel xml:lang="fr">Malbosc (07148)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>4.035685 44.316976</gml:lowerCorner>
+        <gml:upperCorner>4.110098 44.379835</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#07031">
+    <skos:prefLabel xml:lang="fr">Berrias-et-Casteljau (07031)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>4.173599 44.334434</gml:lowerCorner>
+        <gml:upperCorner>4.23769 44.423827</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#64006">
+    <skos:prefLabel xml:lang="fr">ACCOUS (64006)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>-0.662673 42.853087</gml:lowerCorner>
+        <gml:upperCorner>-0.492435 42.993864</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#64062">
+    <skos:prefLabel xml:lang="fr">ARUDY (64062)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>-0.523727 43.073134</gml:lowerCorner>
+        <gml:upperCorner>-0.415456 43.124251</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#64069">
+    <skos:prefLabel xml:lang="fr">ASTE-BÉON (64069)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>-0.425741 43.004514</gml:lowerCorner>
+        <gml:upperCorner>-0.368965 43.057044</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#64085">
+    <skos:prefLabel xml:lang="fr">AYDIUS (64085)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>-0.567597 42.967995</gml:lowerCorner>
+        <gml:upperCorner>-0.472863 43.034331</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#64104">
+    <skos:prefLabel xml:lang="fr">BEDOUS (64104)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>-0.615518 42.984058</gml:lowerCorner>
+        <gml:upperCorner>-0.564698 43.029808</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#64110">
+    <skos:prefLabel xml:lang="fr">BÉOST (64110)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>-0.421239 42.929092</gml:lowerCorner>
+        <gml:upperCorner>-0.279141 43.013756</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#64116">
+    <skos:prefLabel xml:lang="fr">BESCAT (64116)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>-0.445241 43.114876</gml:lowerCorner>
+        <gml:upperCorner>-0.399916 43.147978</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#64127">
+    <skos:prefLabel xml:lang="fr">BIELLE (64127)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>-0.509341 43.013396</gml:lowerCorner>
+        <gml:upperCorner>-0.413346 43.079609</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#64128">
+    <skos:prefLabel xml:lang="fr">BILHÈRES (64128)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>-0.530598 43.044771</gml:lowerCorner>
+        <gml:upperCorner>-0.427426 43.086351</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#64136">
+    <skos:prefLabel xml:lang="fr">BORCE (64136)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>-0.636157 42.780873</gml:lowerCorner>
+        <gml:upperCorner>-0.550371 42.922823</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#64157">
+    <skos:prefLabel xml:lang="fr">BUZY (64157)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>-0.489449 43.11356</gml:lowerCorner>
+        <gml:upperCorner>-0.402887 43.170007</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#64175">
+    <skos:prefLabel xml:lang="fr">CASTET (64175)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>-0.42187 43.025406</gml:lowerCorner>
+        <gml:upperCorner>-0.328819 43.077946</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#64185">
+    <skos:prefLabel xml:lang="fr">CETTE-EYGUN (64185)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>-0.611021 42.919838</gml:lowerCorner>
+        <gml:upperCorner>-0.507547 42.957293</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#64204">
+    <skos:prefLabel xml:lang="fr">EAUX-BONNES (64204)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>-0.41454 42.916739</gml:lowerCorner>
+        <gml:upperCorner>-0.297785 42.986171</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#64206">
+    <skos:prefLabel xml:lang="fr">ESCOT (64206)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>-0.618296 43.055425</gml:lowerCorner>
+        <gml:upperCorner>-0.520308 43.097966</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#64223">
+    <skos:prefLabel xml:lang="fr">ETSAUT (64223)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>-0.578708 42.850635</gml:lowerCorner>
+        <gml:upperCorner>-0.484933 42.929483</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#64240">
+    <skos:prefLabel xml:lang="fr">GÈRE-BÉLESTEN (64240)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>-0.482398 43.001066</gml:lowerCorner>
+        <gml:upperCorner>-0.415267 43.041821</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#64280">
+    <skos:prefLabel xml:lang="fr">IZESTE (64280)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>-0.477469 43.074317</gml:lowerCorner>
+        <gml:upperCorner>-0.419247 43.099894</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#64320">
+    <skos:prefLabel xml:lang="fr">LARUNS (64320)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>-0.510271 42.795452</gml:lowerCorner>
+        <gml:upperCorner>-0.307052 43.018718</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#64330">
+    <skos:prefLabel xml:lang="fr">LÉES-ATHAS (64330)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>-0.740468 42.937663</gml:lowerCorner>
+        <gml:upperCorner>-0.609532 43.005502</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#64336">
+    <skos:prefLabel xml:lang="fr">LESCUN (64336)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>-0.736441 42.870738</gml:lowerCorner>
+        <gml:upperCorner>-0.609471 42.962385</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#64351">
+    <skos:prefLabel xml:lang="fr">LOURDIOS-ICHÈRE (64351)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>-0.692505 43.019219</gml:lowerCorner>
+        <gml:upperCorner>-0.618787 43.06727</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#64353">
+    <skos:prefLabel xml:lang="fr">LOUVIE-JUZON (64353)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>-0.425098 43.022552</gml:lowerCorner>
+        <gml:upperCorner>-0.260141 43.115524</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#64354">
+    <skos:prefLabel xml:lang="fr">LOUVIE-SOUBIRON (64354)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>-0.4211 42.992488</gml:lowerCorner>
+        <gml:upperCorner>-0.255363 43.037674</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#64363">
+    <skos:prefLabel xml:lang="fr">LYS (64363)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>-0.379361 43.110993</gml:lowerCorner>
+        <gml:upperCorner>-0.316816 43.162371</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#64433">
+    <skos:prefLabel xml:lang="fr">OSSE-EN-ASPE (64433)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>-0.736028 42.978011</gml:lowerCorner>
+        <gml:upperCorner>-0.601688 43.048677</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#64473">
+    <skos:prefLabel xml:lang="fr">SAINTE-COLOME (64473)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>-0.412846 43.093082</gml:lowerCorner>
+        <gml:upperCorner>-0.351227 43.129371</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#64506">
+    <skos:prefLabel xml:lang="fr">SARRANCE (64506)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>-0.650527 43.012896</gml:lowerCorner>
+        <gml:upperCorner>-0.502097 43.071738</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#64522">
+    <skos:prefLabel xml:lang="fr">SÉVIGNACQ-MEYRACQ (64522)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>-0.426158 43.102444</gml:lowerCorner>
+        <gml:upperCorner>-0.349304 43.17783</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#64542">
+    <skos:prefLabel xml:lang="fr">URDOS (64542)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>-0.567748 42.777511</gml:lowerCorner>
+        <gml:upperCorner>-0.498623 42.884578</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#65001">
+    <skos:prefLabel xml:lang="fr">ADAST (65001)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>-0.084935 42.968056</gml:lowerCorner>
+        <gml:upperCorner>-0.068531 42.984343</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#65006">
+    <skos:prefLabel xml:lang="fr">ANCIZAN (65006)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>0.233386 42.862035</gml:lowerCorner>
+        <gml:upperCorner>0.349097 42.944615</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#65017">
+    <skos:prefLabel xml:lang="fr">ARAGNOUET (65017)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>0.100034 42.721824</gml:lowerCorner>
+        <gml:upperCorner>0.28092 42.834503</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#65018">
+    <skos:prefLabel xml:lang="fr">ARBÉOST (65018)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>-0.293244 42.942346</gml:lowerCorner>
+        <gml:upperCorner>-0.248097 43.010009</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#65021">
+    <skos:prefLabel xml:lang="fr">ARCIZANS-AVANT (65021)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>-0.141658 42.922266</gml:lowerCorner>
+        <gml:upperCorner>-0.096323 42.998246</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#65022">
+    <skos:prefLabel xml:lang="fr">ARCIZANS-DESSUS (65022)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>-0.178223 42.976662</gml:lowerCorner>
+        <gml:upperCorner>-0.146412 43.015828</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#65025">
+    <skos:prefLabel xml:lang="fr">ARGELÈS-GAZOST (65025)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>-0.112632 42.997286</gml:lowerCorner>
+        <gml:upperCorner>-0.080169 43.016897</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#65029">
+    <skos:prefLabel xml:lang="fr">ARRAS-EN-LAVEDAN (65029)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>-0.175169 42.913938</gml:lowerCorner>
+        <gml:upperCorner>-0.111053 43.015329</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#65032">
+    <skos:prefLabel xml:lang="fr">ARRENS-MARSOUS (65032)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>-0.327173 42.819033</gml:lowerCorner>
+        <gml:upperCorner>-0.176084 42.998385</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#65036">
+    <skos:prefLabel xml:lang="fr">ARTALENS-SOUIN (65036)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>-0.059426 42.967381</gml:lowerCorner>
+        <gml:upperCorner>-0.019241 42.990007</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#65039">
+    <skos:prefLabel xml:lang="fr">ASPIN-AURE (65039)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>0.29967 42.9154</gml:lowerCorner>
+        <gml:upperCorner>0.360858 42.959784</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#65045">
+    <skos:prefLabel xml:lang="fr">AUCUN (65045)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>-0.228311 42.954483</gml:lowerCorner>
+        <gml:upperCorner>-0.167698 43.017864</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#65046">
+    <skos:prefLabel xml:lang="fr">AULON (65046)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>0.211923 42.832831</gml:lowerCorner>
+        <gml:upperCorner>0.310316 42.879915</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#65055">
+    <skos:prefLabel xml:lang="fr">AYROS-ARBOUIX (65055)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>-0.082502 42.988823</gml:lowerCorner>
+        <gml:upperCorner>-0.049151 43.011756</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#65059">
+    <skos:prefLabel xml:lang="fr">BAGNÈRES-DE-BIGORRE (65059)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>0.04224 42.866244</gml:lowerCorner>
+        <gml:upperCorner>0.225524 43.092068</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#65075">
+    <skos:prefLabel xml:lang="fr">BAZUS-AURE (65075)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>0.327127 42.849582</gml:lowerCorner>
+        <gml:upperCorner>0.358616 42.864169</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#65077">
+    <skos:prefLabel xml:lang="fr">BEAUCENS (65077)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>-0.077184 42.919362</gml:lowerCorner>
+        <gml:upperCorner>0.113681 42.990007</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#65089">
+    <skos:prefLabel xml:lang="fr">BETPOUEY (65089)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>0.027819 42.829412</gml:lowerCorner>
+        <gml:upperCorner>0.100343 42.890147</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#65112">
+    <skos:prefLabel xml:lang="fr">BUN (65112)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>-0.174723 42.954493</gml:lowerCorner>
+        <gml:upperCorner>-0.149234 42.980135</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#65117">
+    <skos:prefLabel xml:lang="fr">CADEILHAN-TRACHÈRE (65117)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>0.263355 42.800589</gml:lowerCorner>
+        <gml:upperCorner>0.31731 42.820516</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#65123">
+    <skos:prefLabel xml:lang="fr">CAMPAN (65123)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>0.138716 42.870301</gml:lowerCorner>
+        <gml:upperCorner>0.313721 43.027462</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#65138">
+    <skos:prefLabel xml:lang="fr">CAUTERETS (65138)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>-0.239314 42.771074</gml:lowerCorner>
+        <gml:upperCorner>-0.046577 42.960184</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#65145">
+    <skos:prefLabel xml:lang="fr">CHÈZE (65145)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>-0.04898 42.903346</gml:lowerCorner>
+        <gml:upperCorner>0.009542 42.93741</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#65168">
+    <skos:prefLabel xml:lang="fr">ESQUIÈZE-SÈRE (65168)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>-0.016657 42.873691</gml:lowerCorner>
+        <gml:upperCorner>0.002984 42.887439</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#65169">
+    <skos:prefLabel xml:lang="fr">ESTAING (65169)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>-0.252587 42.81755</gml:lowerCorner>
+        <gml:upperCorner>-0.154678 42.958761</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#65173">
+    <skos:prefLabel xml:lang="fr">ESTERRE (65173)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>-5.12E-4 42.86049</gml:lowerCorner>
+        <gml:upperCorner>0.029966 42.886856</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#65176">
+    <skos:prefLabel xml:lang="fr">FERRIÈRES (65176)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>-0.264716 42.982992</gml:lowerCorner>
+        <gml:upperCorner>-0.211001 43.039677</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#65182">
+    <skos:prefLabel xml:lang="fr">GAILLAGOS (65182)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>-0.200465 42.976655</gml:lowerCorner>
+        <gml:upperCorner>-0.162909 43.013157</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#65188">
+    <skos:prefLabel xml:lang="fr">GAVARNIE (65188)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>-0.150205 42.684385</gml:lowerCorner>
+        <gml:upperCorner>0.029803 42.786218</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#65192">
+    <skos:prefLabel xml:lang="fr">GÈDRE (65192)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>-0.085725 42.695877</gml:lowerCorner>
+        <gml:upperCorner>0.139399 42.829132</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#65210">
+    <skos:prefLabel xml:lang="fr">GRUST (65210)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>-0.08371 42.866818</gml:lowerCorner>
+        <gml:upperCorner>-0.026002 42.910971</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#65211">
+    <skos:prefLabel xml:lang="fr">GUCHAN (65211)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>0.325701 42.836132</gml:lowerCorner>
+        <gml:upperCorner>0.367107 42.855674</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#65212">
+    <skos:prefLabel xml:lang="fr">GUCHEN (65212)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>0.300057 42.841044</gml:lowerCorner>
+        <gml:upperCorner>0.34738 42.869104</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#65267">
+    <skos:prefLabel xml:lang="fr">LAU-BALAGNAS (65267)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>-0.106995 42.982108</gml:lowerCorner>
+        <gml:upperCorner>-0.075675 43.001978</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#65295">
+    <skos:prefLabel xml:lang="fr">LUZ-SAINT-SAUVEUR (65295)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>-0.07289 42.793479</gml:lowerCorner>
+        <gml:upperCorner>0.107978 42.877667</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#65362">
+    <skos:prefLabel xml:lang="fr">PIERREFITTE-NESTALAS (65362)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>-0.084827 42.950539</gml:lowerCorner>
+        <gml:upperCorner>-0.063161 42.970487</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#65371">
+    <skos:prefLabel xml:lang="fr">PRÉCHAC (65371)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>-0.078902 42.985007</gml:lowerCorner>
+        <gml:upperCorner>-0.058849 43.001066</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#65388">
+    <skos:prefLabel xml:lang="fr">SAINT-LARY-SOULAN (65388)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>0.112563 42.673116</gml:lowerCorner>
+        <gml:upperCorner>0.3601 42.85239</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#65396">
+    <skos:prefLabel xml:lang="fr">SAINT-SAVIN (65396)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>-0.105157 42.9581</gml:lowerCorner>
+        <gml:upperCorner>-0.077184 42.989772</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#65399">
+    <skos:prefLabel xml:lang="fr">SALIGOS (65399)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>-0.03923 42.886389</gml:lowerCorner>
+        <gml:upperCorner>0.010148 42.912714</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#65411">
+    <skos:prefLabel xml:lang="fr">SASSIS (65411)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>-0.022528 42.868593</gml:lowerCorner>
+        <gml:upperCorner>-0.012475 42.886633</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#65413">
+    <skos:prefLabel xml:lang="fr">SAZOS (65413)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>-0.080711 42.819863</gml:lowerCorner>
+        <gml:upperCorner>-0.009371 42.902578</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#65424">
+    <skos:prefLabel xml:lang="fr">SERS (65424)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>0.009542 42.882595</gml:lowerCorner>
+        <gml:upperCorner>0.14747 42.936965</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#65428">
+    <skos:prefLabel xml:lang="fr">SIREIX (65428)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>-0.168312 42.950105</gml:lowerCorner>
+        <gml:upperCorner>-0.14319 42.98026</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#65435">
+    <skos:prefLabel xml:lang="fr">SOULOM (65435)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>-0.091742 42.940106</gml:lowerCorner>
+        <gml:upperCorner>-0.052542 42.962348</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#65450">
+    <skos:prefLabel xml:lang="fr">TRAMEZAÏGUES (65450)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>0.205992 42.71582</gml:lowerCorner>
+        <gml:upperCorner>0.297118 42.804035</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#65458">
+    <skos:prefLabel xml:lang="fr">UZ (65458)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>-0.104041 42.9468</gml:lowerCorner>
+        <gml:upperCorner>-0.080243 42.971786</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#65463">
+    <skos:prefLabel xml:lang="fr">VIELLA (65463)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>0.008886 42.858467</gml:lowerCorner>
+        <gml:upperCorner>0.036393 42.881169</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#65465">
+    <skos:prefLabel xml:lang="fr">VIELLE-AURE (65465)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>0.123525 42.823355</gml:lowerCorner>
+        <gml:upperCorner>0.34025 42.884647</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#65467">
+    <skos:prefLabel xml:lang="fr">VIER-BORDES (65467)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>-0.059871 42.977913</gml:lowerCorner>
+        <gml:upperCorner>-1.9E-5 43.007494</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#65469">
+    <skos:prefLabel xml:lang="fr">VIEY (65469)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>0.003145 42.877426</gml:lowerCorner>
+        <gml:upperCorner>0.035736 42.912436</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#65471">
+    <skos:prefLabel xml:lang="fr">VIGNEC (65471)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>0.243135 42.801266</gml:lowerCorner>
+        <gml:upperCorner>0.324865 42.836593</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#65473">
+    <skos:prefLabel xml:lang="fr">VILLELONGUE (65473)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>-0.069182 42.912436</gml:lowerCorner>
+        <gml:upperCorner>0.027296 42.965486</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#65478">
+    <skos:prefLabel xml:lang="fr">VISCOS (65478)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>-0.070322 42.902103</gml:lowerCorner>
+        <gml:upperCorner>-0.035584 42.931883</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#65480">
+    <skos:prefLabel xml:lang="fr">VIZOS (65480)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>-0.017177 42.882683</gml:lowerCorner>
+        <gml:upperCorner>0.007565 42.903527</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#65481">
+    <skos:prefLabel xml:lang="fr">BARÈGES (65481)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>0.046648 42.827727</gml:lowerCorner>
+        <gml:upperCorner>0.174308 42.90844</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#04006">
+    <skos:prefLabel xml:lang="fr">ALLOS (04006)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.532556 44.214767</gml:lowerCorner>
+        <gml:upperCorner>6.728288 44.323293</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#04061">
+    <skos:prefLabel xml:lang="fr">COLMARS (04061)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.597852 44.095597</gml:lowerCorner>
+        <gml:upperCorner>6.71909 44.224586</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#04096">
+    <skos:prefLabel xml:lang="fr">JAUSIERS (04096)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.677466 44.316701</gml:lowerCorner>
+        <gml:upperCorner>6.871539 44.442253</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#04100">
+    <skos:prefLabel xml:lang="fr">LARCHE (04100)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.807937 44.352804</gml:lowerCorner>
+        <gml:upperCorner>6.948087 44.490779</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#04120">
+    <skos:prefLabel xml:lang="fr">MEYRONNES (04120)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.763681 44.433719</gml:lowerCorner>
+        <gml:upperCorner>6.871026 44.506326</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#04226">
+    <skos:prefLabel xml:lang="fr">UVERNET-FOURS (04226)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.544174 44.251414</gml:lowerCorner>
+        <gml:upperCorner>6.796993 44.388932</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#06013">
+    <skos:prefLabel xml:lang="fr">BELVEDERE (06013)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>7.289748 43.997215</gml:lowerCorner>
+        <gml:upperCorner>7.431666 44.125048</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#06016">
+    <skos:prefLabel xml:lang="fr">BEUIL (06016)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.910253 44.038354</gml:lowerCorner>
+        <gml:upperCorner>7.028557 44.196399</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#06020">
+    <skos:prefLabel xml:lang="fr">LA BOLLENE-VESUBIE (06020)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>7.316302 43.96711</gml:lowerCorner>
+        <gml:upperCorner>7.433474 44.021717</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#06023">
+    <skos:prefLabel xml:lang="fr">BREIL-SUR-ROYA (06023)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>7.425405 43.878755</gml:lowerCorner>
+        <gml:upperCorner>7.573727 44.00099</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#06040">
+    <skos:prefLabel xml:lang="fr">CHATEAUNEUF-D'ENTRAUNES (06040)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.803187 44.110827</gml:lowerCorner>
+        <gml:upperCorner>6.877557 44.206022</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#06056">
+    <skos:prefLabel xml:lang="fr">ENTRAUNES (06056)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.698078 44.163519</gml:lowerCorner>
+        <gml:upperCorner>6.827952 44.279712</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#06062">
+    <skos:prefLabel xml:lang="fr">FONTAN (06062)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>7.463568 43.989767</gml:lowerCorner>
+        <gml:upperCorner>7.641057 44.052307</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#06071">
+    <skos:prefLabel xml:lang="fr">GUILLAUMES (06071)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.791637 44.028846</gml:lowerCorner>
+        <gml:upperCorner>6.943208 44.172284</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#06073">
+    <skos:prefLabel xml:lang="fr">ISOLA (06073)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.97352 44.145972</gml:lowerCorner>
+        <gml:upperCorner>7.19377 44.234271</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#06086">
+    <skos:prefLabel xml:lang="fr">MOULINET (06086)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>7.368186 43.903116</gml:lowerCorner>
+        <gml:upperCorner>7.457943 43.997116</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#06094">
+    <skos:prefLabel xml:lang="fr">PEONE (06094)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.877932 44.076424</gml:lowerCorner>
+        <gml:upperCorner>6.972378 44.190204</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#06102">
+    <skos:prefLabel xml:lang="fr">RIMPLAS (06102)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>7.113846 44.045298</gml:lowerCorner>
+        <gml:upperCorner>7.176006 44.154009</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#06110">
+    <skos:prefLabel xml:lang="fr">ROUBION (06110)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.979754 44.060595</gml:lowerCorner>
+        <gml:upperCorner>7.066926 44.163654</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#06111">
+    <skos:prefLabel xml:lang="fr">ROURE (06111)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>7.013621 44.069146</gml:lowerCorner>
+        <gml:upperCorner>7.106936 44.158651</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#06119">
+    <skos:prefLabel xml:lang="fr">SAINT-DALMAS-LE-SELVAGE (06119)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.78635 44.215416</gml:lowerCorner>
+        <gml:upperCorner>6.903896 44.346571</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#06120">
+    <skos:prefLabel xml:lang="fr">SAINT-ETIENNE-DE-TINEE (06120)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.822892 44.158105</gml:lowerCorner>
+        <gml:upperCorner>7.027981 44.361056</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#06127">
+    <skos:prefLabel xml:lang="fr">SAINT-MARTIN-VESUBIE (06127)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>7.224669 44.040803</gml:lowerCorner>
+        <gml:upperCorner>7.388862 44.148081</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#06129">
+    <skos:prefLabel xml:lang="fr">SAINT-SAUVEUR-SUR-TINEE (06129)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>7.08225 44.063545</gml:lowerCorner>
+        <gml:upperCorner>7.162849 44.169097</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#06132">
+    <skos:prefLabel xml:lang="fr">SAORGE (06132)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>7.412274 43.945802</gml:lowerCorner>
+        <gml:upperCorner>7.670436 44.049136</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#06136">
+    <skos:prefLabel xml:lang="fr">SOSPEL (06136)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>7.393576 43.840177</gml:lowerCorner>
+        <gml:upperCorner>7.509048 43.93404</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#06153">
+    <skos:prefLabel xml:lang="fr">VALDEBLORE (06153)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>7.127383 44.043163</gml:lowerCorner>
+        <gml:upperCorner>7.262781 44.187096</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#06163">
+    <skos:prefLabel xml:lang="fr">TENDE (06163)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>7.423047 44.029606</gml:lowerCorner>
+        <gml:upperCorner>7.676647 44.164198</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#05004">
+    <skos:prefLabel xml:lang="fr">ANCELLE (05004)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.155613 44.590077</gml:lowerCorner>
+        <gml:upperCorner>6.302045 44.648985</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#05006">
+    <skos:prefLabel xml:lang="fr">L'ARGENTIERE-LA-BESSEE (05006)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.35286 44.757129</gml:lowerCorner>
+        <gml:upperCorner>6.590295 44.809735</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#05009">
+    <skos:prefLabel xml:lang="fr">ASPRES-LES-CORPS (05009)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>5.949519 44.79099</gml:lowerCorner>
+        <gml:upperCorner>6.056502 44.838096</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#05020">
+    <skos:prefLabel xml:lang="fr">BENEVENT-ET-CHARBILLAC (05020)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.052935 44.689192</gml:lowerCorner>
+        <gml:upperCorner>6.134622 44.725814</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#05025">
+    <skos:prefLabel xml:lang="fr">BUISSARD (05025)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.133359 44.647596</gml:lowerCorner>
+        <gml:upperCorner>6.157532 44.66941</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#05029">
+    <skos:prefLabel xml:lang="fr">CHABOTTES (05029)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.138523 44.631352</gml:lowerCorner>
+        <gml:upperCorner>6.193585 44.665414</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#05031">
+    <skos:prefLabel xml:lang="fr">CHAMPCELLA (05031)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.458818 44.696656</gml:lowerCorner>
+        <gml:upperCorner>6.587418 44.753699</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#05032">
+    <skos:prefLabel xml:lang="fr">CHAMPOLEON (05032)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.188682 44.683246</gml:lowerCorner>
+        <gml:upperCorner>6.359552 44.800024</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#05036">
+    <skos:prefLabel xml:lang="fr">CHATEAUROUX-LES-ALPES (05036)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.398774 44.584089</gml:lowerCorner>
+        <gml:upperCorner>6.568499 44.700812</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#05039">
+    <skos:prefLabel xml:lang="fr">CHAUFFAYER (05039)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>5.984387 44.730892</gml:lowerCorner>
+        <gml:upperCorner>6.034744 44.776795</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#05043">
+    <skos:prefLabel xml:lang="fr">LES COSTES (05043)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.020389 44.732732</gml:lowerCorner>
+        <gml:upperCorner>6.077307 44.761478</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#05045">
+    <skos:prefLabel xml:lang="fr">CROTS (05045)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.397573 44.448723</gml:lowerCorner>
+        <gml:upperCorner>6.516718 44.548083</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#05046">
+    <skos:prefLabel xml:lang="fr">EMBRUN (05046)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.430428 44.541499</gml:lowerCorner>
+        <gml:upperCorner>6.519387 44.619546</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#05058">
+    <skos:prefLabel xml:lang="fr">FREISSINIERES (05058)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.344873 44.682195</gml:lowerCorner>
+        <gml:upperCorner>6.574055 44.774467</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#05063">
+    <skos:prefLabel xml:lang="fr">LA GRAVE (05063)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.202449 44.995141</gml:lowerCorner>
+        <gml:upperCorner>6.374845 45.126848</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#05064">
+    <skos:prefLabel xml:lang="fr">LA CHAPELLE-EN-VALGAUDEMAR (05064)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.138052 44.739545</gml:lowerCorner>
+        <gml:upperCorner>6.349478 44.874229</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#05067">
+    <skos:prefLabel xml:lang="fr">LES INFOURNAS (05067)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.078339 44.7015</gml:lowerCorner>
+        <gml:upperCorner>6.145217 44.727748</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#05079">
+    <skos:prefLabel xml:lang="fr">LE MONETIER-LES-BAINS (05079)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.361755 44.928297</gml:lowerCorner>
+        <gml:upperCorner>6.580069 45.070171</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#05090">
+    <skos:prefLabel xml:lang="fr">LA MOTTE-EN-CHAMPSAUR (05090)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.047679 44.705089</gml:lowerCorner>
+        <gml:upperCorner>6.194469 44.774699</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#05096">
+    <skos:prefLabel xml:lang="fr">ORCIERES (05096)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.263358 44.625754</gml:lowerCorner>
+        <gml:upperCorner>6.442948 44.74405</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#05101">
+    <skos:prefLabel xml:lang="fr">PELVOUX (05101)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.350397 44.85016</gml:lowerCorner>
+        <gml:upperCorner>6.537016 44.95616</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#05106">
+    <skos:prefLabel xml:lang="fr">PRUNIERES (05106)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.311977 44.511395</gml:lowerCorner>
+        <gml:upperCorner>6.370618 44.580505</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#05108">
+    <skos:prefLabel xml:lang="fr">PUY-SAINT-EUSEBE (05108)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.390841 44.541592</gml:lowerCorner>
+        <gml:upperCorner>6.434861 44.591743</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#05110">
+    <skos:prefLabel xml:lang="fr">PUY-SAINT-VINCENT (05110)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.405378 44.793858</gml:lowerCorner>
+        <gml:upperCorner>6.518135 44.837423</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#05111">
+    <skos:prefLabel xml:lang="fr">PUY-SANIERES (05111)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.412877 44.533871</gml:lowerCorner>
+        <gml:upperCorner>6.465131 44.585418</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#05114">
+    <skos:prefLabel xml:lang="fr">REALLON (05114)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.288389 44.569483</gml:lowerCorner>
+        <gml:upperCorner>6.435967 44.663046</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#05116">
+    <skos:prefLabel xml:lang="fr">REOTIER (05116)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.485567 44.655726</gml:lowerCorner>
+        <gml:upperCorner>6.607542 44.701591</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#05130">
+    <skos:prefLabel xml:lang="fr">SAINT-APOLLINAIRE (05130)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.335585 44.540189</gml:lowerCorner>
+        <gml:upperCorner>6.374575 44.576342</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#05132">
+    <skos:prefLabel xml:lang="fr">SAINT-BONNET-EN-CHAMPSAUR (05132)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.059786 44.656091</gml:lowerCorner>
+        <gml:upperCorner>6.145082 44.706953</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#05134">
+    <skos:prefLabel xml:lang="fr">SAINT-CLEMENT-SUR-DURANCE (05134)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.497029 44.595397</gml:lowerCorner>
+        <gml:upperCorner>6.602329 44.698967</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#05141">
+    <skos:prefLabel xml:lang="fr">SAINT-EUSEBE-EN-CHAMPSAUR (05141)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.007929 44.701149</gml:lowerCorner>
+        <gml:upperCorner>6.057263 44.738332</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#05142">
+    <skos:prefLabel xml:lang="fr">SAINT-FIRMIN (05142)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>5.977782 44.773937</gml:lowerCorner>
+        <gml:upperCorner>6.063039 44.818283</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#05144">
+    <skos:prefLabel xml:lang="fr">SAINT-JACQUES-EN-VALGODEMARD (05144)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.025557 44.757728</gml:lowerCorner>
+        <gml:upperCorner>6.104144 44.797063</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#05145">
+    <skos:prefLabel xml:lang="fr">SAINT-JEAN-SAINT-NICOLAS (05145)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.181891 44.641173</gml:lowerCorner>
+        <gml:upperCorner>6.278227 44.710198</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#05147">
+    <skos:prefLabel xml:lang="fr">SAINT-JULIEN-EN-CHAMPSAUR (05147)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.103391 44.648199</gml:lowerCorner>
+        <gml:upperCorner>6.15406 44.696878</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#05149">
+    <skos:prefLabel xml:lang="fr">SAINT-LEGER-LES-MELEZES (05149)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.1865 44.6358</gml:lowerCorner>
+        <gml:upperCorner>6.242266 44.659411</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#05152">
+    <skos:prefLabel xml:lang="fr">SAINT-MAURICE-EN-VALGODEMARD (05152)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.055063 44.768631</gml:lowerCorner>
+        <gml:upperCorner>6.176778 44.838233</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#05153">
+    <skos:prefLabel xml:lang="fr">SAINT-MICHEL-DE-CHAILLOL (05153)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.141625 44.662786</gml:lowerCorner>
+        <gml:upperCorner>6.194942 44.715983</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#05164">
+    <skos:prefLabel xml:lang="fr">SAVINES-LE-LAC (05164)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.35523 44.487362</gml:lowerCorner>
+        <gml:upperCorner>6.434723 44.572494</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#05175">
+    <skos:prefLabel xml:lang="fr">VALLOUISE (05175)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.329594 44.772951</gml:lowerCorner>
+        <gml:upperCorner>6.535057 44.872856</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#05180">
+    <skos:prefLabel xml:lang="fr">LES VIGNEAUX (05180)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.49476 44.796806</gml:lowerCorner>
+        <gml:upperCorner>6.566252 44.852181</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#05181">
+    <skos:prefLabel xml:lang="fr">VILLAR-D'ARENE (05181)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.314815 44.941575</gml:lowerCorner>
+        <gml:upperCorner>6.413595 45.06456</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#05182">
+    <skos:prefLabel xml:lang="fr">VILLAR-LOUBIERE (05182)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.097321 44.808391</gml:lowerCorner>
+        <gml:upperCorner>6.169659 44.8645</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#38040">
+    <skos:prefLabel xml:lang="fr">BESSE (38040)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.152059 45.056522</gml:lowerCorner>
+        <gml:upperCorner>6.265495 45.164859</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#38052">
+    <skos:prefLabel xml:lang="fr">LE BOURG-D'OISANS (38052)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>5.975629 44.935578</gml:lowerCorner>
+        <gml:upperCorner>6.08004 45.121249</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#38073">
+    <skos:prefLabel xml:lang="fr">CHANTELOUVE (38073)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>5.925897 44.957311</gml:lowerCorner>
+        <gml:upperCorner>6.032413 45.018534</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#38112">
+    <skos:prefLabel xml:lang="fr">CLAVANS-EN-HAUT-OISANS (38112)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.132299 45.050692</gml:lowerCorner>
+        <gml:upperCorner>6.20432 45.15645</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#38154">
+    <skos:prefLabel xml:lang="fr">ENTRAIGUES (38154)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>5.931841 44.863044</gml:lowerCorner>
+        <gml:upperCorner>6.000781 44.921943</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#38207">
+    <skos:prefLabel xml:lang="fr">LAVALDENS (38207)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>5.845493 44.937479</gml:lowerCorner>
+        <gml:upperCorner>5.951854 45.040714</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#38237">
+    <skos:prefLabel xml:lang="fr">MIZOEN (38237)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.13442 45.012447</gml:lowerCorner>
+        <gml:upperCorner>6.220199 45.068803</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#38253">
+    <skos:prefLabel xml:lang="fr">MONT-DE-LANS (38253)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.064861 44.983498</gml:lowerCorner>
+        <gml:upperCorner>6.203514 45.046263</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#38283">
+    <skos:prefLabel xml:lang="fr">ORIS-EN-RATTIER (38283)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>5.855382 44.907111</gml:lowerCorner>
+        <gml:upperCorner>5.919036 44.958301</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#38285">
+    <skos:prefLabel xml:lang="fr">ORNON (38285)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>5.920249 45.01397</gml:lowerCorner>
+        <gml:upperCorner>6.00199 45.064709</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#38286">
+    <skos:prefLabel xml:lang="fr">OULLES (38286)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>5.920061 45.058193</gml:lowerCorner>
+        <gml:upperCorner>6.01172 45.098517</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#38302">
+    <skos:prefLabel xml:lang="fr">LE PERIER (38302)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>5.916298 44.902232</gml:lowerCorner>
+        <gml:upperCorner>6.042764 44.971954</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#38375">
+    <skos:prefLabel xml:lang="fr">SAINT-CHRISTOPHE-EN-OISANS (38375)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.10619 44.848369</gml:lowerCorner>
+        <gml:upperCorner>6.359305 45.012447</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#38518">
+    <skos:prefLabel xml:lang="fr">VALBONNAIS (38518)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>5.867666 44.87393</gml:lowerCorner>
+        <gml:upperCorner>5.945472 44.931759</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#38522">
+    <skos:prefLabel xml:lang="fr">VALJOUFFREY (38522)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>5.987987 44.815814</gml:lowerCorner>
+        <gml:upperCorner>6.201112 44.939297</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#38534">
+    <skos:prefLabel xml:lang="fr">VENOSC (38534)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.069533 44.930534</gml:lowerCorner>
+        <gml:upperCorner>6.16038 45.008085</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#38549">
+    <skos:prefLabel xml:lang="fr">VILLARD-NOTRE-DAME (38549)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.010814 44.980014</gml:lowerCorner>
+        <gml:upperCorner>6.05444 45.040669</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#38551">
+    <skos:prefLabel xml:lang="fr">VILLARD-REYMOND (38551)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>5.986305 44.99995</gml:lowerCorner>
+        <gml:upperCorner>6.027014 45.055742</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#83036">
+    <skos:prefLabel xml:lang="fr">Cavalaire-sur-Mer (83036)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.490656 43.150379</gml:lowerCorner>
+        <gml:upperCorner>6.55244 43.208931</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#83152">
+    <skos:prefLabel xml:lang="fr">Rayol-Canadel-sur-Mer (83152)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.447523 43.151038</gml:lowerCorner>
+        <gml:upperCorner>6.501278 43.181539</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#83034">
+    <skos:prefLabel xml:lang="fr">Carqueiranne (83034)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.033126 43.077898</gml:lowerCorner>
+        <gml:upperCorner>6.109725 43.117158</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#83062">
+    <skos:prefLabel xml:lang="fr">La Garde (83062)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>5.97817 43.103394</gml:lowerCorner>
+        <gml:upperCorner>6.054151 43.154714</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#83101">
+    <skos:prefLabel xml:lang="fr">Ramatuelle (83101)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.601047 43.167735</gml:lowerCorner>
+        <gml:upperCorner>6.688897 43.255301</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#83071">
+    <skos:prefLabel xml:lang="fr">La Londe-les-Maures (83071)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.158438 43.113085</gml:lowerCorner>
+        <gml:upperCorner>6.325021 43.215044</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#83048">
+    <skos:prefLabel xml:lang="fr">La Croix-Valmer (83048)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.528221 43.157966</gml:lowerCorner>
+        <gml:upperCorner>6.647773 43.223856</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#83019">
+    <skos:prefLabel xml:lang="fr">Bormes-les-Mimosas (83019)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.271651 43.086455</gml:lowerCorner>
+        <gml:upperCorner>6.451403 43.228494</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#83098">
+    <skos:prefLabel xml:lang="fr">Le Pradet (83098)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>5.992988 43.07763</gml:lowerCorner>
+        <gml:upperCorner>6.04978 43.119163</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#83070">
+    <skos:prefLabel xml:lang="fr">Le Lavandou (83070)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.348912 43.125273</gml:lowerCorner>
+        <gml:upperCorner>6.454027 43.208483</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#83069">
+    <skos:prefLabel xml:lang="fr">Hyères (83069)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.067831 42.982005</gml:lowerCorner>
+        <gml:upperCorner>6.532718 43.207017</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#13022">
+    <skos:prefLabel xml:lang="fr">Cassis (13022)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>5.506304 43.188457</gml:lowerCorner>
+        <gml:upperCorner>5.594302 43.248612</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#13070">
+    <skos:prefLabel xml:lang="fr">La Penne-sur-Huveaune (13070)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>5.504694 43.266665</gml:lowerCorner>
+        <gml:upperCorner>5.532369 43.288878</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#13119">
+    <skos:prefLabel xml:lang="fr">Carnoux-en-Provence (13119)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>5.54442 43.246646</gml:lowerCorner>
+        <gml:upperCorner>5.586654 43.271369</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#13023">
+    <skos:prefLabel xml:lang="fr">Ceyreste (13023)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>5.587806 43.201008</gml:lowerCorner>
+        <gml:upperCorner>5.682996 43.242044</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#13028">
+    <skos:prefLabel xml:lang="fr">La Ciotat (13028)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>5.555965 43.157385</gml:lowerCorner>
+        <gml:upperCorner>5.67912 43.218905</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#13085">
+    <skos:prefLabel xml:lang="fr">Roquefort-la-Bédoule (13085)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>5.554865 43.233289</gml:lowerCorner>
+        <gml:upperCorner>5.704531 43.270395</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#13055">
+    <skos:prefLabel xml:lang="fr">Marseille (13055)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>5.228652 43.169622</gml:lowerCorner>
+        <gml:upperCorner>5.532543 43.391057</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#73015">
+    <skos:prefLabel xml:lang="fr">LES ALLUES (73015)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.520847 45.274948</gml:lowerCorner>
+        <gml:upperCorner>6.664793 45.453192</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#73023">
+    <skos:prefLabel xml:lang="fr">AUSSOIS (73023)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.680379 45.198305</gml:lowerCorner>
+        <gml:upperCorner>6.77301 45.297811</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#73026">
+    <skos:prefLabel xml:lang="fr">AVRIEUX (73026)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.702995 45.136742</gml:lowerCorner>
+        <gml:upperCorner>6.802406 45.235209</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#73038">
+    <skos:prefLabel xml:lang="fr">BELLENTRE (73038)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.692739 45.490717</gml:lowerCorner>
+        <gml:upperCorner>6.769892 45.591924</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#73040">
+    <skos:prefLabel xml:lang="fr">BESSANS (73040)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.956721 45.209946</gml:lowerCorner>
+        <gml:upperCorner>7.137753 45.367164</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#73047">
+    <skos:prefLabel xml:lang="fr">BONNEVAL-SUR-ARC (73047)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.998183 45.326512</gml:lowerCorner>
+        <gml:upperCorner>7.185888 45.43428</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#73054">
+    <skos:prefLabel xml:lang="fr">BOURG-SAINT-MAURICE (73054)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.670666 45.547559</gml:lowerCorner>
+        <gml:upperCorner>6.851873 45.77953</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#73055">
+    <skos:prefLabel xml:lang="fr">BOZEL (73055)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.611412 45.419204</gml:lowerCorner>
+        <gml:upperCorner>6.696033 45.495167</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#73056">
+    <skos:prefLabel xml:lang="fr">BRAMANS (73056)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.758624 45.127115</gml:lowerCorner>
+        <gml:upperCorner>6.947127 45.242261</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#73071">
+    <skos:prefLabel xml:lang="fr">CHAMPAGNY-EN-VANOISE (73071)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.67281 45.404096</gml:lowerCorner>
+        <gml:upperCorner>6.890151 45.498533</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#73142">
+    <skos:prefLabel xml:lang="fr">LANDRY (73142)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.724347 45.549575</gml:lowerCorner>
+        <gml:upperCorner>6.804551 45.581527</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#73143">
+    <skos:prefLabel xml:lang="fr">LANSLEBOURG-MONT-CENIS (73143)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.84378 45.176188</gml:lowerCorner>
+        <gml:upperCorner>7.05118 45.325267</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#73144">
+    <skos:prefLabel xml:lang="fr">LANSLEVILLARD (73144)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.877966 45.260103</gml:lowerCorner>
+        <gml:upperCorner>6.979322 45.337348</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#73157">
+    <skos:prefLabel xml:lang="fr">MODANE (73157)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.57644 45.109327</gml:lowerCorner>
+        <gml:upperCorner>6.714586 45.281309</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#73176">
+    <skos:prefLabel xml:lang="fr">MONTVALEZAN (73176)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.828367 45.603211</gml:lowerCorner>
+        <gml:upperCorner>6.916675 45.66414</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#73197">
+    <skos:prefLabel xml:lang="fr">PEISEY-NANCROIX (73197)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.74012 45.452465</gml:lowerCorner>
+        <gml:upperCorner>6.872197 45.557221</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#73201">
+    <skos:prefLabel xml:lang="fr">PLANAY (73201)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.667416 45.400079</gml:lowerCorner>
+        <gml:upperCorner>6.760502 45.447691</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#73206">
+    <skos:prefLabel xml:lang="fr">PRALOGNAN-LA-VANOISE (73206)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.633975 45.26849</gml:lowerCorner>
+        <gml:upperCorner>6.827099 45.41727</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#73223">
+    <skos:prefLabel xml:lang="fr">SAINT-ANDRE (73223)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.576068 45.19307</gml:lowerCorner>
+        <gml:upperCorner>6.652321 45.263511</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#73227">
+    <skos:prefLabel xml:lang="fr">SAINT-BON-TARENTAISE (73227)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.601093 45.32774</gml:lowerCorner>
+        <gml:upperCorner>6.690091 45.445521</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#73232">
+    <skos:prefLabel xml:lang="fr">SAINTE-FOY-TARENTAISE (73232)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.844544 45.504791</gml:lowerCorner>
+        <gml:upperCorner>7.005357 45.654933</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#73257">
+    <skos:prefLabel xml:lang="fr">SAINT-MARTIN-DE-BELLEVILLE (73257)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.415174 45.252126</gml:lowerCorner>
+        <gml:upperCorner>6.624242 45.448465</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#73285">
+    <skos:prefLabel xml:lang="fr">SEEZ (73285)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.784336 45.595684</gml:lowerCorner>
+        <gml:upperCorner>6.907 45.690569</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#73287">
+    <skos:prefLabel xml:lang="fr">SOLLIERES-SARDIERES (73287)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.751305 45.214249</gml:lowerCorner>
+        <gml:upperCorner>6.878524 45.279806</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#73290">
+    <skos:prefLabel xml:lang="fr">TERMIGNON (73290)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.731359 45.257458</gml:lowerCorner>
+        <gml:upperCorner>6.988172 45.425392</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#73296">
+    <skos:prefLabel xml:lang="fr">TIGNES (73296)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.859525 45.417336</gml:lowerCorner>
+        <gml:upperCorner>7.056361 45.531846</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#73304">
+    <skos:prefLabel xml:lang="fr">VAL-D'ISERE (73304)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.915587 45.366619</gml:lowerCorner>
+        <gml:upperCorner>7.115104 45.479924</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#73322">
+    <skos:prefLabel xml:lang="fr">VILLARODIN-BOURGET (73322)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.657856 45.16239</gml:lowerCorner>
+        <gml:upperCorner>6.726963 45.271205</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/commune#73323">
+    <skos:prefLabel xml:lang="fr">VILLAROGER (73323)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.820108 45.510002</gml:lowerCorner>
+        <gml:upperCorner>6.912871 45.607437</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+</rdf:RDF>

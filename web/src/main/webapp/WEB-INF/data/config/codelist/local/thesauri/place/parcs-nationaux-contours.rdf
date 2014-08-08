@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:gml="http://www.opengis.net/gml#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:skos="http://www.w3.org/2004/02/skos/core#">
+  <skos:ConceptScheme rdf:about="http://registry.parcsnationaux.fr/commune">
+    <dc:title xml:lang="fr">Contours des Parcs</dc:title>
+    <dcterms:issued>2014-08-08</dcterms:issued>
+  </skos:ConceptScheme>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/parcs#1">
+    <skos:prefLabel xml:lang="fr">Aire potentielle d'adhésion du Parc national de Port-Cros</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>5.978179 42.983134</gml:lowerCorner>
+        <gml:upperCorner>6.688898 43.218228</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/parcs#2">
+    <skos:prefLabel xml:lang="fr">Zone coeur du Parc national du Mercantour</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.603872 43.905087</gml:lowerCorner>
+        <gml:upperCorner>7.518004 44.428373</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/parcs#3">
+    <skos:prefLabel xml:lang="fr">Aire potentielle d'adhésion du Parc national du Mercantour</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>7.480459 43.990077</gml:lowerCorner>
+        <gml:upperCorner>7.676644 44.164191</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/parcs#4">
+    <skos:prefLabel xml:lang="fr">Zone coeur du Parc national des Calanques</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>5.191667 43.019445</gml:lowerCorner>
+        <gml:upperCorner>5.228575 43.237222</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/parcs#5">
+    <skos:prefLabel xml:lang="fr">Aire d'adhésion du Parc national du Mercantour</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.807941 44.405426</gml:lowerCorner>
+        <gml:upperCorner>6.948087 44.490775</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/parcs#6">
+    <skos:prefLabel xml:lang="fr">Aire potentielle d'adhésion du Parc national de la Vanoise</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.576114 45.127115</gml:lowerCorner>
+        <gml:upperCorner>6.415256 45.251905</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/parcs#7">
+    <skos:prefLabel xml:lang="fr">Aire potentielle d'adhésion du Parc national de la Guadeloupe</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>-61.809765 15.946517</gml:lowerCorner>
+        <gml:upperCorner>-61.555106 16.361948</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/parcs#8">
+    <skos:prefLabel xml:lang="fr">Aire potentielle d'adhésion du Parc national des Pyrénées</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>0.115516 42.729377</gml:lowerCorner>
+        <gml:upperCorner>0.281402 42.834779</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/parcs#9">
+    <skos:prefLabel xml:lang="fr">Zone coeur du Parc national de Port-Cros</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.351796 42.981618</gml:lowerCorner>
+        <gml:upperCorner>6.428665 43.025446</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/parcs#10">
+    <skos:prefLabel xml:lang="fr">Aire Maritime Adjacente du Parc national de la Guadeloupe</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>-62.018039 16.088888</gml:lowerCorner>
+        <gml:upperCorner>-61.464697 16.51669</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/parcs#11">
+    <skos:prefLabel xml:lang="fr">Aire potentielle d'adhésion du Parc national des Calanques</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>5.555072 43.163192</gml:lowerCorner>
+        <gml:upperCorner>5.704328 43.271386</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/parcs#12">
+    <skos:prefLabel xml:lang="fr">Aire d'adhésion du Parc national des Cévennes</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.271417 43.925009</gml:lowerCorner>
+        <gml:upperCorner>4.23769 44.547742</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/parcs#13">
+    <skos:prefLabel xml:lang="fr">Zone coeur du Parc national des Cévennes</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.221397 43.976622</gml:lowerCorner>
+        <gml:upperCorner>3.954901 44.515887</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/parcs#14">
+    <skos:prefLabel xml:lang="fr">Zone coeur du Parc amazonien de Guyane</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>-54.600752 2.111986</gml:lowerCorner>
+        <gml:upperCorner>-52.037827 3.806474</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/parcs#15">
+    <skos:prefLabel xml:lang="fr">Aire Maritime Adjacente du Parc national de Port-Cros</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>5.978671 42.929714</gml:lowerCorner>
+        <gml:upperCorner>6.789436 43.199819</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/parcs#16">
+    <skos:prefLabel xml:lang="fr">Zone coeur du Parc national de la Guadeloupe</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>-61.809099 16.139298</gml:lowerCorner>
+        <gml:upperCorner>-61.792026 16.195229</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/parcs#17">
+    <skos:prefLabel xml:lang="fr">Aire Maritime Adjacente du Parc national des Calanques</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>4.995835 42.888333</gml:lowerCorner>
+        <gml:upperCorner>5.695561 43.296389</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/parcs#18">
+    <skos:prefLabel xml:lang="fr">Aire potentielle d'adhésion du Parc national des Cévennes</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>3.509776 43.963454</gml:lowerCorner>
+        <gml:upperCorner>3.561492 43.99488</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/parcs#19">
+    <skos:prefLabel xml:lang="fr">Aire potentielle d'adhésion du Parc amazonien de Guyane</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>-53.072455 2.168254</gml:lowerCorner>
+        <gml:upperCorner>-52.170942 3.344884</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/parcs#20">
+    <skos:prefLabel xml:lang="fr">Aire d'adhésion du Parc national des Ecrins</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>5.931835 44.448752</gml:lowerCorner>
+        <gml:upperCorner>6.132293 44.922073</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/parcs#21">
+    <skos:prefLabel xml:lang="fr">Zone coeur du Parc national de la Vanoise</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.604212 45.223465</gml:lowerCorner>
+        <gml:upperCorner>7.180622 45.567886</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/parcs#22">
+    <skos:prefLabel xml:lang="fr">Aire d'adhésion du Parc national des Calanques</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>5.302814 43.202996</gml:lowerCorner>
+        <gml:upperCorner>5.594533 43.286503</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/parcs#23">
+    <skos:prefLabel xml:lang="fr">Aire d'adhésion du Parc national des Pyrénées</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>-0.642229 42.874198</gml:lowerCorner>
+        <gml:upperCorner>-0.484939 43.029807</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/parcs#24">
+    <skos:prefLabel xml:lang="fr">Zone coeur du Parc national des Pyrénées</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>-0.696508 42.684655</gml:lowerCorner>
+        <gml:upperCorner>0.175667 42.904422</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/parcs#25">
+    <skos:prefLabel xml:lang="fr">Zone coeur du Parc national de La Réunion</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>55.342972 -21.358661</gml:lowerCorner>
+        <gml:upperCorner>55.814297 -20.893012</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/parcs#26">
+    <skos:prefLabel xml:lang="fr">Aire potentielle d'adhésion du Parc national des Ecrins</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>6.497085 44.595402</gml:lowerCorner>
+        <gml:upperCorner>6.602337 44.698967</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/parcs#27">
+    <skos:prefLabel xml:lang="fr">Aire potentielle d'adhésion du Parc national de La Réunion</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>55.269895 -21.386352</gml:lowerCorner>
+        <gml:upperCorner>55.836754 -20.875011</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://registry.parcsnationaux.fr/parcs#28">
+    <skos:prefLabel xml:lang="fr">Zone coeur du Parc national des Ecrins</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>5.950957 44.613662</gml:lowerCorner>
+        <gml:upperCorner>6.508635 45.047159</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+</rdf:RDF>
