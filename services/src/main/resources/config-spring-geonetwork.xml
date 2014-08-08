@@ -5,14 +5,14 @@
 	xsi:schemaLocation="
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd" >
 
-	<bean id="RegionsDAO" class="org.fao.geonet.services.region.ThesaurusBasedRegionsDAO">
+	<bean id="ContoursParcsDAO" class="org.fao.geonet.services.region.ThesaurusBasedRegionsDAO">
 		<constructor-arg ref="languages" />
-		<property name="cacheAllRegionsInMemory" value="true"/>
-		<property name="thesaurusName" value="external.place.regions"/>
-	</bean>
-	<bean id="MetadataRegionsDAO" class="org.fao.geonet.services.region.MetadataRegionDAO">
 		<property name="cacheAllRegionsInMemory" value="false"/>
+    <property name="thesaurusName" value="local.place.parcs-nationaux-contours"/>
 	</bean>
+	<!--<bean id="MetadataRegionsDAO" class="org.fao.geonet.services.region.MetadataRegionDAO">-->
+		<!--<property name="cacheAllRegionsInMemory" value="false"/>-->
+	<!--</bean>-->
 
   <bean id="resourceUploadHandler" class="org.fao.geonet.services.resources.handlers.DefaultResourceUploadHandler" />
 
