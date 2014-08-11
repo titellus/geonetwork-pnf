@@ -6,6 +6,8 @@ avec un noeud par parc.
 
 # Personnalisation du catalogue
 
+* Configuration des langues par défaut
+* Configuration du fond de carte (cf. apps/search/js/map/Settings.js)
 * Les logos des parcs sont ajoutés
 * Les thésaurus suivants ont été ajoutés :
  * Contours des parcs
