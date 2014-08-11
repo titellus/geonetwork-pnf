@@ -156,7 +156,7 @@ export MAVEN_OPTS="-Xms1g -Xmx2g -XX:MaxPermSize=512m \
               -Dgeonetwork.schema.dir=$CATALOGUE_DIR/webapp/WEB-INF/data/config/schema_plugins \
               -Dgeonetwork.resources.dir=$CATALOGUE_DIR/webapp \
               -Dgeonetwork.codeList.dir=$CATALOGUE_DIR/webapp/WEB-INF/data/config/codelist"
-mvn jetty:run
+mvn jetty:run -Penv-dev
 ```
 
 

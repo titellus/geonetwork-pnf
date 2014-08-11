@@ -46,7 +46,20 @@ GeoNetwork.map.PROJECTION = "EPSG:900913";
 //GeoNetwork.map.EXTENT = new OpenLayers.Bounds(-550000, 5000000, 1200000, 7000000);
 GeoNetwork.map.EXTENT = new OpenLayers.Bounds(-20037508, -20037508, 20037508, 20037508.34);
 GeoNetwork.map.BACKGROUND_LAYERS = [
-    new OpenLayers.Layer.OSM()
+  new OpenLayers.Layer.XYZ(
+    "Fond de carte",
+    [
+      'https://a.tiles.mapbox.com/v3/examples.map-i86knfo3/${z}/${x}/${y}.png',
+      'https://b.tiles.mapbox.com/v3/examples.map-i86knfo3/${z}/${x}/${y}.png',
+      'https://c.tiles.mapbox.com/v3/examples.map-i86knfo3/${z}/${x}/${y}.png',
+      'https://d.tiles.mapbox.com/v3/examples.map-i86knfo3/${z}/${x}/${y}.png'
+    ], {
+      attribution: "Tiles &copy; <a href='http://mapbox.com/'>MapBox</a>",
+      sphericalMercator: true,
+      wrapDateLine: true
+    }
+  )
+//    new OpenLayers.Layer.OSM()
     //new OpenLayers.Layer.Google("Google Streets");
 ];
 

@@ -4,21 +4,21 @@
        xsi:schemaLocation="             http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd             http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd"
        default-lazy-init="true">
   <import resource="classpath*:/config-spring-geonetwork.xml"/>
-  <import resource="../config-db/database_migration.xml"/>
-  <context:property-override properties-ref="pnv-configuration-overrides"/>
+  <!-- <import resource="../config-db/database_migration.xml"/> -->
+  <context:property-override properties-ref="pnp-configuration-overrides"/>
   <bean class="org.fao.geonet.NodeInfo" id="nodeInfo">
-    <property value="pnv" name="id"/>
+    <property value="pnp" name="id"/>
     <property value="false" name="defaultNode"/>
   </bean>
-  <bean class="org.springframework.beans.factory.config.PropertiesFactoryBean" id="pnv-configuration-overrides">
+  <bean class="org.springframework.beans.factory.config.PropertiesFactoryBean" id="pnp-configuration-overrides">
     <property name="properties">
       <props>
-        <prop key="jdbcDataSource.username">www-data</prop>
-        <prop key="jdbcDataSource.password">www-data</prop>
+        <prop key="jdbcDataSource.username">${db.user}</prop>
+        <prop key="jdbcDataSource.password">${db.password}</prop>
         <prop key="jdbcDataSource.maxActive">10</prop>
         <prop key="jdbcDataSource.maxIdle">2</prop>
         <prop key="jdbcDataSource.initialSize">0</prop>
-        <prop key="jdbcDataSource.Url">jdbc:postgresql://localhost:5432/catalogue_pnv</prop>
+        <prop key="jdbcDataSource.Url">jdbc:postgresql://${db.host}:${db.port}/${db.prefix}pnp</prop>
       </props>
     </property>
   </bean>
