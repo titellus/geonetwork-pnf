@@ -24,7 +24,7 @@ avec un noeud par parc.
 Pour PNF, préconfiguration du moissonnage des fiches des autres parcs.
 
 
-# Installater le catalogue
+# Installer le catalogue
 
 * Installer Java 7
 * Installer Tomcat 7
@@ -44,7 +44,7 @@ cp web/target/geonetwork.war $CATALINA_HOME/webapps/catalogue.war
 <Connector ... URIEncoding="UTF-8">
 ```
  
- * Définir le répertoire des données
+ * Définir le répertoire des données dans bin/catalina.sh
 
 ```
 export CATALOGUE_DIR=/app/tomcat
