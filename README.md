@@ -50,9 +50,9 @@ cp web/target/geonetwork.war $CATALINA_HOME/webapps/catalogue.war
 export CATALOGUE_DIR=/app/tomcat
 export JAVA_OPTS="$JAVA_OPTS -Xms1g -Xmx2g -XX:MaxPermSize=512m \
               -Dgeonetwork.dir=$CATALOGUE_DIR/data/ \
-              -Dgeonetwork.schema.dir=$CATALOGUE_DIR/webapps/catalogue/WEB-INF/data/config/schema_plugins \
-              -Dgeonetwork.resources.dir=$CATALOGUE_DIR/webapps/catalogue \
-              -Dgeonetwork.codeList.dir=$CATALOGUE_DIR/webapps/catalogue/WEB-INF/data/config/codelist"
+              -Dcatalogue.schema.dir=$CATALOGUE_DIR/webapps/catalogue/WEB-INF/data/config/schema_plugins \
+              -Dcatalogue.resources.dir=$CATALOGUE_DIR/webapps/catalogue \
+              -Dcatalogue.codeList.dir=$CATALOGUE_DIR/webapps/catalogue/WEB-INF/data/config/codelist"
 ```
 * Importer ou créer les bases de données
 
