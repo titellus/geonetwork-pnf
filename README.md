@@ -180,6 +180,9 @@ mvn jetty:run -Penv-dev
 
 # Divers
 
+## Configurer le niveau de log
+
+Pour changer le niveau de log, modifier la configuration de log4j (https://github.com/titellus/geonetwork-pnf/blob/stable-develop/web/src/main/webapp/WEB-INF/classes/log4j.xml).
 
 ## Pour lancer des fonctions SQL sur chaque base :
 
