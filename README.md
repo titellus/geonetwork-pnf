@@ -7,9 +7,9 @@ avec un noeud par parc.
 # Personnalisation du catalogue
 
 * Configuration des langues par défaut
-* Configuration du fond de carte (cf. apps/search/js/map/Settings.js)
-* Les logos des parcs sont ajoutés
-* Les thésaurus suivants ont été ajoutés :
+* Configuration du fond de carte (cf. https://github.com/titellus/geonetwork-pnf/blob/stable-develop/web-client/src/main/resources/apps/search/js/map/Settings.js#L48)
+* Les logos des parcs sont ajoutés (http://extranet.parcnational.fr/catalogue/pnf/fre/admin.console#/settings/logo)
+* Les thésaurus suivants ont été ajoutés (https://github.com/titellus/geonetwork-pnf/tree/stable-develop/web/src/main/webapp/WEB-INF/data/config/codelist/local/thesauri/place) :
  * Contours des parcs
  * Communes des parcs
  * Départements
@@ -18,7 +18,7 @@ avec un noeud par parc.
  * GEMET (http://www.eionet.europa.eu/gemet/en/about/)
 * La liste des langues par défaut a été réduite.
 * La liste des trustedHost a été mise à jour
-* Configuration du service CSW de découverte
+* Configuration du service CSW de découverte (http://extranet.parcnational.fr/catalogue/pnf/fre/admin.console#/settings/csw)
 
 
 Pour PNF, préconfiguration du moissonnage des fiches des autres parcs.
@@ -43,7 +43,9 @@ cp web/target/geonetwork.war $CATALINA_HOME/webapps/catalogue.war
 ```
 <Connector ... URIEncoding="UTF-8">
 ```
+ 
  * Définir le répertoire des données
+
 ```
 export CATALOGUE_DIR=/app/tomcat
 export JAVA_OPTS="$JAVA_OPTS -Xms1g -Xmx2g -XX:MaxPermSize=512m \
