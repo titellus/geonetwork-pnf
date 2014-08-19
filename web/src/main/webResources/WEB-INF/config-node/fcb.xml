@@ -7,7 +7,7 @@
   <!-- <import resource="../config-db/database_migration.xml"/> -->
   <context:property-override properties-ref="pnf-configuration-overrides"/>
   <bean class="org.fao.geonet.NodeInfo" id="nodeInfo">
-    <property value="pnf" name="id"/>
+    <property value="fcb" name="id"/>
     <property value="false" name="defaultNode"/>
   </bean>
   <bean class="org.springframework.beans.factory.config.PropertiesFactoryBean" id="pnf-configuration-overrides">
@@ -18,7 +18,7 @@
         <prop key="jdbcDataSource.maxActive">10</prop>
         <prop key="jdbcDataSource.maxIdle">2</prop>
         <prop key="jdbcDataSource.initialSize">0</prop>
-        <prop key="jdbcDataSource.Url">jdbc:postgresql://${db.host}:${db.port}/${db.prefix}pnf</prop>
+        <prop key="jdbcDataSource.Url">jdbc:postgresql://${db.host}:${db.port}/${db.prefix}fcb</prop>
       </props>
     </property>
   </bean>
