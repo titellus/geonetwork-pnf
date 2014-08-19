@@ -39,6 +39,11 @@ mvn clean install -DskipTests
 cp web/target/geonetwork.war $CATALINA_HOME/webapps/catalogue.war
 ```
 * Configurer Tomcat
+ * Définir l'encodage dans le fichier conf/server.xml
+```
+<Connector ... URIEncoding="UTF-8">
+```
+ * Définir le répertoire des données
 ```
 export CATALOGUE_DIR=/app/tomcat
 export JAVA_OPTS="$JAVA_OPTS -Xms1g -Xmx2g -XX:MaxPermSize=512m \
@@ -138,9 +143,18 @@ cd WEB-INF/node-utils
 # Sauvegarder l'application
 
 * Sauvegarder les bases de données
+
+```
+for db in pnf pnc pne png pag pnm pnpc pnp pnrun pnv pncal
+do
+  pg_dump --host localhost --port 5432 --username "postgres" --no-password  \
+  --format plain --no-owner --encoding UTF8 --no-privileges --verbose \
+  --file "/tmp/catalogue_$db.sql" "catalogue_$db"
+done
+```
+
 * Sauvegarder les répertoires des données de chaque instance ($CATALOGUE_DIR/data/)
 * Sauvegarder le WAR (si modification)
-
 
 
 
