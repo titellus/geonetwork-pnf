@@ -431,4 +431,14 @@
     <servlet-name>gn-servlet</servlet-name>
     <url-pattern>/pnv/*</url-pattern>
   </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>gn-servlet</servlet-name>
+    <url-pattern>/pnx/*</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>gn-servlet</servlet-name>
+    <url-pattern>/fcb/*</url-pattern>
+  </servlet-mapping>
 </web-app>
