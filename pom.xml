@@ -1131,7 +1131,6 @@
         <module>web-client</module>
         <module>web</module>
         <module>e2e-tests</module>
-        <module>geoserver</module>
       </modules>
     </profile>
     <profile>

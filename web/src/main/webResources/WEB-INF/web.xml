@@ -88,7 +88,55 @@
     </filter>
     <filter-mapping>
       <filter-name>SessionTimeoutCookieFilter</filter-name>
-      <url-pattern>/srv/*</url-pattern>
+      <url-pattern>/pnx/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>SessionTimeoutCookieFilter</filter-name>
+        <url-pattern>/pnv/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>SessionTimeoutCookieFilter</filter-name>
+        <url-pattern>/pnf/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>SessionTimeoutCookieFilter</filter-name>
+        <url-pattern>/fcb/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>SessionTimeoutCookieFilter</filter-name>
+        <url-pattern>/pag/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>SessionTimeoutCookieFilter</filter-name>
+        <url-pattern>/pnc/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>SessionTimeoutCookieFilter</filter-name>
+        <url-pattern>/pncal/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>SessionTimeoutCookieFilter</filter-name>
+        <url-pattern>/pne/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>SessionTimeoutCookieFilter</filter-name>
+        <url-pattern>/png/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>SessionTimeoutCookieFilter</filter-name>
+        <url-pattern>/pnm/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>SessionTimeoutCookieFilter</filter-name>
+        <url-pattern>/pnp/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>SessionTimeoutCookieFilter</filter-name>
+        <url-pattern>/pnpc/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>SessionTimeoutCookieFilter</filter-name>
+        <url-pattern>/pnrun/*</url-pattern>
     </filter-mapping>
 
     <!-- url rewrite filter -->
@@ -371,15 +419,11 @@
         </servlet-class>
         <init-param>
             <param-name>nodeId</param-name>
-            <param-value>srv</param-value>
+            <param-value>pnx</param-value>
         </init-param>
         <load-on-startup>2</load-on-startup>
     </servlet>
 
-    <servlet-mapping>
-        <servlet-name>spring</servlet-name>
-        <url-pattern>/srv/*</url-pattern>
-    </servlet-mapping>
 
     <servlet-mapping>
         <servlet-name>spring</servlet-name>
