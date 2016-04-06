@@ -31,19 +31,20 @@ import jeeves.interfaces.Service;
 import jeeves.server.ServiceConfig;
 import jeeves.server.context.ServiceContext;
 import org.fao.geonet.Util;
-import org.fao.geonet.GeonetContext;
-import org.fao.geonet.constants.Geonet;
 import org.fao.geonet.domain.*;
+import org.fao.geonet.exceptions.SitemapDocumentNotFoundEx;
 import org.fao.geonet.kernel.AccessManager;
 import org.fao.geonet.repository.MetadataRepository;
 import org.fao.geonet.repository.OperationAllowedRepository;
 import org.fao.geonet.repository.specification.MetadataSpecs;
 import org.fao.geonet.repository.specification.OperationAllowedSpecs;
 import org.jdom.Element;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specifications;
 
+import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -58,7 +59,23 @@ public class Sitemap implements Service {
     private static final String FORMAT_XML = "xml";
     private static final String FORMAT_HTML = "html";
 
-    public void init(String appPath, ServiceConfig config) throws Exception { }
+    // Max. items in page defined in spec
+    private static final int MAX_ITEMS_PER_PAGE = 50000;
+
+    private int _maxItemsPage;
+
+    public void init(Path appPath, ServiceConfig config) throws Exception {
+        String sMaxItemsPage = config.getValue("maxItemsPage", MAX_ITEMS_PER_PAGE + "");
+
+        try {
+            _maxItemsPage = Integer.parseInt(sMaxItemsPage);
+
+            if (_maxItemsPage > MAX_ITEMS_PER_PAGE) _maxItemsPage = MAX_ITEMS_PER_PAGE;
+
+        } catch (NumberFormatException ex) {
+            _maxItemsPage = MAX_ITEMS_PER_PAGE;
+        }
+    }
 
     public Element exec(Element params, ServiceContext context) throws Exception
     {
@@ -75,21 +92,59 @@ public class Sitemap implements Service {
 
         final OperationAllowedRepository operationAllowedRepository = context.getBean(OperationAllowedRepository.class);
         Specifications<OperationAllowed> spec = Specifications.where(OperationAllowedSpecs.hasOperation(ReservedOperation.view));
+        List<Integer> groupIds = new ArrayList<>();
         for (Integer grpId : groups) {
-            spec = spec.and(OperationAllowedSpecs.hasGroupId(grpId));
+            groupIds.add(grpId);
         }
+        spec = spec.and(OperationAllowedSpecs.hasGroupIdIn(groupIds));
         final List<Integer> list = operationAllowedRepository.findAllIds(spec, OperationAllowedId_.metadataId);
 
         final MetadataRepository metadataRepository = context.getBean(MetadataRepository.class);
-        Sort sortByChangeDateDesc = new Sort(Sort.Direction.DESC, Metadata_.dataInfo.getName()+"."+MetadataDataInfo_.changeDate);
+        Sort sortByChangeDateDesc = new Sort(Sort.Direction.DESC, Metadata_.dataInfo.getName() + "." + MetadataDataInfo_.changeDate.getName());
 
-        Element result = metadataRepository.findAllAsXml(MetadataSpecs.hasMetadataIdIn(list), sortByChangeDateDesc);
+        long metadatataCount = metadataRepository.count(MetadataSpecs.hasMetadataIdIn(list));
+        long pages = (long) Math.ceil((double)metadatataCount / _maxItemsPage);
 
+        int doc = Util.getParam(params, "doc", 0);
 
-        Element formatEl = new Element("format");
-        formatEl.setText(format.toLowerCase());
+        Element result = null;
 
-        result.addContent(formatEl);
+        // Requesting a sitemap specific document
+        if (doc > 0) {
+            if (doc <= pages) {
+                final PageRequest pageRequest = new PageRequest(doc - 1, _maxItemsPage, sortByChangeDateDesc);
+
+                result = metadataRepository.findAllAsXml(MetadataSpecs.hasMetadataIdIn(list), pageRequest);
+
+                Element formatEl = new Element("format");
+                formatEl.setText(format.toLowerCase());
+
+                result.addContent(formatEl);
+            } else {
+                throw new SitemapDocumentNotFoundEx(doc);
+            }
+
+            // Request the sitemap (no specific document)
+        } else {
+            if (metadatataCount <= _maxItemsPage) {
+                result = metadataRepository.findAllAsXml(MetadataSpecs.hasMetadataIdIn(list), sortByChangeDateDesc);
+
+                Element formatEl = new Element("format");
+                formatEl.setText(format.toLowerCase());
+
+                result.addContent(formatEl);
+            } else {
+                result = new Element("response");
+
+                Element indexDocs = new Element("indexDocs");
+                indexDocs.setText(pages + "");
+                result.addContent(indexDocs);
+
+                Element changeDate = new Element("changeDate");
+                changeDate.setText(new ISODate().toString());
+                result.addContent(changeDate);
+            }
+        }
         
         return result;
     }

@@ -1,3 +1,26 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.kernel;
 
 import jeeves.server.ServiceConfig;
@@ -6,10 +29,10 @@ import org.jdom.Element;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 
-import static java.io.File.separator;
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -24,38 +47,47 @@ public abstract class AbstractGeonetworkDataDirectoryTest extends AbstractCoreIn
     @Autowired
     private GeonetworkDataDirectory dataDirectory;
 
-    protected abstract String getDataDir();
+    protected abstract Path getDataDir();
 
     @Test
     public void testInit() throws Exception {
         // make sure it exists
-        new File(getDataDir()).mkdirs();
+        Files.createDirectories(getDataDir());
 
         // reinitialize data directory so that it uses the defaults
         dataDirectory.setSystemDataDir(null);
+        dataDirectory.setConfigDir(null);
+        dataDirectory.setLuceneDir(null);
+        dataDirectory.setSpatialIndexPath(null);
+        dataDirectory.setMetadataDataDir(null);
+        dataDirectory.setMetadataRevisionDir(null);
+        dataDirectory.setResourcesDir(null);
+        dataDirectory.setHtmlCacheDir(null);
+        dataDirectory.setSchemaPluginsDir(null);
+        dataDirectory.setThesauriDir(null);
         final ArrayList<Element> serviceConfigParameterElements = getServiceConfigParameterElements();
         final ServiceConfig handlerConfig = new ServiceConfig(serviceConfigParameterElements);
-        final String webappDir = getWebappDir(getClass());
+        final Path webappDir = getWebappDir(getClass());
         dataDirectory.init("geonetwork", webappDir, handlerConfig, null);
 
         assertEquals(getGeonetworkNodeId(), dataDirectory.getNodeId());
-        final String expectedDataDir = getDataDir();
+        final Path expectedDataDir = getDataDir();
         assertEquals(expectedDataDir, dataDirectory.getSystemDataDir());
-        assertEquals(new File(webappDir).getAbsoluteFile(), new File(dataDirectory.getWebappDir()).getAbsoluteFile());
+        assertEquals(webappDir.toAbsolutePath().normalize(), dataDirectory.getWebappDir().toAbsolutePath().normalize());
         assertSystemDirSubFolders(expectedDataDir);
     }
 
-    private void assertSystemDirSubFolders(String expectedDataDir) {
-        final String expectedConfigDir = expectedDataDir + separator + "config";
-        assertEquals(new File(expectedConfigDir), dataDirectory.getConfigDir());
-        assertEquals(new File(expectedDataDir, "index"), dataDirectory.getLuceneDir());
-        assertEquals(new File(expectedDataDir, "spatialindex"), dataDirectory.getSpatialIndexPath());
-        assertEquals(new File(expectedDataDir, "data" + separator + "metadata_data"), dataDirectory.getMetadataDataDir());
-        assertEquals(new File(expectedDataDir, "data" + separator + "metadata_subversion"), dataDirectory.getMetadataRevisionDir());
-        final File expectedResourcesDir = new File(expectedDataDir, "data" + separator + "resources");
+    private void assertSystemDirSubFolders(Path expectedDataDir) {
+        final Path expectedConfigDir = expectedDataDir.resolve("config");
+        assertEquals(expectedConfigDir, dataDirectory.getConfigDir());
+        assertEquals(expectedDataDir.resolve("index"), dataDirectory.getLuceneDir());
+        assertEquals(expectedDataDir.resolve("spatialindex"), dataDirectory.getSpatialIndexPath());
+        assertEquals(expectedDataDir.resolve("data").resolve("metadata_data"), dataDirectory.getMetadataDataDir());
+        assertEquals(expectedDataDir.resolve("data").resolve("metadata_subversion"), dataDirectory.getMetadataRevisionDir());
+        final Path expectedResourcesDir = expectedDataDir.resolve("data").resolve("resources");
         assertEquals(expectedResourcesDir, dataDirectory.getResourcesDir());
-        assertEquals(new File(expectedResourcesDir, "htmlcache"), dataDirectory.getHtmlCacheDir());
-        assertEquals(new File(expectedConfigDir, "schema_plugins"), dataDirectory.getSchemaPluginsDir());
-        assertEquals(new File(expectedConfigDir, "codelist"), dataDirectory.getThesauriDir());
+        assertEquals(expectedResourcesDir.resolve("htmlcache"), dataDirectory.getHtmlCacheDir());
+        assertEquals(expectedConfigDir.resolve("schema_plugins"), dataDirectory.getSchemaPluginsDir());
+        assertEquals(expectedConfigDir.resolve("codelist"), dataDirectory.getThesauriDir());
     }
 }

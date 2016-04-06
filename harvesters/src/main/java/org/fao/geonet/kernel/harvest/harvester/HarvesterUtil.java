@@ -1,3 +1,26 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.kernel.harvest.harvester;
 
 import org.fao.geonet.Logger;
@@ -6,7 +29,8 @@ import org.fao.geonet.kernel.schema.MetadataSchema;
 import org.fao.geonet.utils.Xml;
 import org.jdom.Element;
 
-import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,10 +38,10 @@ import java.util.Map;
  * Created by francois on 3/7/14.
  */
 public class HarvesterUtil {
-    public static Pair<String, Map<String, String>> parseXSLFilter(String filter,
+    public static Pair<String, Map<String, Object>> parseXSLFilter(String filter,
                                 Logger log) {
         String processName = filter;
-        Map<String, String> processParams = new HashMap<String, String>();
+        Map<String, Object> processParams = new HashMap<String, Object>();
 
         // Parse complex xslfilter process_name?process_param1=value&process_param2=value...
         if (filter.contains("?")) {
@@ -49,25 +73,24 @@ public class HarvesterUtil {
     /**
      * Filter the metadata if process parameter is set and
      * corresponding XSL transformation exists.
+     *
      * @param metadataSchema
      * @param md
      *
+     * @param processParams
      * @return
      */
     public static Element processMetadata(MetadataSchema metadataSchema,
                                           Element md,
                                           String processName,
-                                          Map<String, String> processParams,
+                                          Map<String, Object> processParams,
                                           Logger log) {
 
-        String filePath = metadataSchema.getSchemaDir() +
-                "/process/" + processName + ".xsl";
-        File xslProcessing = new File(filePath);
-        if (!xslProcessing.exists()) {
-            log.info("     processing instruction not found for " +
-                    metadataSchema.getName() + " schema. metadata not filtered.");
+        Path filePath = metadataSchema.getSchemaDir().resolve("process").resolve(processName + ".xsl");
+        if (!Files.exists(filePath)) {
+            log.info("     processing instruction not found for " + metadataSchema.getName() + " schema. metadata not filtered.");
         } else {
-            Element processedMetadata = null;
+            Element processedMetadata;
             try {
                 processedMetadata = Xml.transform(md, filePath, processParams);
                 if(log.isDebugEnabled()) log.debug("     metadata filtered.");

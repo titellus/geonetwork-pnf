@@ -1,11 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- 
+<!--
+  ~ Copyright (C) 2001-2016 Food and Agriculture Organization of the
+  ~ United Nations (FAO-UN), United Nations World Food Programme (WFP)
+  ~ and United Nations Environment Programme (UNEP)
+  ~
+  ~ This program is free software; you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation; either version 2 of the License, or (at
+  ~ your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful, but
+  ~ WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  ~ General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program; if not, write to the Free Software
+  ~ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+  ~
+  ~ Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+  ~ Rome - Italy. email: geonetwork@osgeo.org
+  -->
+
+<!--
   The main entry point for all user interface generated
   from XSLT. 
 -->
-<xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:stylesheet version="2.0"
+                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                exclude-result-prefixes="#all">
 
-  <xsl:output omit-xml-declaration="yes" method="html" doctype-public="html" indent="yes"
+  <xsl:output omit-xml-declaration="yes" method="html" doctype-system="html" indent="yes"
     encoding="UTF-8"/>
 
   <xsl:include href="common/base-variables.xsl"/>
@@ -13,7 +38,7 @@
   <xsl:include href="base-layout-cssjs-loader.xsl"/>
 
   <xsl:template match="/">
-    <html ng-app="{$angularApp}" lang="{$lang}" id="ng-app">
+    <html ng-app="{$angularModule}" lang="{$lang}" id="ng-app">
       <head>
         <title>
           <xsl:value-of select="concat($env/system/site/name, ' - ', $env/system/site/organization)"
@@ -27,11 +52,11 @@
         <meta name="keywords" content=""/>
 
 
-        <link rel="icon" type="image/gif" href="../../images/logos/favicon.gif"/>
+        <link rel="icon" sizes="16x16 32x32 48x48" type="image/png" href="../../images/logos/favicon.png"/>
         <link href="rss.search?sortBy=changeDate" rel="alternate" type="application/rss+xml"
-          title="{{concat($env/system/site/name, ' - ', $env/system/site/organization)}}"/>
+          title="{concat($env/system/site/name, ' - ', $env/system/site/organization)}"/>
         <link href="portal.opensearch" rel="search" type="application/opensearchdescription+xml"
-          title="concat($env/system/site/name, ' - ', $env/system/site/organization)"/>
+          title="{concat($env/system/site/name, ' - ', $env/system/site/organization)}"/>
 
         <xsl:call-template name="css-load"/>
       </head>
@@ -51,17 +76,18 @@
             </div>
           </xsl:when>
           <xsl:otherwise>
-            <!-- AngularJS application -->
-            <div data-ng-cloak="" class="ng-cloak">
-              <div class="navbar navbar-default"
-                data-ng-include="'{$uiResourcesPath}templates/top-toolbar.html'"> </div>
+
+              <!-- AngularJS application -->
+              <xsl:if test="$angularApp != 'gn_search' and $angularApp != 'gn_viewer'">
+                <div class="navbar navbar-default gn-top-bar"
+                     data-ng-hide="layout.hideTopToolBar"
+                     data-ng-include="'{$uiResourcesPath}templates/top-toolbar.html'"></div>              </xsl:if>
 
               <xsl:apply-templates mode="content" select="."/>
 
               <xsl:if test="$isJsEnabled">
                 <xsl:call-template name="javascript-load"/>
               </xsl:if>
-            </div>
             <xsl:if test="$isJsEnabled">
               <xsl:call-template name="no-js-alert"/>
             </xsl:if>

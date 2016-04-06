@@ -1,14 +1,30 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.kernel;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
-
 import org.fao.geonet.constants.Geonet;
+import org.fao.geonet.exceptions.TermNotFoundException;
 import org.fao.geonet.kernel.rdf.Query;
 import org.fao.geonet.kernel.rdf.QueryBuilder;
 import org.fao.geonet.kernel.rdf.Selectors;
@@ -23,27 +39,35 @@ import org.openrdf.sesame.config.AccessDeniedException;
 import org.openrdf.sesame.config.ConfigurationException;
 import org.openrdf.sesame.query.MalformedQueryException;
 import org.openrdf.sesame.query.QueryEvaluationException;
-import org.springframework.context.support.GenericXmlApplicationContext;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class ThesaurusTest extends AbstractThesaurusBasedTest {
 
     private Thesaurus writableThesaurus;
+    private static final String TEST_KEYWORD = "http://test.com/keywords#testKeyword";
 
     @Before
-    public void prepareEmptyThesaurus() throws ConfigurationException {
-        File file = new File(this.thesaurusFile.getParentFile(), ThesaurusTest.class.getSimpleName()+"_empyt.rdf");
-        file.delete();
-        GenericXmlApplicationContext appContext = new GenericXmlApplicationContext();
-        appContext.getBeanFactory().registerSingleton("IsoLangMapper", isoLangMapper);
+    public void prepareEmptyThesaurus() throws ConfigurationException, IOException {
+        Path file = this.thesaurusFile.getParent().resolve(ThesaurusTest.class.getSimpleName() + "_empyt.rdf");
+        Files.deleteIfExists(file);
 
-        this.writableThesaurus = new Thesaurus(appContext, file.getName(), null, null, Geonet.CodeList.LOCAL, file.getName(), file, null, true);
-        super.setRepository(writableThesaurus);
+        this.writableThesaurus = new Thesaurus(isoLangMapper, file.getFileName().toString(), null, null, Geonet.CodeList.LOCAL,
+                file.getFileName().toString(), file, "http://test.com", true);
+        writableThesaurus.initRepository();
     }
     
     @After
-    public void deleteEmptyThesaurus() {
+    public void deleteEmptyThesaurus() throws IOException {
         writableThesaurus.getRepository().shutDown();
-        writableThesaurus.getFile().delete();
+        Files.deleteIfExists(writableThesaurus.getFile());
     }
     
     public ThesaurusTest() {
@@ -409,4 +433,58 @@ public class ThesaurusTest extends AbstractThesaurusBasedTest {
         assertEquals(code2, result.get(0).getUriCode());
     }
 
+    @Test
+    public void testHasConceptSchemeTrue() throws Exception {
+        writableThesaurus.addTitleElement("testScheme");
+
+        boolean hasConceptScheme = writableThesaurus.hasConceptScheme("http://geonetwork-opensource.org/testScheme");
+
+        assertTrue(hasConceptScheme);
+    }
+
+    @Test
+    public void testHasConceptSchemeFalse() throws Exception {
+        writableThesaurus.addTitleElement("testScheme");
+
+        boolean hasConceptScheme = writableThesaurus.hasConceptScheme("http://geonetwork-opensource.org/anotherScheme");
+
+        assertFalse(hasConceptScheme);
+    }
+
+    @Test
+    public void testGetKeywordFound() throws Exception {
+        addKeywordToWritableThesaurus(TEST_KEYWORD);
+
+        KeywordBean result = writableThesaurus.getKeyword(TEST_KEYWORD);
+
+        assertEquals(result.getUriCode(), TEST_KEYWORD);
+    }
+
+    @Test(expected=TermNotFoundException.class)
+    public void testGetKeywordNotFound() throws Exception {
+        writableThesaurus.getKeyword("http://test.com/keywords#testKeyword");
+    }
+
+    @Test
+    public void testHasKeyword() throws Exception {
+        addKeywordToWritableThesaurus(TEST_KEYWORD);
+
+        boolean result = writableThesaurus.hasKeyword(TEST_KEYWORD);
+
+        assertTrue(result);
+    }
+
+    @Test
+    public void testDoesntHavekeyword() throws Exception {
+        boolean result = writableThesaurus.hasKeyword("http://test.com/keywords#testKeyword");
+
+        assertFalse(result);
+    }
+
+    private void addKeywordToWritableThesaurus(String uri)
+            throws IOException, AccessDeniedException, GraphException {
+        KeywordBean keyword = new KeywordBean(isoLangMapper);
+        keyword.setUriCode(uri);
+        writableThesaurus.addElement(keyword);
+    }
 }

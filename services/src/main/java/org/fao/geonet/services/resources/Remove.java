@@ -24,7 +24,6 @@
 package org.fao.geonet.services.resources;
 
 import org.fao.geonet.exceptions.ObjectNotFoundEx;
-import org.fao.geonet.exceptions.OperationAbortedEx;
 import jeeves.server.ServiceConfig;
 import jeeves.server.context.ServiceContext;
 import org.fao.geonet.Util;
@@ -39,11 +38,12 @@ import org.fao.geonet.services.metadata.Update;
 import org.fao.geonet.services.resources.handlers.IResourceRemoveHandler;
 import org.jdom.Element;
 
-import java.io.File;
+import java.nio.file.Path;
 
 /**
  * Deletes an uploaded file from the database when a record is in editing mode.
  */
+@Deprecated
 public class Remove extends NotInReadOnlyModeService {
 	private Update  update = new Update();
 
@@ -53,7 +53,7 @@ public class Remove extends NotInReadOnlyModeService {
 	//---
 	//-----------------------------------------------------------------------------
 
-	public void init(String appPath, ServiceConfig params) throws Exception
+	public void init(Path appPath, ServiceConfig params) throws Exception
 	{
 		update.init(appPath, params);
 	}

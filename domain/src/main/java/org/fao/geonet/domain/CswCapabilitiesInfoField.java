@@ -1,4 +1,29 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.domain;
+
+import java.io.Serializable;
 
 import org.fao.geonet.entitylistener.CswCapabilitiesInfoFieldEntityListenerManager;
 import org.hibernate.annotations.Type;
@@ -18,8 +43,11 @@ import javax.persistence.*;
 @Table(name = "CswServerCapabilitiesInfo")
 @EntityListeners(CswCapabilitiesInfoFieldEntityListenerManager.class)
 @SequenceGenerator(name=CswCapabilitiesInfoField.ID_SEQ_NAME, initialValue=100, allocationSize=1)
-public class CswCapabilitiesInfoField extends GeonetEntity {
-    static final String ID_SEQ_NAME = "csw_server_capabilities_info_id_seq";
+public class CswCapabilitiesInfoField extends GeonetEntity implements Serializable {
+
+	private static final long serialVersionUID = -2893765878557173596L;
+
+	static final String ID_SEQ_NAME = "csw_server_capabilities_info_id_seq";
 
     private static final int ID_COLUMN_LENGTH = 10;
     private static final int LANG_ID_COLUMN_LENGTH = 5;

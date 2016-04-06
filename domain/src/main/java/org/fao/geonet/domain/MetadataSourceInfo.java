@@ -1,3 +1,26 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.domain;
 
 import javax.persistence.Access;
@@ -17,7 +40,7 @@ import javax.persistence.Embeddable;
 public class MetadataSourceInfo {
     private String _sourceId;
     private Integer _groupOwner;
-    private int _owner;
+    private Integer _owner;
 
     /**
      * Get the source of the metadata. The source identifies where the metadata came from. It is usually a uuid but can be any identifier.
@@ -73,7 +96,7 @@ public class MetadataSourceInfo {
      * @return the id of the user that owns this metadata.
      */
     @Column(nullable = false)
-    public int getOwner() {
+    public Integer getOwner() {
         return _owner;
     }
 
@@ -82,39 +105,30 @@ public class MetadataSourceInfo {
      *
      * @param owner the id of the user that owns this metadata.
      */
-    public MetadataSourceInfo setOwner(int owner) {
+    public MetadataSourceInfo setOwner(Integer owner) {
         this._owner = owner;
         return this;
     }
 
     @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + _groupOwner;
-        result = prime * result + _owner;
-        result = prime * result + ((_sourceId == null) ? 0 : _sourceId.hashCode());
-        return result;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        MetadataSourceInfo that = (MetadataSourceInfo) o;
+
+        if (_groupOwner != null ? !_groupOwner.equals(that._groupOwner) : that._groupOwner != null) return false;
+        if (_owner != null ? !_owner.equals(that._owner) : that._owner != null) return false;
+        if (_sourceId != null ? !_sourceId.equals(that._sourceId) : that._sourceId != null) return false;
+
+        return true;
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        MetadataSourceInfo other = (MetadataSourceInfo) obj;
-        if (!_groupOwner.equals(other._groupOwner))
-            return false;
-        if (_owner != other._owner)
-            return false;
-        if (_sourceId == null) {
-            if (other._sourceId != null)
-                return false;
-        } else if (!_sourceId.equals(other._sourceId))
-            return false;
-        return true;
+    public int hashCode() {
+        int result = _sourceId != null ? _sourceId.hashCode() : 0;
+        result = 31 * result + (_groupOwner != null ? _groupOwner.hashCode() : 0);
+        result = 31 * result + (_owner != null ? _owner.hashCode() : 0);
+        return result;
     }
 }

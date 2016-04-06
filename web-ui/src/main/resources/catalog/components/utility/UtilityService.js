@@ -1,7 +1,73 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 (function() {
   goog.provide('gn_utility_service');
 
   var module = angular.module('gn_utility_service', []);
+
+  module.factory('RecursionHelper', ['$compile', function($compile) {
+    return {
+      /**
+       * Manually compiles the element, fixing the recursion loop.
+       * @param {Object} element
+       * @param {Function} [link] A post-link function, or an object
+       * with function(s) registered via pre and post properties.
+       * @return {Object} An object containing the linking functions.
+       */
+      compile: function(element, link) {
+        // Normalize the link parameter
+        if (angular.isFunction(link)) {
+          link = { post: link };
+        }
+
+        // Break the recursion loop by removing the contents
+        var contents = element.contents().remove();
+        var compiledContents;
+        return {
+          pre: (link && link.pre) ? link.pre : null,
+          /**
+           * Compiles and re-adds the contents
+           */
+          post: function(scope, element) {
+            // Compile the contents
+            if (!compiledContents) {
+              compiledContents = $compile(contents);
+            }
+            // Re-add the compiled contents to the element
+            compiledContents(scope, function(clone) {
+              element.append(clone);
+            });
+
+            // Call the post-linking function, if any
+            if (link && link.post) {
+              link.post.apply(null, arguments);
+            }
+          }
+        };
+      }
+    };
+  }]);
 
   var gnUtilityService = function() {
     /**
@@ -14,7 +80,7 @@
             $(elementId).offset().top :
             $(elementId).position().top;
       }
-      $(document.body).animate({scrollTop: top},
+      $('body,html').animate({scrollTop: top},
           duration, easing);
     };
 
@@ -46,7 +112,8 @@
       $(':checkbox:not(:checked)', form).each(function() {
         uc.push(encodeURIComponent(this.name) + '=false');
       });
-      return form.serialize().replace(/=on/g, '=true') +
+      return form.serialize().replace(/=on&/g, '=true&').
+          replace(/=on$/, '=true') +
           (uc.length ? '&' + uc.join('&').replace(/%20/g, '+') : '');
     };
 
@@ -161,16 +228,96 @@
           });
       return parameterValue;
     };
+
+    var CSVToArray = function(strData, strDelimiter) {
+      strDelimiter = (strDelimiter || ',');
+      var objPattern = new RegExp(
+          (
+              '(\\' + strDelimiter + '|\\r?\\n|\\r|^)' +
+              '(?:\"([^\"]*(?:\"\"[^\"]*)*)\"|' +
+              '([^\"\\' + strDelimiter + '\\r\\n]*))'
+          ),
+          'gi'
+          );
+      var arrData = [[]];
+      var arrMatches = null;
+      while (arrMatches = objPattern.exec(strData)) {
+        var strMatchedDelimiter = arrMatches[1];
+        if (
+            strMatchedDelimiter.length &&
+            strMatchedDelimiter !== strDelimiter
+        ) {
+          arrData.push([]);
+        }
+
+        var strMatchedValue;
+        if (arrMatches[2]) {
+          strMatchedValue = arrMatches[2].replace(
+              new RegExp('\"\"', 'g'),
+              '\"');
+        } else {
+          strMatchedValue = arrMatches[3];
+        }
+        arrData[arrData.length - 1].push(strMatchedValue);
+      }
+      return (arrData);
+    };
+
+    /**
+     * If object property is not an array, make it an array
+     * @param {Object} object
+     * @param {String} key
+     * @param {String|Object} value
+     * @param {String} propertyName
+     */
+    var formatObjectPropertyAsArray = function(object,
+        key, value,
+        propertyName) {
+      if (key === propertyName && !$.isArray(object[key])) {
+        object[key] = [value];
+      }
+    };
+
+    /**
+     * Traverse an object tree
+     *
+     * @param {Object} o The object
+     * @param {Function} func  The function to apply to all object properties
+     * @param {String|Object|Array} args  The argument to pass to the function.
+     * @return {Object} the object (optionnaly affected by the function)
+     */
+    function traverse(o, func, args) {
+      for (var i in o) {
+        func.apply(this, [o, i, o[i], args]);
+        if (o[i] !== null && typeof(o[i]) == 'object') {
+          //going on step down in the object tree!!
+          traverse(o[i], func, args);
+        }
+      }
+      return o;
+    };
+
+    function randomUuid() {
+      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(
+          /[xy]/g,
+          function(c) {
+            var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+            return v.toString(16);
+          });
+    }
     return {
       scrollTo: scrollTo,
       isInView: isInView,
       serialize: serialize,
       parseBoolean: parseBoolean,
+      traverse: traverse,
+      formatObjectPropertyAsArray: formatObjectPropertyAsArray,
       toCsv: toCsv,
-      getUrlParameter: getUrlParameter
+      CSVToArray: CSVToArray,
+      getUrlParameter: getUrlParameter,
+      randomUuid: randomUuid
     };
   };
-
 
   module.factory('gnUtilityService', gnUtilityService);
 
@@ -245,7 +392,7 @@
                   regionsList.push({
                     id: id,
                     name: id.split('#')[1],
-                    label: $translate(id.split('#')[1])
+                    label: value['@label'] || id.split('#')[1]
                   });
                 }
               });

@@ -1,7 +1,31 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.repository;
 
 import org.fao.geonet.domain.HarvesterSetting;
 import org.fao.geonet.domain.Setting_;
+import org.jdom.Element;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -24,10 +48,10 @@ public class HarvesterSettingRepositoryTest extends AbstractSpringDataTest {
     @Test
     public void testFindByName() throws Exception {
         HarvesterSetting setting = _repo.save(newSetting());
-        List<HarvesterSetting> found = _repo.findByName(setting.getName());
+        List<HarvesterSetting> found = _repo.findAllByName(setting.getName());
         assertEquals(1, found.size());
         assertSameContents(setting, found.get(0), _skipProps);
-        assertEquals(0, _repo.findByName("some wrong name").size());
+        assertEquals(0, _repo.findAllByName("some wrong name").size());
     }
 
     @Test
@@ -226,6 +250,13 @@ public class HarvesterSettingRepositoryTest extends AbstractSpringDataTest {
         assertEquals("3", list2.get(1).getName());
         assertEquals("2", list2.get(2).getName());
         assertEquals("1", list2.get(3).getName());
+    }
+
+    @Test
+    public void testFindAllAsXml() throws Exception {
+        _repo.save(newSetting().setName("4"));
+        final Element allAsXml = _repo.findAllAsXml();
+        //  No Exception... good
     }
 
     private HarvesterSetting newSetting() {

@@ -23,37 +23,38 @@
 
 package org.fao.geonet.kernel.search;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.ServletContext;
 
-import jeeves.server.context.ServiceContext;
-import jeeves.server.overrides.ConfigurationOverrides;
 import org.apache.lucene.facet.FacetsConfig;
-import org.apache.lucene.facet.taxonomy.CategoryPath;
-import org.fao.geonet.kernel.GeonetworkDataDirectory;
-import org.fao.geonet.utils.Log;
-import org.fao.geonet.utils.Xml;
-
 import org.apache.lucene.search.TopFieldCollector;
 import org.apache.lucene.util.NumericUtils;
 import org.apache.lucene.util.Version;
+import org.fao.geonet.ApplicationContextHolder;
 import org.fao.geonet.constants.Geonet;
+import org.fao.geonet.kernel.GeonetworkDataDirectory;
+import org.fao.geonet.kernel.search.facet.Dimension;
+import org.fao.geonet.kernel.search.facet.Facets;
+import org.fao.geonet.kernel.search.facet.SummaryTypes;
+import org.fao.geonet.utils.IO;
+import org.fao.geonet.utils.Log;
+import org.fao.geonet.utils.Xml;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.stereotype.Component;
+
+import jeeves.server.overrides.ConfigurationOverrides;
 
 /**
  * Lucene configuration class load Lucene XML configuration file.
@@ -67,187 +68,9 @@ public class LuceneConfig {
 	private static final int BOOST_CLASS = 2;
 	private static final int DOC_BOOST_CLASS = 3;
 
-    private FacetsConfig facetConfiguration = null;
+	private Path configurationFile;
+	private LinkedHashSet<String> fuzzyMatching;
 
-
-    @Autowired
-    GeonetworkDataDirectory _geonetworkDataDirectory;
-    @Autowired
-    ApplicationContext _appContext;
-
-	private File configurationFile;
-	private File taxonomyConfigurationFile;
-
-    public static class Facet {
-        /**
-         * Default number of values for a facet
-         */
-        public static final int DEFAULT_MAX_KEYS = 10;
-        /**
-         * Max number of values for a facet
-         */
-        public static final int MAX_SUMMARY_KEY = 1000;
-        /**
-         * Define the sorting order of a facet.
-         */
-        public enum SortBy {
-            /**
-             * Use a text comparator for sorting values
-             */
-            VALUE, 
-            /**
-             * Use a numeric compartor for sorting values
-             */
-            NUMVALUE, 
-            /**
-             * Sort by count
-             */
-            COUNT,
-            /**
-             * Sort by translated label
-             */
-            LABEL;
-
-            public static org.fao.geonet.kernel.search.LuceneConfig.Facet.SortBy find(
-                    String lookupName,
-                    org.fao.geonet.kernel.search.LuceneConfig.Facet.SortBy defaultValue) {
-                for (SortBy sortBy : values()) {
-                    if(sortBy.name().equalsIgnoreCase(lookupName)) {
-                        return sortBy;
-                    }
-                }
-                return defaultValue;
-            }
-        }
-
-        public enum SortOrder {
-            ASCENDING, DESCENDING
-        }
-    }
-    
-    /**
-     * Facet configuration
-     */
-    public static class FacetConfig {
-        private final String name;
-        private final String plural;
-        private final String indexKey;
-        private final Facet.SortBy sortBy;
-        private final Facet.SortOrder sortOrder;
-        private int max;
-        private final String translator;
-        /**
-         * Create a facet configuration from a summary configuration element.
-         * 
-         * @param summaryElement
-         */
-        public FacetConfig(Element summaryElement) {
-            
-            name = summaryElement.getAttributeValue("name");
-            plural = summaryElement.getAttributeValue("plural");
-            indexKey = summaryElement.getAttributeValue("indexKey");
-            translator = summaryElement.getAttributeValue("translator");
-            
-            String maxString = summaryElement.getAttributeValue("max");
-            if (maxString == null) {
-                max = Facet.DEFAULT_MAX_KEYS;
-            } else {
-                max = Integer.parseInt(maxString);
-            }
-            this.max = Math.min(Facet.MAX_SUMMARY_KEY, max);
-            
-            String sortByConfig = summaryElement.getAttributeValue("sortBy");
-            String sortOrderConfig = summaryElement.getAttributeValue("sortOrder");
-            
-            sortBy = Facet.SortBy.find(sortByConfig, Facet.SortBy.COUNT);
-            
-            if("asc".equals(sortOrderConfig)){
-                sortOrder = Facet.SortOrder.ASCENDING;
-            } else {
-                sortOrder = Facet.SortOrder.DESCENDING;
-            }
-        }
-
-        public FacetConfig(FacetConfig config) {
-            this.name = config.name;
-            this.plural = config.plural;
-            this.indexKey = config.indexKey;
-            this.translator = config.translator;
-            this.max = config.max;
-            this.sortBy = config.sortBy;
-            this.sortOrder = config.sortOrder;
-        }
-
-        public String toString() {
-            StringBuffer sb = new StringBuffer("Field: ");
-            sb.append(indexKey);
-            sb.append("\tname:");
-            sb.append(name);
-            sb.append("\tmax:");
-            sb.append(max + "");
-            sb.append("\tsort by");
-            sb.append(sortBy.toString());
-            sb.append("\tsort order:");
-            sb.append(sortOrder.toString());
-            return sb.toString();
-        }
-        /**
-         * @return the name of the facet (ie. the tag name in the XML response)
-         */
-        public String getName() {
-            return name;
-        }
-        /**
-         * @return the plural for the name (ie. the parent tag of each facet values)
-         */
-        public String getPlural() {
-            return plural;
-        }
-        /**
-         * @return the name of the field in the index
-         */
-        public String getIndexKey() {
-            return indexKey;
-        }
-        /**
-         * @return the ordering for the facet. Defaults is by {@link Facet.SortBy#COUNT}.
-         */
-        public Facet.SortBy getSortBy() {
-            return sortBy;
-        }
-        /**
-         * @return asc or desc. Defaults is {@link Facet.SortOrder#DESCENDING}.
-         */
-        public Facet.SortOrder getSortOrder() {
-            return sortOrder;
-        }
-        /**
-         * @return (optional) the number of values to be returned for the facet.
-         * Defaults is {@link Facet#DEFAULT_MAX_KEYS} and never greater than
-         * {@link Facet#MAX_SUMMARY_KEY}.
-         */
-        public int getMax() {
-            return max;
-        }
-        public void setMax(int max) {
-            this.max = max;
-        }
-        public Translator getTranslator(ServiceContext context, String langCode) {
-            try {
-                return Translator.createTranslator(translator, context, langCode);
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        }
-
-    }
-
-	/**
-	 * List of taxonomy by taxonomy types (hits, hits_with_summary
-	 * for each field (eg. denominator) and its configuration (eg. sort).
-	 */
-	private Map<String, Map<String,FacetConfig>> taxonomy;
-	
 	/**
 	 * Lucene numeric field configuration
 	 */
@@ -266,7 +89,7 @@ public class LuceneConfig {
 				this.type = DEFAULT_TYPE;
 
 			try {
-				int p = Integer.valueOf(precisionStep);
+				int p = Integer.parseInt(precisionStep);
 				this.precisionStep = p;
 			} catch (Exception e) {
 				// TODO: handle exception
@@ -308,9 +131,9 @@ public class LuceneConfig {
             return LuceneConfig.this;
         }
 		
-	};
+	}
 
-	private Set<String> tokenizedFields = new HashSet<String>();
+	private Set<String> tokenizedFields = new LinkedHashSet<String>();
 	private Map<String, LuceneConfigNumericField> numericFields = new HashMap<String, LuceneConfigNumericField>();
 	private Map<String, String> dumpFields = new HashMap<String, String>();
 
@@ -348,18 +171,28 @@ public class LuceneConfig {
 	private double nrtManagerReopenThreadMinStaleSec = 0.1f;
 	
 	private Version LUCENE_VERSION = Geonet.LUCENE_VERSION;
-	private Set<String> multilingualSortFields = new HashSet<String>();
+	private Set<String> multilingualSortFields = new LinkedHashSet<String>();
 
-	
-    /**
+    private Facets facets;
+    private SummaryTypes summaryTypes;
+
+    public LuceneConfig(Facets facets, SummaryTypes summaryTypes) {
+        this.facets = facets;
+        this.summaryTypes = summaryTypes;
+    }
+
+	/**
 	 * Creates a new Lucene configuration from an XML configuration file.
 	 *
      * @param luceneConfigXmlFile
      */
 	public void configure(String luceneConfigXmlFile) {
-        if(Log.isDebugEnabled(Geonet.SEARCH_ENGINE))
+		ApplicationContext _appContext = ApplicationContextHolder.get();
+		GeonetworkDataDirectory geonetworkDataDirectory = _appContext.getBean(GeonetworkDataDirectory.class);
+
+		if(Log.isDebugEnabled(Geonet.SEARCH_ENGINE))
             Log.debug(Geonet.SEARCH_ENGINE, "Loading Lucene configuration ...");
-		this.configurationFile = new File(_geonetworkDataDirectory.getWebappDir(), luceneConfigXmlFile);
+		this.configurationFile = geonetworkDataDirectory.resolveWebResource(luceneConfigXmlFile);
         ServletContext servletContext;
         try {
             servletContext = _appContext.getBean(ServletContext.class);
@@ -368,17 +201,16 @@ public class LuceneConfig {
         }
 
         this.load(servletContext, luceneConfigXmlFile);
-		String taxonomyConfig = "WEB-INF/config-summary.xml";
-		this.taxonomyConfigurationFile = new File(_geonetworkDataDirectory.getWebappDir(), taxonomyConfig);
-		this.loadTaxonomy(servletContext, taxonomyConfig);
-	}
+    }
 
 	private void load(ServletContext servletContext, String luceneConfigXmlFile) {
-		try {
-			luceneConfig = Xml.loadStream(new FileInputStream(
-					this.configurationFile));
+		ApplicationContext _appContext = ApplicationContextHolder.get();
+		GeonetworkDataDirectory geonetworkDataDirectory = _appContext.getBean(GeonetworkDataDirectory.class);
+		try (InputStream in = IO.newInputStream(this.configurationFile)) {
+			luceneConfig = Xml.loadStream(in);
 			if (servletContext != null) {
-				ConfigurationOverrides.DEFAULT.updateWithOverrides(luceneConfigXmlFile, servletContext, _geonetworkDataDirectory.getWebappDir(), luceneConfig);
+				ConfigurationOverrides.DEFAULT.updateWithOverrides(luceneConfigXmlFile, servletContext,
+                        geonetworkDataDirectory.getWebappDir(), luceneConfig);
 			}
 			
 			// Main Lucene index configuration option
@@ -404,7 +236,7 @@ public class LuceneConfig {
 				RAMBufferSizeMB = DEFAULT_RAMBUFFERSIZEMB;
 			} else {
 				try {
-					RAMBufferSizeMB = Double.valueOf(rb);
+					RAMBufferSizeMB = Double.parseDouble(rb);
 				} catch (NumberFormatException e) {
 					Log.warning(Geonet.SEARCH_ENGINE,
 							"Invalid double value for RAM buffer size. Using default value.");
@@ -417,7 +249,7 @@ public class LuceneConfig {
 				MergeFactor = DEFAULT_MERGEFACTOR;
 			} else {
 				try {
-					MergeFactor = Integer.valueOf(mf);
+					MergeFactor = Integer.parseInt(mf);
 				} catch (NumberFormatException e) {
 					Log.warning(Geonet.SEARCH_ENGINE,
 							"Invalid integer value for merge factor. Using default value.");
@@ -428,7 +260,7 @@ public class LuceneConfig {
 			String cI = elem.getChildText("commitInterval");
 			if (cI != null) {
 			    try {
-			        commitInterval = Long.valueOf(cI);
+			        commitInterval = Long.parseLong(cI);
 			    } catch (NumberFormatException e) {
 			        Log.warning(Geonet.SEARCH_ENGINE,
 			                "Invalid long value for commitInterval. Using default value.");
@@ -446,7 +278,7 @@ public class LuceneConfig {
 			String maxStaleNS = elem.getChildText("nrtManagerReopenThreadMaxStaleSec");
 			if (maxStaleNS != null) {
 			    try {
-			        nrtManagerReopenThreadMaxStaleSec = Double.valueOf(maxStaleNS);
+			        nrtManagerReopenThreadMaxStaleSec = Double.parseDouble(maxStaleNS);
 			    } catch (NumberFormatException e) {
 			        Log.warning(Geonet.SEARCH_ENGINE,
 			                "Invalid Double value for nrtManagerReopenThreadMaxStaleSec. Using default value.");
@@ -455,7 +287,7 @@ public class LuceneConfig {
 			String minStaleNS = elem.getChildText("nrtManagerReopenThreadMinStaleSec");
 			if (minStaleNS != null) {
 			    try {
-			        nrtManagerReopenThreadMinStaleSec = Double.valueOf(minStaleNS);
+			        nrtManagerReopenThreadMinStaleSec = Double.parseDouble(minStaleNS);
 			    } catch (NumberFormatException e) {
 			        Log.warning(Geonet.SEARCH_ENGINE,
 			                "Invalid Double value for nrtManagerReopenThreadMinStaleSec. Using default value.");
@@ -464,7 +296,7 @@ public class LuceneConfig {
 
 			// Tokenized fields
 			elem = luceneConfig.getChild("tokenized");
-			tokenizedFields = new HashSet<String>();
+			tokenizedFields = new LinkedHashSet<String>();
 			if (elem != null) {
 				for (Object o : elem.getChildren()) {
 					if (o instanceof Element) {
@@ -475,6 +307,24 @@ public class LuceneConfig {
 									"Tokenized element must have a name attribute, check Lucene configuration file.");
 						} else {
 							tokenizedFields.add(name);
+						}
+					}
+				}
+			}
+
+			// similarity fields
+			elem = luceneConfig.getChild("fuzzyMatching");
+			if (elem != null && "true".equalsIgnoreCase(elem.getAttributeValue("enabled"))) {
+				fuzzyMatching = new LinkedHashSet<String>();
+				for (Object o : elem.getChildren()) {
+					if (o instanceof Element) {
+						String name = ((Element) o).getAttributeValue("name");
+						if (name == null) {
+							Log.warning(
+									Geonet.SEARCH_ENGINE,
+									"fuzzyMatching element must have a name attribute, check Lucene configuration file.");
+						} else {
+							fuzzyMatching.add(name);
 						}
 					}
 				}
@@ -624,62 +474,6 @@ public class LuceneConfig {
 		}
 	}
 	
-	private void loadTaxonomy(ServletContext servletContext,
-			String taxonomyConfigFile) {
-		try {
-			Element taxonomyConfig = Xml.loadStream(new FileInputStream(
-					this.taxonomyConfigurationFile));
-			if (servletContext != null) {
-				ConfigurationOverrides.DEFAULT.updateWithOverrides(taxonomyConfigFile, servletContext, _geonetworkDataDirectory.getWebappDir(), taxonomyConfig);
-			}
-			
-			taxonomy = new HashMap<String, Map<String,FacetConfig>>();
-			Element definitions = taxonomyConfig.getChild("def");
-			if (definitions != null) {
-				for (Object e : definitions.getChildren()) {
-					if (e instanceof Element) {
-						Element config = (Element) e;
-						taxonomy.put(config.getName(), getSummaryConfig(config));
-					}
-				}
-			}
-		} catch (JDOMException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-        this.facetConfiguration = new FacetsConfig();
-        for (Map<String, LuceneConfig.FacetConfig> facets : getTaxonomy().values()) {
-            for (LuceneConfig.FacetConfig facetConfig : facets.values()) {
-                String fieldName = facetConfig.getIndexKey()  +
-                        SearchManager.FACET_FIELD_SUFFIX;
-                this.facetConfiguration.setIndexFieldName(fieldName, fieldName);
-                this.facetConfiguration.setMultiValued(fieldName, true);
-            }
-        }
-    }
-	
-
-    /**
-     *
-     * @return
-     * @throws Exception
-     */
-	private Map<String,FacetConfig> getSummaryConfig(Element resultTypeConfig) {
-	    // User linked hash map so that results in output are same as ordered in summary file
-		Map<String, FacetConfig> results = new LinkedHashMap<String, FacetConfig>();
-
-		for (Object obj : resultTypeConfig.getChildren()) {
-			if(obj instanceof Element) {
-			    Element summaryElement = (Element) obj;
-			    FacetConfig fc = new FacetConfig(summaryElement);
-				results.put(fc.getIndexKey(), fc);
-			}
-		}
-		return results;
-	}
-
 	private void loadAnalyzerConfig(String configRootName, Map<String, String> fieldAnalyzer) {
 		Element elem;
 		elem = luceneConfig.getChild(configRootName);
@@ -713,6 +507,9 @@ public class LuceneConfig {
 		if (children == null)
 			return; // No params
 
+		ApplicationContext _appContext = ApplicationContextHolder.get();
+		GeonetworkDataDirectory geonetworkDataDirectory = _appContext.getBean(GeonetworkDataDirectory.class);
+
         if(Log.isDebugEnabled(Geonet.SEARCH_ENGINE))
             Log.debug(Geonet.SEARCH_ENGINE, "  Field: " + field + ", loading class " + clazz + " ...");
 
@@ -744,13 +541,11 @@ public class LuceneConfig {
 						params[i] = LUCENE_VERSION;
 					} else if ("java.io.File".equals(paramType)
 							&& value != null) {
-						File f = new File(value);
-						if (!f.exists()) { // try relative to appPath
-							f = new File(_geonetworkDataDirectory.getWebappDir(), value);
+						Path f = IO.toPath(value);
+						if (!Files.exists(f)) { // try relative to appPath
+							f = geonetworkDataDirectory.resolveWebResource(value);
 						}
-						if (f != null) {
-							params[i] = f;
-						}
+                        params[i] = f;
 					} else if ("double".equals(paramType) && value != null) {
 						params[i] = Double.parseDouble(value);
 					} else if ("int".equals(paramType) && value != null) {
@@ -813,6 +608,17 @@ public class LuceneConfig {
 	}
 
 	/**
+	 * Check if similarity can be applied to the field
+	 * @param fieldName the name of the field to check.
+	 */
+	public boolean applySimilarity(String fieldName) {
+		if (fuzzyMatching != null) {
+			return fuzzyMatching.contains(fieldName);
+		}
+		return true;
+	}
+
+	/**
 	 * 
 	 * @param name
 	 * @return	True if the field has to be tokenized
@@ -855,24 +661,6 @@ public class LuceneConfig {
 	public boolean isNumericField(String fieldName) {
 		return this.numericFields.containsKey(fieldName);
 	}
-
-    /**
-     * Return true if the field is a facet field.
-     *
-     * TODO: Create a simple set of fieldname instead
-     * of looping on all summary configuration.
-     *
-     * @param fieldName
-     * @return
-     */
-    public boolean isFacetField(String fieldName) {
-        for (Map<String, FacetConfig> facets : getTaxonomy().values()) {
-            if (facets.containsKey(fieldName)) {
-                return true;
-            }
-        }
-        return false;
-    }
 
 	/**
 	 * 
@@ -1002,6 +790,14 @@ public class LuceneConfig {
         return LUCENE_VERSION;
     }
 
+    public List<Dimension> getDimensionsUsing(String indexKey) {
+        return facets.getDimensionsUsing(indexKey);
+    }
+
+    public SummaryTypes getSummaryTypes() {
+        return summaryTypes;
+    }
+
 	/**
 	 * 
 	 */
@@ -1030,13 +826,10 @@ public class LuceneConfig {
 		sb.append("  * trackDocScores: " + isTrackDocScores() + " \n");
 		sb.append("  * trackMaxScore: " + isTrackMaxScore() + " \n");
 		sb.append("  * docsScoredInOrder: " + isDocsScoredInOrder() + " \n");
-		sb.append("Taxonomy configuration: "
-				+ getTaxonomy().keySet().toString() + "\n");
-		for (String key : getTaxonomy().keySet()) {
-			sb.append("  * type: " + key + "\n");
-			Map<String, FacetConfig> facetsConfig = getTaxonomy().get(key);
-			sb.append(facetsConfig.toString());
-		}
+
+		sb.append(facets.toString());
+		sb.append(summaryTypes.toString());
+
 		return sb.toString();
 	}
 
@@ -1084,16 +877,8 @@ public class LuceneConfig {
 		return docsScoredInOrder;
 	}
 
-	public Map<String, Map<String,FacetConfig>> getTaxonomy() {
-		return taxonomy;
-	}
-
-	public void setTaxonomy(Map<String, Map<String,FacetConfig>> taxonomy) {
-		this.taxonomy = taxonomy;
-	}
-
     public FacetsConfig getTaxonomyConfiguration() {
-        return facetConfiguration;
+        return facets.getAsLuceneFacetsConfig();
     }
 
     public static String multilingualSortFieldName(String fieldName, String locale) {

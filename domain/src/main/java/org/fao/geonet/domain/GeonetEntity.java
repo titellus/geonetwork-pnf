@@ -1,14 +1,39 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.domain;
 
 import org.jdom.Element;
 import org.springframework.beans.BeanWrapperImpl;
 
-import javax.annotation.Nonnull;
-import javax.persistence.Embeddable;
 import java.beans.PropertyDescriptor;
+import java.util.Collections;
 import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import javax.annotation.Nonnull;
+import javax.persistence.Embeddable;
 
 /**
  * Contains common methods of all entities in Geonetwork.
@@ -41,18 +66,28 @@ public class GeonetEntity {
         return record;
     }
 
+    /**
+     * Subclasses can override this if there are properties that should not be called when constructing the XML representation.
+     * of this entity.
+     *
+     * The property should not have the get prefix.
+     */
+    protected Set<String> propertiesToExcludeFromXml() {
+        return Collections.emptySet();
+    }
     protected Element asXml(IdentityHashMap<Object, Void> alreadyEncoded) {
-        return asXml(this, alreadyEncoded);
+        return asXml(this, alreadyEncoded, propertiesToExcludeFromXml());
     }
 
-    private static Element asXml(Object obj, IdentityHashMap<Object, Void> alreadyEncoded) {
+    private static Element asXml(Object obj, IdentityHashMap<Object, Void> alreadyEncoded, Set<String> exclude) {
         alreadyEncoded.put(obj, null);
         Element record = new Element(RECORD_EL_NAME);
         BeanWrapperImpl wrapper = new BeanWrapperImpl(obj);
 
         for (PropertyDescriptor desc : wrapper.getPropertyDescriptors()) {
             try {
-                if (desc.getReadMethod() != null && desc.getReadMethod().getDeclaringClass() == obj.getClass()) {
+                if (desc.getReadMethod() != null && desc.getReadMethod().getDeclaringClass() == obj.getClass() &&
+                    !exclude.contains(desc.getName())) {
                     final String descName = desc.getName();
                     if (descName.equalsIgnoreCase("labelTranslations")) {
                         Element labelEl = new Element(LABEL_EL_NAME);
@@ -70,7 +105,7 @@ public class GeonetEntity {
                     } else {
                         final Object rawData = desc.getReadMethod().invoke(obj);
                         if (rawData != null) {
-                            final Element element = propertyToElement(alreadyEncoded, descName, rawData);
+                            final Element element = propertyToElement(alreadyEncoded, descName, rawData, exclude);
                             record.addContent(element);
                         }
                     }
@@ -82,7 +117,8 @@ public class GeonetEntity {
         return record;
     }
 
-    private static Element propertyToElement(IdentityHashMap<Object, Void> alreadyEncoded, String descName, Object rawData) {
+    private static Element propertyToElement(IdentityHashMap<Object, Void> alreadyEncoded, String descName, Object rawData,
+                                             Set<String> exclude) {
         final Element element = new Element(descName.toLowerCase());
         if (rawData instanceof GeonetEntity) {
             if (!alreadyEncoded.containsKey(rawData)) {
@@ -93,13 +129,13 @@ public class GeonetEntity {
         } else if (rawData instanceof XmlEmbeddable) {
             ((XmlEmbeddable) rawData).addToXml(element);
         } else if (hasEmbeddableAnnotation(rawData)) {
-            final Element element1 = asXml(rawData, alreadyEncoded);
+            final Element element1 = asXml(rawData, alreadyEncoded, exclude);
             final List list = element1.removeContent();
             element.addContent(list);
         } else if (rawData instanceof Iterable) {
             String childName = pluralToSingular(descName);
             for (Object o : (Iterable<?>) rawData) {
-                element.addContent(propertyToElement(alreadyEncoded, childName, o));
+                element.addContent(propertyToElement(alreadyEncoded, childName, o, exclude));
             }
         } else {
             element.addContent(rawData.toString());

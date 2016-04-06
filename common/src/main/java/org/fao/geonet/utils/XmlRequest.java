@@ -1,24 +1,43 @@
 
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.utils;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.fao.geonet.exceptions.BadServerResponseEx;
 import org.fao.geonet.exceptions.BadSoapResponseEx;
 import org.fao.geonet.exceptions.BadXmlResponseEx;
-
-import org.apache.commons.io.IOUtils;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.springframework.http.client.ClientHttpResponse;
 
 import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.List;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 
 //=============================================================================
 
@@ -75,9 +94,10 @@ public class XmlRequest extends AbstractHttpRequest {
 	//---------------------------------------------------------------------------
 	/** Sends a request (using GET or POST) and save the content to a file. This
 	  * method does not store received data.
-	  */
+     * @param outFile
+     */
 
-	public final void executeLarge(File outFile) throws IOException
+	public final void executeLarge(Path outFile) throws IOException
 	{
         HttpRequestBase httpMethod = setupHttpMethod();
 
@@ -126,31 +146,16 @@ public class XmlRequest extends AbstractHttpRequest {
 
     //---------------------------------------------------------------------------
 
-	protected final File doExecuteLarge(HttpRequestBase httpMethod, File outFile) throws IOException
+	protected final Path doExecuteLarge(HttpRequestBase httpMethod, Path outFile) throws IOException
 	{
 
-		InputStream  is = null;
-		OutputStream os = null;
-
-		try
-		{
-            final ClientHttpResponse httpResponse = doExecute(httpMethod);
-
-			is = httpResponse.getBody();
-			os = new FileOutputStream(outFile);
-			
-			BinaryFile.copy(is, os);
-
-			return outFile;
-		}
-		finally
-		{
-		    IOUtils.closeQuietly(is);
-		    IOUtils.closeQuietly(os);
+		try (ClientHttpResponse httpResponse = doExecute(httpMethod)) {
+            Files.copy(httpResponse.getBody(), outFile, StandardCopyOption.REPLACE_EXISTING);
+            return outFile;
+		} finally {
 			httpMethod.releaseConnection();
 
 			sentData = getSentData(httpMethod);
-
 			//--- we do not save received data because it can be very large
 		}
 	}

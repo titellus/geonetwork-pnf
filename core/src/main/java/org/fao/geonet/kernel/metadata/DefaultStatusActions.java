@@ -25,14 +25,19 @@ package org.fao.geonet.kernel.metadata;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
-
 import jeeves.server.UserSession;
 import jeeves.server.context.ServiceContext;
-
 import org.fao.geonet.GeonetContext;
 import org.fao.geonet.constants.Geonet;
 import org.fao.geonet.constants.Params;
-import org.fao.geonet.domain.*;
+import org.fao.geonet.domain.ISODate;
+import org.fao.geonet.domain.Metadata;
+import org.fao.geonet.domain.Pair;
+import org.fao.geonet.domain.Profile;
+import org.fao.geonet.domain.ReservedOperation;
+import org.fao.geonet.domain.StatusValue;
+import org.fao.geonet.domain.User;
+import org.fao.geonet.domain.User_;
 import org.fao.geonet.kernel.DataManager;
 import org.fao.geonet.kernel.setting.SettingManager;
 import org.fao.geonet.repository.MetadataRepository;
@@ -44,22 +49,22 @@ import org.fao.geonet.util.MailSender;
 import org.fao.geonet.util.XslUtil;
 import org.jdom.JDOMException;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public class DefaultStatusActions implements StatusActions {
 
     private String host, port, username, password, from, fromDescr, replyTo, replyToDescr;
-    private boolean useSSL;    protected ServiceContext context;
+    private boolean useSSL;
+    private boolean useTLS;
+    protected ServiceContext context;
     protected String language;
     protected DataManager dm;
     protected String siteUrl;
@@ -98,6 +103,7 @@ public class DefaultStatusActions implements StatusActions {
         username = sm.getValue("system/feedback/mailServer/username");
         password = sm.getValue("system/feedback/mailServer/password");
         useSSL = sm.getValueAsBool("system/feedback/mailServer/ssl");
+        useTLS = sm.getValueAsBool("system/feedback/mailServer/tls");
         
         if (host == null || host.length() == 0) {
             context.error("Mail server host not configure");
@@ -114,7 +120,7 @@ public class DefaultStatusActions implements StatusActions {
             emailNotes = false;
         }
 
-        fromDescr = siteName + LangUtils.translate(context, "statusTitle").get(this.language);
+        fromDescr = siteName + LangUtils.translate(context.getApplicationContext(), "statusTitle").get(this.language);
 
         session = context.getUserSession();
         replyTo = session.getEmailAddr();
@@ -138,8 +144,8 @@ public class DefaultStatusActions implements StatusActions {
     public void onEdit(int id, boolean minorEdit) throws Exception {
 
         if (!minorEdit && dm.getCurrentStatus(id).equals(Params.Status.APPROVED)) {
-            String changeMessage = String.format(LangUtils.translate(context, "statusUserEdit").get(this.language), replyToDescr,
-                    replyTo, id);
+            String changeMessage = String.format(LangUtils.translate(context.getApplicationContext(),
+                            "statusUserEdit").get(this.language), replyToDescr, replyTo, id);
             unsetAllOperations(id);
             dm.setStatus(context, id, Integer.valueOf(Params.Status.DRAFT), new ISODate(), changeMessage);
         }
@@ -200,9 +206,9 @@ public class DefaultStatusActions implements StatusActions {
     * @param mdId The metadata id to unset privileges on
     */
   private void unsetAllOperations(int mdId) throws Exception {
-      String allGroup = "1";
+      int allGroup = 1;
       for (ReservedOperation op : ReservedOperation.values()) {
-          dm.unsetOperation(context, mdId+"", allGroup, op);
+          dm.forceUnsetOperation(context, mdId, allGroup, op.getId());
       }
   }
 
@@ -229,7 +235,7 @@ public class DefaultStatusActions implements StatusActions {
         });
         String mdChanged = buildMetadataChangedMessage(metadata);
         String translatedStatusName = getTranslatedStatusName(Params.Status.SUBMITTED);
-        String subject = String.format(LangUtils.translate(context, "statusInform").get(this.language), siteName,
+        String subject = String.format(LangUtils.translate(context.getApplicationContext(), "statusInform").get(this.language), siteName,
                 translatedStatusName, replyToDescr, replyTo, changeDate);
 
         processList(users, subject, Params.Status.SUBMITTED,
@@ -243,11 +249,11 @@ public class DefaultStatusActions implements StatusActions {
     	String message = "";
  
     	try {
-    		statusMetadataDetails = LangUtils.translate(context, "statusMetadataDetails").get(this.language);
+    		statusMetadataDetails = LangUtils.translate(context.getApplicationContext(), "statusMetadataDetails").get(this.language);
 		} catch (Exception e) {}
     	// Fallback on a default value if statusMetadataDetails not resolved
     	if (statusMetadataDetails == null) {
-    		statusMetadataDetails = "* {{index:title}} ({{serverurl}}/search?uuid={{index:_uuid}})";
+    		statusMetadataDetails = "* {{index:title}} ({{serverurl}}/catalog.search#/metadata/{{index:_uuid}})";
     	}
     	
     	ArrayList<String> fields = new ArrayList<String>();
@@ -296,7 +302,7 @@ public class DefaultStatusActions implements StatusActions {
 
         String translatedStatusName = getTranslatedStatusName(status);
         // --- get metadata owners (sorted on owner userid)
-        String subject = String.format(LangUtils.translate(context, "statusInform").get(this.language), siteName,
+        String subject = String.format(LangUtils.translate(context.getApplicationContext(), "statusInform").get(this.language), siteName,
                 translatedStatusName, replyToDescr, replyTo, changeDate);
         String mdChanged = buildMetadataChangedMessage(metadataIds);
         
@@ -340,15 +346,14 @@ public class DefaultStatusActions implements StatusActions {
      * @param changeMessage The message indicating why the status has changed
      */
     protected void sendEmail(String sendTo, String subject, String status, String changeDate, String changeMessage, String mdChanged) throws Exception {
-        String message = String.format(LangUtils.translate(context, "statusSendEmail").get(this.language), changeMessage, mdChanged, siteUrl, status,
-                changeDate);
-        
+        String message = String.format(LangUtils.translate(context.getApplicationContext(), "statusSendEmail").get(this.language),
+                changeMessage, mdChanged, siteUrl, status, changeDate);
 
         if (!emailNotes) {
             context.info("Would send email \nTo: " + sendTo + "\nSubject: " + subject + "\n Message:\n" + message);
         } else {
             MailSender sender = new MailSender(context);
-            sender.sendWithReplyTo(host, Integer.parseInt(port), username, password, useSSL, from, fromDescr,
+            sender.sendWithReplyTo(host, Integer.parseInt(port), username, password, useSSL, useTLS, from, fromDescr,
             		sendTo, null, replyTo, replyToDescr, subject, message);
         }
     }

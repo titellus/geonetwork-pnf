@@ -1,3 +1,26 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.services.metadata.schema;
 
 import com.google.common.collect.Lists;
@@ -18,9 +41,10 @@ import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.springframework.data.jpa.domain.Specification;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
 
@@ -38,7 +62,7 @@ public class SchematronCriteriaTypeService implements Service {
     private SchematronService schematronService = new SchematronService();
 
     @Override
-    public void init(String appPath, ServiceConfig params) throws Exception {
+    public void init(Path appPath, ServiceConfig params) throws Exception {
     }
 
     @Override
@@ -80,7 +104,7 @@ public class SchematronCriteriaTypeService implements Service {
         return results;
     }
 
-    private void addTitleToSchematronElement(ServiceContext context, XmlCacheManager cacheManager, Element element, String schemaDir) throws JDOMException, IOException {
+    private void addTitleToSchematronElement(ServiceContext context, XmlCacheManager cacheManager, Element element, Path schemaDir) throws JDOMException, IOException {
         final String ruleName = element.getChildText("rulename");
         final Element strings = loadTranslations(context, schemaDir, ruleName + ".xml", cacheManager);
         String title = ruleName;
@@ -98,13 +122,13 @@ public class SchematronCriteriaTypeService implements Service {
 
     private void addCriteriaTypeDefinition(ServiceContext context, SchemaManager schemaManager, Element schemaEl, String schemaName) throws IOException, JDOMException {
 
-        final String schemaDir = schemaManager.getSchemaDir(schemaName);
-        File file = new File(schemaDir, "schematron" + File.separator + "criteria-type.xml");
+        final Path schemaDir = schemaManager.getSchemaDir(schemaName);
+        Path file = schemaDir.resolve("schematron").resolve("criteria-type.xml");
 
         final XmlCacheManager cacheManager = context.getBean(XmlCacheManager.class);
         Element criteriaTypeTranslations = loadTranslations(context, schemaDir, "criteria-type.xml", cacheManager);
 
-        if (file.exists()) {
+        if (Files.exists(file)) {
             Element criteriaType = Xml.loadFile(file);
             criteriaType.setName("criteriaTypes");
             criteriaType.addContent(alwaysAcceptCriteriaType());
@@ -123,12 +147,12 @@ public class SchematronCriteriaTypeService implements Service {
         }
     }
 
-    private Element loadTranslations(ServiceContext context, String schemaDir, String translationFile, XmlCacheManager cacheManager) throws JDOMException, IOException {
+    private Element loadTranslations(ServiceContext context, Path schemaDir, String translationFile, XmlCacheManager cacheManager) throws JDOMException, IOException {
         Element criteriaTypeTranslations;
         try {
-            criteriaTypeTranslations = cacheManager.get(context, true, schemaDir + File.separator + "loc",
-                    translationFile, context.getLanguage(), Geonet.DEFAULT_LANGUAGE);
-        } catch (FileNotFoundException e) {
+            criteriaTypeTranslations = cacheManager.get(context.getApplicationContext(), true, schemaDir.resolve("loc"), translationFile, context.getLanguage(),
+                    Geonet.DEFAULT_LANGUAGE, true);
+        } catch (NoSuchFileException e) {
             // there is a case where the schematron plugin doesn't have any translations for the criteria (maybe there aren't any criteria).
             criteriaTypeTranslations = new Element("strings");
         }

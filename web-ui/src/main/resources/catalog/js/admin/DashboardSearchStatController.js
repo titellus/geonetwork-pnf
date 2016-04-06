@@ -1,3 +1,26 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 (function() {
   goog.provide('gn_dashboard_search_stat_controller');
 
@@ -32,13 +55,13 @@
       $scope.dateFrom = null;
       // The end of the temporal range
       $scope.dateTo = null;
-      $scope.graphicType = 'DAY';
+      $scope.graphicType = 'MONTH';
 
 
 
       function getMainSearchStat() {
         // Get core statistics for q service
-        $http.get('statistics-search@json?service=q')
+        $http.get('statistics-search?_content_type=json&service=q')
         .success(function(data) {
               $scope.statistics.search.mainSearchStatistics.q =
                   (data === 'null' ? null : data);
@@ -47,7 +70,7 @@
             });
 
         // Get core statistics for csw service
-        $http.get('statistics-search@json?service=csw')
+        $http.get('statistics-search?_content_type=json&service=csw')
         .success(function(data) {
               $scope.statistics.search.mainSearchStatistics.csw =
                   (data === 'null' ? null : data);
@@ -55,7 +78,7 @@
               // TODO
             });
 
-        $http.get('statistics-search-ip@json')
+        $http.get('statistics-search-ip?_content_type=json')
         .success(function(data) {
               $scope.statistics.search.ip = data;
             }).error(function(data) {
@@ -68,9 +91,13 @@
 
         // Search by date statistics
         $http.get($scope.url +
-                  'statistics-search-by-date@json?' +
-                  'dateFrom=' + $scope.dateFrom +
-                  '&dateTo=' + $scope.dateTo +
+                  'statistics-search-by-date?_content_type=json&' +
+                  'dateFrom=' +
+                    ($scope.dateFrom === null ? 'NULL' :
+                      moment($scope.dateFrom).format('YYYY-MM-DD')) +
+                  '&dateTo=' +
+                    ($scope.dateTo === null ? 'NULL' :
+                      moment($scope.dateTo).format('YYYY-MM-DD')) +
                   '&graphicType=' + $scope.graphicType +
                   '&byType=' + byType).success(function(data) {
           // Get min/max range
@@ -80,8 +107,8 @@
           // No date defined, get min and max of search range
           // and init dateFrom and dateTo to query full time range
           if ($scope.dateFrom === null) {
-            $scope.dateFrom = $scope.dateMin;
-            $scope.dateTo = $scope.dateMax;
+            $scope.dateFrom = new Date($scope.dateMin);
+            $scope.dateTo = new Date($scope.dateMax);
             return;
           }
 
@@ -180,7 +207,7 @@
 
       function getSearchStatByService() {
         // Search by service type statistics
-        $http.get('statistics-search-by-service-type@json')
+        $http.get('statistics-search-by-service-type?_content_type=json')
         .success(function(data) {
               var total = 0;
               for (var i in data) {
@@ -217,7 +244,7 @@
       };
 
       function getSearchStatForFieldsAndTerms() {
-        $http.get('statistics-search-fields@json')
+        $http.get('statistics-search-fields?_content_type=json&')
         .success(function(data) {
               $scope.statistics.search.fields = data;
 
@@ -235,7 +262,7 @@
 
         $scope.viewTermsForField = function(field, service) {
           $scope.currentField = field;
-          $http.get('statistics-search-terms@json?' +
+          $http.get('statistics-search-terms?_content_type=json&' +
                   'field=' + field +
                   '&service=' + service)
                   .success(function(data) {
@@ -249,13 +276,13 @@
       }
 
       $scope.searchStatisticExport = function() {
-        $http.get('stat.tableExport?tableToExport=requests')
+        $http.get('statistics-search-export?tableToExport=requests')
         .success(function(data) {
               $scope.requestsExport = $sce.trustAsHtml(data);
             }).error(function(data) {
               // TODO
             });
-        $http.get('stat.tableExport?tableToExport=params')
+        $http.get('statistics-search-export?tableToExport=params')
         .success(function(data) {
               $scope.paramsExport = $sce.trustAsHtml(data);
             }).error(function(data) {

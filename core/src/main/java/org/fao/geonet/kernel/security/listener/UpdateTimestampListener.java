@@ -1,11 +1,32 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.kernel.security.listener;
 
-
+import org.fao.geonet.ApplicationContextHolder;
 import org.fao.geonet.domain.ISODate;
 import org.fao.geonet.domain.User;
 import org.fao.geonet.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.security.authentication.event.AbstractAuthenticationEvent;
 import org.springframework.security.authentication.event.AuthenticationSuccessEvent;
@@ -20,46 +41,42 @@ import org.springframework.security.web.authentication.switchuser.Authentication
  * Can be de/activated adding config-security-core(-overrides).xml
  * 
  * <bean class="org.fao.geonet.kernel.security.listener.UpdateTimestampListener"
- * id="updateTimestampListener"> <property name="activate" value="true"/> </bean>
+ * id="updateTimestampListener"> <property name="activate" value="true"/>
+ * </bean>
  * 
  * 
  * @author delawen
  * @author Jose García
  * 
  */
-public class UpdateTimestampListener implements ApplicationListener<ApplicationEvent> {
+public class UpdateTimestampListener implements
+		ApplicationListener<AbstractAuthenticationEvent> {
 
+	@Override
+	/**
+	 * Depending on which type of app event we will log one or other thing.
+	 */
+	public void onApplicationEvent(AbstractAuthenticationEvent e) {
+		UserRepository userRepo = ApplicationContextHolder.get().getBean(UserRepository.class);
 
-    @Autowired
-    private UserRepository _userRepository;
+		if (e instanceof InteractiveAuthenticationSuccessEvent
+				|| e instanceof AuthenticationSuccessEvent
+				|| e instanceof AuthenticationSwitchUserEvent) {
 
-    @Override
-    /**
-     * Depending on which type of app event we will log one or other thing.
-     */
-    public void onApplicationEvent(ApplicationEvent ev) {
+			try {
+				UserDetails userDetails = (UserDetails) e.getAuthentication()
+						.getPrincipal();
 
-        if (ev instanceof AbstractAuthenticationEvent) {
-            AbstractAuthenticationEvent e = (AbstractAuthenticationEvent) ev;
+				User user = userRepo.findOneByUsername(userDetails.getUsername());
+				user.setLastLoginDate(new ISODate().toString());
+				userRepo.save(user);
 
-            if (e instanceof InteractiveAuthenticationSuccessEvent
-                    || e instanceof AuthenticationSuccessEvent
-                    || e instanceof AuthenticationSwitchUserEvent) {
+			} catch (Exception ex) {
+				// TODO: Log exception
+				ex.printStackTrace();
+			}
 
-                try {
-                    UserDetails userDetails = (UserDetails) e
-                            .getAuthentication().getPrincipal();
+		}
 
-                    User user = _userRepository.findOneByUsername(userDetails.getUsername());
-                    user.setLastLoginDate(new ISODate().toString());
-                    _userRepository.save(user);
-
-                } catch (Exception ex) {
-                    // TODO: Log exception
-                    ex.printStackTrace();
-                }
-
-            }
-        }
-    }
+	}
 }

@@ -1,3 +1,27 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
+
 /**
  * Created by Jesse on 2/12/14.
  */
@@ -193,41 +217,56 @@
             .swapPriority(schema, schematron, schema.schematron[idx + 1]);
         }
       };
-      $scope.createSchematronGroup = function() {
-        var name, groups, i, newGroup;
-        name = $translate('NEW');
+      $scope.createSchematronGroup = function(newGroup) {
+        if (!newGroup) {
+          newGroup = {
+            id: {
+              name: $translate('NEW'),
+              schematronid: $scope.selection.schematron.id
+            },
+            requirement: $scope.requirements[0]
+          };
+        }
+        var name, groups, i = -1;
+        name = newGroup.id.name;
         groups = $scope.schematronGroups;
         if (!groups) {
           groups = [];
           $scope.schematronGroups = groups;
         }
 
-        var isNameTaken = function() {
+        var isNameTaken = function(name) {
           var j, group;
           for (j = 0; j < groups.length; j++) {
             group = groups[j];
-            if (group.id.name === name) {
+            if (group.id.name === (name)) {
               return true;
             }
           }
           return false;
         };
-        i = 1;
-        while (isNameTaken()) {
-          i++;
-          name = $translate('NEW') + i;
+        if (isNameTaken(name)) {
+          i = 1;
+          while (isNameTaken(name + i)) {
+            i++;
+          }
+          newGroup.id.name = name + i;
         }
-        newGroup = {
-          id: {
-            name: name,
-            schematronid: $scope.selection.schematron.id
-          },
-          requirement: $scope.requirements[0]
-        };
+
         gnSchematronAdminService.group.add(newGroup, groups, function(group) {
           $scope.selection.group = group;
           updateGroupCount(group, 1);
+          var i, criteria = group.criteria;
+          group.criteria = [];
+          for (i = 0; i < criteria.length; i++) {
+            var template = angular.copy(criteria[i]);
+            gnSchematronAdminService.criteria.add(criteria[i],
+                group.criteria[i], group);
+          }
         });
+      };
+      $scope.duplicateSchematronGroup = function() {
+        $scope.createSchematronGroup(angular.copy($scope.selection.group));
       };
       gnSchematronAdminService.criteriaTypes.list(function(data) {
         $scope.schematrons = data.schemas;
@@ -236,22 +275,27 @@
         if ($routeParams.schemaName) {
           var findSchema, findSchematron, schema, schematron;
           findSchema = function(schemaName) {
-            var i, schemaDef;
-            for (i = 0; i < $scope.schematrons.length; i++) {
-              schemaDef = $scope.schematrons[i];
-              if (schemaDef.name === schemaName) {
-                return schemaDef;
+            var key, schemaDef;
+            for (key in $scope.schematrons) {
+              if ($scope.schematrons.hasOwnProperty(key)) {
+                schemaDef = $scope.schematrons[key];
+                if (schemaDef.name === schemaName) {
+                  return schemaDef;
+                }
               }
             }
             return undefined;
           };
+
           findSchematron = function(schemaDef, schematronId) {
-            var i, schematron;
+            var key, schematron;
             if (schematronId) {
-              for (i = 0; i < schemaDef.schematron.length; i++) {
-                schematron = schemaDef.schematron[i];
-                if (schematronId === schematron.id) {
-                  return schematron;
+              for (key in schemaDef.schematron) {
+                if (schemaDef.schematron.hasOwnProperty(key)) {
+                  schematron = schemaDef.schematron[key];
+                  if (schematronId === schematron.id) {
+                    return schematron;
+                  }
                 }
               }
             }

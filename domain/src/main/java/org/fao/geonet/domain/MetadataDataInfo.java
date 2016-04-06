@@ -1,7 +1,35 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.domain;
 
-import javax.persistence.*;
 import java.io.Serializable;
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.AttributeOverride;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.Transient;
 
 /**
  * Encapsulates the metadata about a metadata document. (title, rating, schema etc...) This is a JPA Embeddable object that is embedded
@@ -21,9 +49,10 @@ public class MetadataDataInfo implements Serializable {
     private char _template = Constants.YN_FALSE;
     private String _root;
     private String _doctype;
-    private Integer _displayOrder;
-    private int _rating;
-    private int _popularity;
+    private String _extra;
+    private Integer _displayOrder = 0;
+    private int _rating = 0;
+    private int _popularity = 0;
 
     /**
      * Get title of metadata.
@@ -44,6 +73,33 @@ public class MetadataDataInfo implements Serializable {
      */
     public MetadataDataInfo setTitle(String title) {
         this._title = title;
+        return this;
+    }
+
+    /**
+     * Get the "extra" data associates with the metadata.  This is situation specific for example it might provide extra
+     * parameters for searching for metadata.
+     *
+     * This data is normally used for custom geonetwork applications which
+     * need this data for some application specific task.
+     */
+    @Column
+    public String getExtra() {
+        return _extra;
+    }
+
+    /**
+     * Set the "extra" data associates with the metadata.  This is situation specific for example it might provide extra
+     * parameters for searching for metadata.
+     *
+     * This data is normally used for custom geonetwork applications which
+     * need this data for some application specific task.
+     *
+     * @param extra new value.
+     * @return this data info object
+     */
+    public MetadataDataInfo setExtra(String extra) {
+        this._extra = extra;
         return this;
     }
 

@@ -1,11 +1,33 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.services.region;
 
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import jeeves.JeevesCacheManager;
 import jeeves.server.context.ServiceContext;
-import org.fao.geonet.GeonetContext;
-import org.fao.geonet.constants.Geonet;
+import org.fao.geonet.kernel.KeywordBean;
 import org.fao.geonet.kernel.Thesaurus;
 import org.fao.geonet.kernel.ThesaurusManager;
 import org.fao.geonet.kernel.rdf.QueryBuilder;
@@ -18,8 +40,12 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.openrdf.model.Value;
 import org.openrdf.sesame.query.QueryResultsTable;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
+import java.util.WeakHashMap;
 import java.util.concurrent.Callable;
 
 public class ThesaurusBasedRegionsDAO extends RegionsDAO {
@@ -55,8 +81,7 @@ public class ThesaurusBasedRegionsDAO extends RegionsDAO {
     }
 
     private synchronized Thesaurus getThesaurus(ServiceContext context) throws Exception {
-        GeonetContext gc = (GeonetContext) context.getHandlerContext(Geonet.CONTEXT_NAME);
-        ThesaurusManager th = gc.getBean(ThesaurusManager.class);
+        ThesaurusManager th = context.getBean(ThesaurusManager.class);
         Thesaurus regions = th.getThesaurusByName(thesaurusName);
         if(regions != null) {
             return regions;
@@ -84,7 +109,7 @@ public class ThesaurusBasedRegionsDAO extends RegionsDAO {
         return geometry;
     }
 
-	@Override
+    @Override
 	public Collection<String> getRegionCategoryIds(final ServiceContext context) throws Exception{
 	    return JeevesCacheManager.findInTenSecondCache(CATEGORY_ID_CACHE_KEY, new Callable<Collection<String>>(){
 
@@ -104,4 +129,20 @@ public class ThesaurusBasedRegionsDAO extends RegionsDAO {
 	    });
 	}
 
+    public java.util.List<KeywordBean> getRegionTopConcepts(final ServiceContext context) throws Exception{
+        return JeevesCacheManager.findInTenSecondCache(CATEGORY_ID_CACHE_KEY + context.getLanguage(),
+            new Callable<java.util.List<KeywordBean>>(){
+
+                @Override
+                public java.util.List<KeywordBean> call() throws Exception {
+                    Thesaurus thesaurus = getThesaurus(context);
+                    if (thesaurus != null) {
+                        return thesaurus.getTopConcepts(context.getLanguage());
+                    } else {
+                        return null;
+                    }
+                }
+
+            });
+    }
 }

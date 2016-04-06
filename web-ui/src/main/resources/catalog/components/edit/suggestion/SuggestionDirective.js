@@ -1,3 +1,26 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 (function() {
   goog.provide('gn_suggestion_directive');
 
@@ -8,53 +31,67 @@
    * - gnSuggestionList
    */
   angular.module('gn_suggestion_directive', [])
-  .directive('gnSuggestionList', ['gnSuggestion', 'gnCurrentEdit',
-        function(gnSuggestion, gnCurrentEdit) {
-          return {
-            restrict: 'A',
-            templateUrl: '../../catalog/components/edit/suggestion/' +
-                'partials/list.html',
-            scope: {},
-            link: function(scope, element, attrs) {
-              scope.gnSuggestion = gnSuggestion;
-              scope.gnCurrentEdit = gnCurrentEdit;
-              scope.suggestions = [];
-              scope.loading = false;
+    .directive('gnSuggestionList',
+      ['gnSuggestion', 'gnCurrentEdit', '$rootScope',
+        '$translate', '$interpolate',
+       function(gnSuggestion, gnCurrentEdit, $rootScope,
+                $translate, $interpolate) {
+         return {
+           restrict: 'A',
+           templateUrl: '../../catalog/components/edit/suggestion/' +
+           'partials/list.html',
+           scope: {},
+           link: function(scope, element, attrs) {
+             scope.gnSuggestion = gnSuggestion;
+             scope.gnCurrentEdit = gnCurrentEdit;
+             scope.suggestions = [];
+             scope.loading = false;
 
-              scope.load = function() {
-                scope.loading = true;
-                scope.suggestions = [];
-                gnSuggestion.load(scope.$parent.lang || 'eng').
-                    success(function(data) {
-                      scope.loading = false;
-                      if (data && !angular.isString(data)) {
-                        scope.suggestions = data;
-                      }
-                      else {
-                        scope.suggestions = [];
-                      }
-                    });
-              };
+             scope.load = function() {
+               scope.loading = true;
+               scope.suggestions = [];
+               gnSuggestion.load(scope.$parent.lang || 'eng').
+               success(function(data) {
+                 scope.loading = false;
+                 if (data && !angular.isString(data)) {
+                   scope.suggestions = data;
+                   angular.forEach(scope.suggestions, function(sugg) {
+                     var value = sugg.name['#text'] || sugg.name;
+                     sugg.name = $interpolate(value)(scope.$parent);
+                   });
+                 }
+                 else {
+                   scope.suggestions = [];
+                 }
+               }).error(function(error) {
+                 scope.loading = false;
+                 $rootScope.$broadcast('StatusUpdated', {
+                   title: $translate('suggestionListError'),
+                   error: error,
+                   timeout: 0,
+                   type: 'danger'});
+               });
+             };
 
-              // Reload suggestions list when a directive requires it
-              scope.$watch('gnSuggestion.reload', function() {
-                if (scope.gnSuggestion.reload) {
-                  scope.load();
-                  scope.gnSuggestion.reload = false;
-                }
-              });
+             // Reload suggestions list when a directive requires it
+             scope.$watch('gnSuggestion.reload', function() {
+               if (scope.gnSuggestion.reload) {
+                 scope.load();
+                 scope.gnSuggestion.reload = false;
+               }
+             });
 
-              // When saving is done, refresh validation report
-              // scope.$watch('gnCurrentEdit.saving', function(newValue) {
-              //   if (newValue === false) {
-              //     scope.load();
-              //   }
-              // });
-            }
-          };
-        }])
-  .directive('gnRunSuggestion', ['gnSuggestion',
-        function(gnSuggestion) {
+             // When saving is done, refresh validation report
+             // scope.$watch('gnCurrentEdit.saving', function(newValue) {
+             //   if (newValue === false) {
+             //     scope.load();
+             //   }
+             // });
+           }
+         };
+       }])
+    .directive('gnRunSuggestion', ['gnSuggestion', '$interpolate',
+        function(gnSuggestion, $interpolate) {
           return {
             restrict: 'A',
             templateUrl: '../../catalog/components/edit/suggestion/' +
@@ -66,16 +103,21 @@
               // Indicate if one process is complete
               scope.processed = false;
               /**
-               * Init form parameters.
-               * This function is registered to be called on each
-               * suggestion click in the suggestions list.
-               */
+             * Init form parameters.
+             * This function is registered to be called on each
+             * suggestion click in the suggestions list.
+             */
               var initParams = function() {
                 scope.params = {};
                 scope.currentSuggestion = gnSuggestion.getCurrent();
                 var p = scope.currentSuggestion.params;
                 for (key in p) {
-                  scope.params[key] = p[key].defaultValue;
+                  if (p[key].type == 'expression') {
+                    scope.params[key] =
+                        $interpolate(p[key].defaultValue)(scope);
+                  } else {
+                    scope.params[key] = p[key].defaultValue;
+                  }
                 }
               };
 
@@ -86,6 +128,9 @@
                     scope.params).then(function() {
                   scope.processing = false;
                   scope.processed = true;
+                  if (angular.isDefined(attrs['id'])) {
+                    $('#' + attrs['id'] + '-popup').modal('hide');
+                  }
                 });
               };
               gnSuggestion.register(initParams);

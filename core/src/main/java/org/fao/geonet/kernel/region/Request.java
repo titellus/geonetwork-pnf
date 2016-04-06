@@ -1,5 +1,29 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.kernel.region;
 
+import com.google.common.base.Optional;
 import org.jdom.Element;
 
 import java.util.Collection;
@@ -69,7 +93,7 @@ public abstract class Request {
      */
     public Element xmlResult() throws Exception {
         Collection<Region> regions = execute();
-        Element result = new Element(REGIONS_EL);
+        Element result = new Element(REGIONS_EL).setAttribute("class", "array");
         result.setAttribute(COUNT_ATT, Integer.toString(regions.size()));
         for (Region region : regions) {
             result.addContent(region.toElement());
@@ -78,4 +102,35 @@ public abstract class Request {
     }
 
 
+    /**
+     * Given the request information attempt to determine the last modified value.
+     *
+     * This should be an efficient operation if the operation takes too long to determine (for example loading many regions and
+     * determining the last modified of all of them) then {@link Long#MAX_VALUE} should be returned.  This will mean that the
+     * lastModified check will be skipped and the response will be returned to the client each time.
+     *
+     * {@link Long#MAX_VALUE} can also be returned if it is too difficult (implementation wise or otherwise)
+     *
+     * If the id or category id does not apply then Optional.absent() should be returned since this should not affect the last modified
+     * score.  This can be used as a kind of "applicable"
+     *
+     * Examples:
+     * <ul>
+     *    <li>
+     *        If the request is a category or a specific region ID it can be easily calculated what the last modified date was.
+     *    </li>
+     *    <li>
+     *        The last modified date is known for the entire data set then it can be easily calculated for any request
+     *    </li>
+     *    <li>
+     *        If each category could have a different last modified then perhaps only id and category requests can have a last modified
+     *        or the most recent last modified of all categories could be the taken
+     *    </li>
+     * </ul>
+     * @return Optional.absent() if the search parameters are not applicable to this Region implementation,
+     *         {@link Long#MAX_VALUE} if the value cannot be accurately calculated for the parameters set on the search object
+     *         otherwise the last modified value of the last modified region that would be in the response if request is executed.
+     *
+     */
+    public abstract Optional<Long> getLastModified() throws Exception;
 }

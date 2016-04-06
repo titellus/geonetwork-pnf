@@ -1,3 +1,26 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 (function() {
   goog.provide('gn_metadata_manager_service');
 
@@ -19,12 +42,11 @@
        '$translate',
        '$compile',
        'gnUrlUtils',
-       'gnNamespaces',
        'gnXmlTemplates',
        'gnHttp',
        'gnCurrentEdit',
        function($q, $http, $translate, $compile,
-               gnUrlUtils, gnNamespaces, gnXmlTemplates,
+               gnUrlUtils, gnXmlTemplates,
                gnHttp, gnCurrentEdit) {
 
          /**
@@ -65,7 +87,28 @@
              }
            }
          };
+         // When adding a new element, the down control
+         // of the previous element must be enabled and
+         // the up control enabled only if the previous
+         // element is not on top.
+         var checkMoveControls = function(element) {
+           var previousElement = element.prev();
+           if (previousElement !== undefined) {
+             var findExp = 'div.gn-move';
+             var previousElementCtrl = $(previousElement
+               .find(findExp).get(0)).children();
 
+             // Up control is enabled if the previous element is
+             // not on top.
+             var upCtrl = previousElementCtrl.get(0);
+             var isTop = isFirstElementOfItsKind(previousElement.get(0));
+             $(upCtrl).toggleClass('invisible', isTop);
+
+             // Down control is on because we have a new element below.
+             var downCtrl = previousElementCtrl.get(1);
+             $(downCtrl).removeClass('invisible');
+           }
+         };
          var setStatus = function(status) {
            gnCurrentEdit.savedStatus = $translate(status.msg);
            gnCurrentEdit.savedTime = moment();
@@ -100,6 +143,7 @@
                }
              }
 
+             gnCurrentEdit.working = true;
              $http.post(
              refreshForm ? 'md.edit.save' : 'md.edit.saveonly',
              $(gnCurrentEdit.formId).serialize(),
@@ -115,12 +159,13 @@
                 if (!silent) {
                   setStatus({msg: 'allChangesSaved', saving: false});
                 }
-
+                gnCurrentEdit.working = false;
                 defer.resolve(snippet);
               }).error(function(error) {
                 if (!silent) {
                   setStatus({msg: 'saveMetadataError', saving: false});
                 }
+                gnCurrentEdit.working = false;
                 defer.reject(error);
               });
              return defer.promise;
@@ -210,18 +255,6 @@
              $(gnCurrentEdit.formId).
              find('input[id="version"]').val(version);
            },
-           assignGroup: function(groupId) {
-             var defer = $q.defer();
-             $http.get('md.group.update?id=' + gnCurrentEdit.id +
-             '&groupid=' + groupId)
-              .success(function(data) {
-               defer.resolve(data);
-             })
-              .error(function(data) {
-               defer.reject(data);
-             });
-             return defer.promise;
-           },
            /**
            * Called after the edit form has been loaded.
            * Fill gnCurrentEdit all the info of the current
@@ -243,10 +276,12 @@
                uuid: getInputValue('uuid'),
                schema: getInputValue('schema'),
                version: getInputValue('version'),
+               tab: getInputValue('currTab'),
                geoPublisherConfig:
                angular.fromJson(getInputValue('geoPublisherConfig')),
                extent:
                angular.fromJson(getInputValue('extent')),
+               isMinor: getInputValue('minor') === 'true',
                layerConfig:
                angular.fromJson(getInputValue('layerConfig')),
                saving: false
@@ -275,30 +310,6 @@
              //                  &child=geonet:attribute
 
              var attributeAction = attribute ? '&child=geonet:attribute' : '';
-
-
-             // When adding a new element, the down control
-             // of the previous element must be enabled and
-             // the up control enabled only if the previous
-             // element is not on top.
-             var checkMoveControls = function(element) {
-               var previousElement = element.prev();
-               if (previousElement !== undefined) {
-                 var findExp = 'div.gn-move';
-                 var previousElementCtrl = $(previousElement
-                  .find(findExp).get(0)).children();
-
-                 // Up control is enabled if the previous element is
-                 // not on top.
-                 var upCtrl = previousElementCtrl.get(0);
-                 var isTop = isFirstElementOfItsKind(previousElement.get(0));
-                 $(upCtrl).toggleClass('invisible', isTop);
-
-                 // Down control is on because we have a new element below.
-                 var downCtrl = previousElementCtrl.get(1);
-                 $(downCtrl).removeClass('invisible');
-               }
-             };
 
              var defer = $q.defer();
              $http.get(this.buildEditUrlPrefix('md.element.add') +
@@ -346,7 +357,15 @@
                var target = $('#gn-el-' + insertRef);
                var snippet = $(data);
 
-               target[position || 'before'](snippet);
+               if (target.hasClass('gn-add-field')) {
+                 target.addClass('gn-extra-field');
+               }
+               snippet.css('display', 'none');   // Hide
+               target[position || 'before'](snippet); // Insert
+               snippet.slideDown(duration, function() {});   // Slide
+
+               // Adapt the move element
+               checkMoveControls(snippet);
 
                $compile(snippet)(gnCurrentEdit.formScope);
                defer.resolve(snippet);
@@ -494,19 +513,13 @@
              location.href = 'catalog.edit?#/metadata/' +
              md['geonet:info'].id;
            },
-           getRecord: function(id) {
+           getRecord: function(uuid) {
              var defer = $q.defer();
-             // TODO : replace to use new services
-             var url = gnUrlUtils.append('xml.metadata.get',
-             gnUrlUtils.toKeyValue({
-               id: id
-             })
-             );
-             $http.get(url).
-             success(function(data, status) {
+             $http.get('../api/records/' + uuid).
+             success(function(data) {
                defer.resolve(data);
              }).
-             error(function(data, status) {
+             error(function(data) {
                //                TODO handle error
                //                defer.reject(error);
              });

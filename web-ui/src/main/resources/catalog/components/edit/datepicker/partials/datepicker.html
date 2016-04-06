@@ -1,4 +1,5 @@
-<div class="form-group">
+<div class="form-group gn-field"
+     data-ng-class="{'has-error': !isValidDate, 'gn-required': required}">
   <label class="control-label col-sm-2" data-ng-if="label">{{label}}</label>
   <div data-ng-class="label ? 'col-sm-9' : 'col-sm-12'">
     <!-- The hidden field with the value. -->
@@ -6,7 +7,9 @@
            name="{{elementRef}}" value="{{xmlSnippet}}"/>
 
 
-    <div class="input-group gn-date-picker" data-ng-show="dateTypeSupported === true">
+    <div class="input-group gn-date-picker"
+         data-ng-class="{'gn-time-with-ind-position': withIndeterminatePosition}"
+         data-ng-show="dateTypeSupported === true">
       <div class="input-group gn-indeterminate-position"
           data-ng-show="withIndeterminatePosition"
           data-schema-info-combo="codelist"
@@ -21,10 +24,12 @@
       <input type="month" class="form-control"
              data-ng-model="month"
              data-ng-show="mode === 'month'"/>
-      <input type="date" class="form-control gn-date"
+      <input type="date" class="form-control"
              data-ng-model="date"
+             data-ng-class="hideTime == 'true' ? 'gn-notime' : ''"
              data-ng-show="mode === ''"/>
-      <input type="time" class="form-control gn-date"
+      <input type="time" class="form-control"
+             data-ng-class="hideTime == 'true' ? 'hidden' : ''"
              data-ng-model="time"
              data-ng-show="mode === ''"/>
       <div class="input-group-btn">
@@ -51,8 +56,9 @@
            data-allow-blank=""
            lang="lang"></div>
       <input type="text"
-        class="form-control"
-        data-ng-model="dateInput">
+             placeholder="YYYY-MM-DDTHH:mm:ss"
+             class="form-control"
+             data-ng-model="dateInput"/>
       <div class="input-group-btn">
         <button type="button" class="btn btn-default dropdown-toggle"
                 data-toggle="dropdown">

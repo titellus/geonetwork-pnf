@@ -1,3 +1,26 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.kernel.schema;
 
 import org.fao.geonet.domain.Pair;
@@ -8,8 +31,10 @@ import org.jdom.Namespace;
 import org.jdom.xpath.XPath;
 import org.junit.Test;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,35 +51,34 @@ public class TestIso19139SchematronDefinition extends AbstractSchematronTest {
     @SuppressWarnings("unchecked")
     @Test
     public void testAllSchematrons() throws Exception {
-        for (File file : new File(SCHEMA_PLUGINS, "iso19139/schematron").listFiles()) {
-            if (!file.getName().endsWith(".sch")) {
-                continue;
-            }
+        try (DirectoryStream<Path> schematronFiles = Files.newDirectoryStream(getSchematronDir("iso19139"), "*.sch")) {
+            for (Path schematronFile : schematronFiles) {
+                final Pair<Element, Path> compiledSchematron = compileSchematron(schematronFile);
+                Element schematronDefinition = compiledSchematron.one();
+                Path schematronXsl = compiledSchematron.two();
 
-            final Pair<Element, File> compiledSchematron = compileSchematron(file);
-            Element schematronDefinition = compiledSchematron.one();
-            File schematronXsl = compiledSchematron.two();
+                final Element validMetadata = loadValidMetadata();
 
-            final Element validMetadata = loadValidMetadata();
+                Element results = Xml.transform(validMetadata, schematronXsl, params);
+                assertEquals(schematronFile.getFileName().toString(), 0, countFailures(results));
 
-            Element results = Xml.transform(validMetadata, schematronXsl.getPath(), params);
-            assertEquals(file.getName(), 0, countFailures(results));
+                final List<Element> declaredPattern = schematronDefinition.getChildren("pattern", SCH_NAMESPACE);
+                final List<Element> xsltPattern = (List<Element>) Xml.selectNodes(results, "svrl:active-pattern", NAMESPACES);
+                assertEquals(declaredPattern.size(), xsltPattern.size());
 
-            final List<Element> declaredPattern = schematronDefinition.getChildren("pattern", SCH_NAMESPACE);
-            final List<Element> xsltPattern = (List<Element>) Xml.selectNodes(results, "svrl:active-pattern", NAMESPACES);
-            assertEquals(declaredPattern.size(), xsltPattern.size());
+                for (Element pattern : declaredPattern) {
+                    checkPattern(schematronFile, validMetadata, pattern);
+                }
 
-            for (Element pattern : declaredPattern) {
-                checkPattern(file, validMetadata, pattern);
             }
         }
     }
 
     @SuppressWarnings("unchecked")
-    private void checkPattern(File file, Element validMetadata, Element pattern) throws JDOMException {
+    private void checkPattern(Path file, Element validMetadata, Element pattern) throws JDOMException {
         final List<Element> declaredRules = pattern.getChildren("rule", SCH_NAMESPACE);
 
-        Map<Element, List<Element>> xml = new IdentityHashMap<Element, List<Element>>();
+        Map<Element, List<Element>> xml = new IdentityHashMap<>();
 
         for (Element declaredRule : declaredRules) {
             String context = declaredRule.getAttributeValue("context");
@@ -80,11 +104,11 @@ public class TestIso19139SchematronDefinition extends AbstractSchematronTest {
         }
     }
 
-    private void throwDuplicateContextRule(File file, String titleOfRule, Map.Entry<Element, List<Element>> previouslyLoadedNodes) {
+    private void throwDuplicateContextRule(Path file, String titleOfRule, Map.Entry<Element, List<Element>> previouslyLoadedNodes) {
         final String ruleTitle = createRuleTitle(previouslyLoadedNodes.getKey());
 
         String errorDescription = "A problem was found with the rules in the schematron :'" +
-                                  file.getPath().substring(file.getParent().length() + 1) + "' \n\n";
+                                  file.getFileName() + "' \n\n";
 
         String fixExplanation =
                 "Each rule in a pattern must select different nodes in the metadata because,\n" +

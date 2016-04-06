@@ -34,7 +34,9 @@ import org.fao.geonet.kernel.setting.SettingManager;
 import org.fao.geonet.services.NotInReadOnlyModeService;
 import org.jdom.Element;
 
+import java.nio.file.Path;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Accepts CSW Publication operations.
@@ -51,7 +53,7 @@ public class CswPublicationDispatcher extends NotInReadOnlyModeService {
      * @throws Exception
      */
     @Override
-	public void init(String appPath, ServiceConfig config) throws Exception {
+	public void init(Path appPath, ServiceConfig config) throws Exception {
         super.init(appPath, config);
 		cswServiceSpecificContraint = config.getValue(Geonet.Elem.FILTER);
 	}
@@ -76,7 +78,14 @@ public class CswPublicationDispatcher extends NotInReadOnlyModeService {
         String operation;
         // KVP encoding
         if(params.getName().equals("request")) {
-            operation = params.getChildText("request");
+            Map<String, String> hm = CatalogDispatcher.extractParams(params);
+            operation = hm.get("request");
+            if (operation == null) {
+                    Element info = new Element("info")
+                                    .setText("No 'request' parameter found");
+                    response.addContent(info);
+                    return response;
+            }
         }
         // SOAP encoding
         else if(params.getName().equals("Envelope")) {
@@ -91,10 +100,11 @@ public class CswPublicationDispatcher extends NotInReadOnlyModeService {
         else {
             operation = params.getName();
         }
-        System.out.println("CSW operation: " + operation);
 
-        if(!operation.equals("Harvest") && !operation.equals("Transaction")) {
-            System.out.println("Not a CSW Publication operation: " + operation);
+        if (operation == null) {
+            Element info  = new Element("info").setText("Request parameter is not defined.");
+            response.addContent(info);
+        } else if(!operation.equals("Harvest") && !operation.equals("Transaction")) {
             Element info  = new Element("info").setText("Not a CSW Publication operation: " + operation + ". Did you mean to use the CSW Discovery service? Use service name /csw");
 			response.addContent(info);
         }

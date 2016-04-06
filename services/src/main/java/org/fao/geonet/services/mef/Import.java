@@ -23,27 +23,41 @@
 
 package org.fao.geonet.services.mef;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import jeeves.constants.Jeeves;
 import jeeves.server.ServiceConfig;
 import jeeves.server.context.ServiceContext;
-import org.fao.geonet.utils.IO;
+import org.apache.lucene.document.Document;
+import org.apache.lucene.index.Term;
+import org.apache.lucene.search.BooleanClause;
+import org.apache.lucene.search.BooleanQuery;
+import org.apache.lucene.search.IndexSearcher;
+import org.apache.lucene.search.ScoreDoc;
+import org.apache.lucene.search.TermQuery;
+import org.apache.lucene.search.TopDocs;
 import org.fao.geonet.Util;
 import org.fao.geonet.constants.Geonet;
 import org.fao.geonet.constants.Params;
 import org.fao.geonet.kernel.mef.MEFLib;
+import org.fao.geonet.kernel.search.IndexAndTaxonomy;
+import org.fao.geonet.kernel.search.SearchManager;
 import org.fao.geonet.services.NotInReadOnlyModeService;
+import org.fao.geonet.utils.IO;
 import org.jdom.Element;
 
-import java.io.File;
+import java.nio.file.Path;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Import MEF file.
- * 
+ *
  */
 public class Import extends NotInReadOnlyModeService {
-	private String stylePath;
+	private Path stylePath;
+    private static final Set<String> UUID_FIELD_LOADER = Sets.newHashSet(Geonet.IndexFieldNames.UUID);
 
     /**
      *
@@ -52,15 +66,15 @@ public class Import extends NotInReadOnlyModeService {
      * @throws Exception
      */
     @Override
-	public void init(String appPath, ServiceConfig params) throws Exception {
+	public void init(Path appPath, ServiceConfig params) throws Exception {
         super.init(appPath, params);
-		this.stylePath = appPath + Geonet.Path.IMPORT_STYLESHEETS;
+		this.stylePath = appPath.resolve(Geonet.Path.IMPORT_STYLESHEETS);
 	}
 
 	/**
 	 * Service to import MEF File.
-	 * 
-	 * 
+	 *
+	 *
 	 * @param params
 	 *            List of parameters:
 	 *            <ul>
@@ -68,43 +82,61 @@ public class Import extends NotInReadOnlyModeService {
 	 *            <li>file_type: "single" for loading a single XML file, "mef" to
 	 *            load MEF file (version 1 or 2). "mef" is the default value.</li>
 	 *            </ul>
-	 * 
+	 *
 	 * @return List of imported ids.
-	 * 
+	 *
 	 */
     @Override
 	public Element serviceSpecificExec(Element params, ServiceContext context)
 			throws Exception {
 		String mefFile = Util.getParam(params, "mefFile");
         String fileType = Util.getParam(params, "file_type", "mef");
-		String uploadDir = context.getUploadDir();
+		Path uploadDir = context.getUploadDir();
 
-		File file = new File(uploadDir, mefFile);
+		Path file = uploadDir.resolve(mefFile);
 
 		List<String> id = MEFLib.doImport(params, context, file, stylePath);
         StringBuilder ids = new StringBuilder();
+        StringBuilder uuidString = new StringBuilder();
+
+        BooleanQuery query = new BooleanQuery();
 
         Iterator<String> iter = id.iterator();
         while (iter.hasNext()) {
-            String item = (String) iter.next();
+            String item = iter.next();
             ids.append(item).append(";");
-
+            query.add(new TermQuery(new Term(Geonet.IndexFieldNames.ID, item)), BooleanClause.Occur.SHOULD);
         }
 
-        IO.delete(file, false, Geonet.MEF);
+        List<String> uuids = Lists.newArrayList();
+        try (IndexAndTaxonomy idxTax = context.getBean(SearchManager.class).getNewIndexReader(null);){
+            IndexSearcher searcher = new IndexSearcher(idxTax.indexReader);
+            TopDocs search = searcher.search(query, 500);
 
-		Element result = null;
+            for (ScoreDoc scoreDoc : search.scoreDocs) {
+                Document doc = idxTax.indexReader.document(scoreDoc.doc, UUID_FIELD_LOADER);
+                String uuid = doc.get(Geonet.IndexFieldNames.UUID);
+                uuids.add(uuid);
+                uuidString.append(uuid).append(';');
+            }
+        }
+
+        IO.deleteFile(file, false, Geonet.MEF);
+
+		Element result;
 
         if (context.getService().equals("mef.import")) {
 
             result = new Element("id");
             result.setText(ids.toString());
+            result .setAttribute(Params.UUID, uuidString.toString());
 
         } else {
 
             result = new Element(Jeeves.Elem.RESPONSE);
             if ((fileType.equals("single") && (id.size() == 1))) {
                 result.addContent(new Element(Params.ID).setText(id.get(0) +""));
+                result.addContent(new Element(Params.UUID).setText(uuids.get(0) +""));
             } else {
                 result.addContent(new Element("records").setText(id.size() +""));
 

@@ -23,38 +23,48 @@
 
 package org.fao.geonet.services.register;
 
+import java.io.File;
+import java.nio.file.Path;
+import java.sql.SQLException;
+
 import jeeves.constants.Jeeves;
 import jeeves.server.ServiceConfig;
 import jeeves.server.context.ServiceContext;
+
+import org.fao.geonet.GeonetContext;
 import org.fao.geonet.Util;
-import org.fao.geonet.domain.*;
+import org.fao.geonet.constants.Geonet;
+import org.fao.geonet.constants.Params;
+import org.fao.geonet.domain.Address;
+import org.fao.geonet.domain.Group;
+import org.fao.geonet.domain.Profile;
+import org.fao.geonet.domain.ReservedGroup;
+import org.fao.geonet.domain.User;
+import org.fao.geonet.domain.UserGroup;
+import org.fao.geonet.kernel.GeonetworkDataDirectory;
+import org.fao.geonet.kernel.setting.SettingInfo;
+import org.fao.geonet.kernel.setting.SettingManager;
 import org.fao.geonet.repository.GroupRepository;
 import org.fao.geonet.repository.UserGroupRepository;
 import org.fao.geonet.repository.UserRepository;
-import org.fao.geonet.utils.Xml;
-import org.fao.geonet.GeonetContext;
-import org.fao.geonet.constants.Geonet;
-import org.fao.geonet.constants.Params;
-import org.fao.geonet.kernel.setting.SettingInfo;
-import org.fao.geonet.kernel.setting.SettingManager;
 import org.fao.geonet.services.NotInReadOnlyModeService;
-import org.fao.geonet.util.PasswordUtil;
 import org.fao.geonet.util.MailUtil;
+import org.fao.geonet.util.PasswordUtil;
+import org.fao.geonet.utils.Xml;
 import org.jdom.Element;
-
-import java.io.File;
-import java.sql.SQLException;
-import java.util.Random;
+import org.springframework.security.crypto.keygen.KeyGenerators;
+import org.springframework.security.crypto.keygen.StringKeyGenerator;
 
 /**
  * Register user.
  */
+@Deprecated
 public class SelfRegister extends NotInReadOnlyModeService {
 
 	private static final String PROFILE_TEMPLATE = "profileTemplate";
 	private static final String PROFILE = "RegisteredUser";
 	private static String FS = File.separator;
-	private String stylePath;
+	private Path stylePath;
 	private static final String PASSWORD_EMAIL_XSLT = "registration-pwd-email.xsl";
 	private static final String PROFILE_EMAIL_XSLT = "registration-prof-email.xsl";
 
@@ -64,8 +74,7 @@ public class SelfRegister extends NotInReadOnlyModeService {
 	// ---
 	// --------------------------------------------------------------------------
 
-	public void init(String appPath, ServiceConfig params) throws Exception {
-		this.stylePath = appPath + Geonet.Path.XSLT_FOLDER + FS + "services" + FS + "account" + FS;
+	public void init(Path appPath, ServiceConfig params) throws Exception {
 	}
 
 	// --------------------------------------------------------------------------
@@ -76,6 +85,9 @@ public class SelfRegister extends NotInReadOnlyModeService {
 
 	public Element serviceSpecificExec(Element params, ServiceContext context)
 			throws Exception {
+
+        final GeonetworkDataDirectory dataDir = context.getBean(GeonetworkDataDirectory.class);
+        this.stylePath = dataDir.resolveWebResource(Geonet.Path.XSLT_FOLDER).resolve("services").resolve("account");
 
 		String surname = Util.getParam(params, Params.SURNAME);
 		String name = Util.getParam(params, Params.NAME);
@@ -105,6 +117,7 @@ public class SelfRegister extends NotInReadOnlyModeService {
         element.setAttribute(Params.SURNAME, surname);
         element.setAttribute(Params.NAME, name);
         element.setAttribute(Params.EMAIL, email);
+        element.setAttribute(Params.USERNAME, username);
 
         final UserRepository userRepository = context.getBean(UserRepository.class);
         if (userRepository.findOneByEmail(email) != null) {
@@ -119,7 +132,7 @@ public class SelfRegister extends NotInReadOnlyModeService {
                 .setKind(kind)
                 .setName(name)
                 .setOrganisation(organ)
-                .setProfile(Profile.findProfileIgnoreCase(profile))
+                .setProfile(Profile.RegisteredUser)
                 .setSurname(surname)
                 .setUsername(username);
         user.getSecurity().setPassword(passwordHash);
@@ -128,7 +141,9 @@ public class SelfRegister extends NotInReadOnlyModeService {
 
         userRepository.save(user);
 
-        UserGroup userGroup = new UserGroup().setUser(user).setGroup(group);
+        // The user is created as registereduser on the GUEST group, and not mapped on the specific optional
+        // profile. Then the catalogue administrator could manage the created user.
+        UserGroup userGroup = new UserGroup().setUser(user).setGroup(group).setProfile(Profile.RegisteredUser);
         context.getBean(UserGroupRepository.class).save(userGroup);
 		// Send email to user confirming registration
 
@@ -145,7 +160,7 @@ public class SelfRegister extends NotInReadOnlyModeService {
         return element.addContent(new Element("result").setText("errorProfileRequestFailed"));
       }
 
-    return element.setAttribute(Params.USERNAME, username);
+    return element;
 	}
 
 	/**
@@ -174,7 +189,7 @@ public class SelfRegister extends NotInReadOnlyModeService {
 	    root.addContent(new Element("password").setText(password));
 	    
 		String template = Util.getParam(params, Params.TEMPLATE, PASSWORD_EMAIL_XSLT);
-	    String emailXslt = stylePath + template;
+	    Path emailXslt = stylePath.resolve(template);
 	    Element elEmail = Xml.transform(root, emailXslt);
 	    
 		String email = Util.getParam(params, Params.EMAIL);
@@ -205,7 +220,7 @@ public class SelfRegister extends NotInReadOnlyModeService {
 	    root.addContent((Element)params.clone());
 	    
 		String profileTemplate = Util.getParam(params, PROFILE_TEMPLATE, PROFILE_EMAIL_XSLT);
-	    String emailXslt = stylePath + profileTemplate;
+	    Path emailXslt = stylePath.resolve(profileTemplate);
 	    Element elEmail = Xml.transform(root, emailXslt);
 	    
 	    String subject = elEmail.getChildText("subject");
@@ -234,28 +249,8 @@ public class SelfRegister extends NotInReadOnlyModeService {
 	 * Get initial password - a randomly generated string.
 	 */
 	String getInitPassword() {
-		Random random = new Random();
-		StringBuilder password = new StringBuilder();
-		char c = 'a';
-		for (int i = 0; i < 6; i++) {
-			int j = random.nextInt(10);
-			String rand;
-            if (j < 5) {
-				if (j < 3) {
-					rand = String.valueOf(
-							(char) (c + (int) (random.nextInt() * 26)))
-							.toUpperCase();
-				} else {
-					rand = String.valueOf(
-							(char) (c + (int) (random.nextInt() * 26)))
-							.toLowerCase();
-				}
-			} else {
-				rand = String.valueOf(random.nextInt(10));
-			}
-			password.append(rand);
-		}
-		return password.toString();
+		StringKeyGenerator generator = KeyGenerators.string();
+		return generator.generateKey().substring(0, 8);
 	}
 
 }

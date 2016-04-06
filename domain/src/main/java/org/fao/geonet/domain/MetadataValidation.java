@@ -1,7 +1,31 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.domain;
 
 import org.fao.geonet.entitylistener.MetadataValidationEntityListenerManager;
 
+import javax.annotation.Nonnull;
 import javax.persistence.*;
 
 /**
@@ -14,11 +38,12 @@ import javax.persistence.*;
 @Table(name = "Validation")
 @EntityListeners(MetadataValidationEntityListenerManager.class)
 public class MetadataValidation extends GeonetEntity {
-    private MetadataValidationId _id;
-    private MetadataValidationStatus _status;
-    private int _tested;
-    private int _failed;
-    private ISODate _validationDate;
+    private MetadataValidationId id;
+    private MetadataValidationStatus status;
+    private int numTests = 0;
+    private int numFailures = 0;
+    private ISODate validationDate = new ISODate();
+    private Boolean required = Boolean.TRUE;
 
     /**
      * Return the id object of this entity.
@@ -27,7 +52,7 @@ public class MetadataValidation extends GeonetEntity {
      */
     @EmbeddedId
     public MetadataValidationId getId() {
-        return _id;
+        return id;
     }
 
     /**
@@ -37,7 +62,7 @@ public class MetadataValidation extends GeonetEntity {
      * @return this entity object
      */
     public MetadataValidation setId(MetadataValidationId id) {
-        this._id = id;
+        this.id = id;
         return this;
     }
 
@@ -48,7 +73,7 @@ public class MetadataValidation extends GeonetEntity {
      */
     @Column(nullable = false)
     public MetadataValidationStatus getStatus() {
-        return _status;
+        return status;
     }
 
     /**
@@ -58,7 +83,7 @@ public class MetadataValidation extends GeonetEntity {
      * @return this entity object
      */
     public MetadataValidation setStatus(MetadataValidationStatus status) {
-        this._status = status;
+        this.status = status;
         return this;
     }
 
@@ -85,53 +110,13 @@ public class MetadataValidation extends GeonetEntity {
     }
 
     /**
-     * TODO DOC: The purpose for this is unknown as it is always 0 at the this class is created.
-     *
-     * @return
-     */
-    public int getTested() {
-        return _tested;
-    }
-
-    /**
-     * TODO DOC: The purpose for this is unknown as it is always 0 at the this class is created.
-     *
-     * @param tested
-     * @return this entity object
-     */
-    public MetadataValidation setTested(int tested) {
-        this._tested = tested;
-        return this;
-    }
-
-    /**
-     * TODO DOC: The purpose for this is unknown as it is always 0 at the this class is created.
-     *
-     * @return
-     */
-    public int getFailed() {
-        return _failed;
-    }
-
-    /**
-     * TODO DOC: The purpose for this is unknown as it is always 0 at the this class is created.
-     *
-     * @param failed
-     * @return this entity object
-     */
-    public MetadataValidation setFailed(int failed) {
-        this._failed = failed;
-        return this;
-    }
-
-    /**
      * The moment that the validation completed.
      *
      * @return The moment that the validation completed.
      */
     @AttributeOverride(name = "dateAndTime", column = @Column(name = "valDate", length = 30))
     public ISODate getValidationDate() {
-        return _validationDate;
+        return validationDate;
     }
 
     /**
@@ -139,8 +124,71 @@ public class MetadataValidation extends GeonetEntity {
      * @return this entity object
      */
     public MetadataValidation setValidationDate(ISODate validationDate) {
-        this._validationDate = validationDate;
+        this.validationDate = validationDate;
         return this;
 
+    }
+
+    public MetadataValidation setRequired(Boolean required) {
+        this.required = required;
+        return this;
+    }
+
+    /**
+     * Set if this type of validation is required for the metadata to be considered valid.  Some validation tests are informational
+     * only (see {@link org.fao.geonet.domain.Schematron}) if the test is informational only then required is false and it will not
+     * affect the metadata's overall validity.
+     */
+    @Column(nullable = true)
+    @Nonnull
+    public Boolean isRequired() {
+        return required == null ? Boolean.TRUE : required;
+    }
+
+    /**
+     * Get the number of tests executed.
+     */
+    @Column(name = "tested")
+    public int getNumTests() {
+        return numTests;
+    }
+
+    /**
+     * Set the number of tests executed
+     *
+     * @return this entity object
+     */
+    public MetadataValidation setNumTests(int numTests) {
+        this.numTests = numTests;
+        return this;
+    }
+
+    /**
+     * Get the number of assertion/test failures.
+     */
+    @Column(name = "failed")
+    public int getNumFailures() {
+        return numFailures;
+    }
+
+    /**
+     * Set the number of assertion/test failures.
+     *
+     * @return this entity object
+     */
+    public MetadataValidation setNumFailures(int numFailures) {
+        this.numFailures = numFailures;
+        return this;
+    }
+
+    @Override
+    public String toString() {
+        return "MetadataValidation{" + id +
+               ", status=" + status +
+               ", numTests=" + numTests +
+               ", numFailures=" + numFailures +
+               ", validationDate=" + validationDate +
+               ", required=" + required +
+               '}';
     }
 }

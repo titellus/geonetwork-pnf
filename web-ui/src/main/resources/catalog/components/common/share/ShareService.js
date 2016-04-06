@@ -1,3 +1,26 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 (function() {
   goog.provide('gn_share_service');
 
@@ -21,7 +44,7 @@
   /**
    * @ngdoc service
    * @kind function
-   * @name gn_share_service.service:gnShareService
+   * @name gn_share.service:gnShareService
    * @requires gnShareConstants
    * @requires $q
    * @requires $http
@@ -57,7 +80,7 @@
       return {
         /**
          * @ngdoc method
-         * @methodOf gn_share_service.service:gnShareService
+         * @methodOf gn_share.service:gnShareService
          * @name gnShareService#isAdminOrReviewer
          *
          * @description
@@ -77,7 +100,7 @@
 
         /**
          * @ngdoc method
-         * @methodOf gn_share_service.service:gnShareService
+         * @methodOf gn_share.service:gnShareService
          * @name gnShareService#loadPrivileges
          *
          * @description
@@ -91,7 +114,11 @@
          */
         loadPrivileges: function(metadataId, userProfile) {
           var defer = $q.defer();
-          $http.get('md.privileges@json?id=' + metadataId)
+          var url = angular.isDefined(metadataId) ?
+              'md.privileges?_content_type=json&id=' + metadataId :
+              'md.privileges.batch?_content_type=json';
+
+          $http.get(url)
             .success(function(data) {
                 var groups = data !== 'null' ? data.group : null;
                 if (data == null) {
@@ -163,7 +190,7 @@
 
         /**
          * @ngdoc method
-         * @methodOf gn_share_service.service:gnShareService
+         * @methodOf gn_share.service:gnShareService
          * @name gnShareService#savePrivileges
          *
          * @description
@@ -175,19 +202,34 @@
          *
          * @return {HttpPromise} Future object.
          */
-        savePrivileges: function(metadataId, groups) {
+        savePrivileges: function(metadataId, groups, user) {
           var defer = $q.defer();
-          var params = {
-            id: metadataId
-          };
+          var params = {};
+          var url;
+
+          if (angular.isDefined(metadataId)) {
+            url = 'md.privileges.update?_content_type=json';
+            params.id = metadataId;
+          }
+          else {
+            url = 'md.privileges.batch.update?_content_type=json';
+          }
           angular.forEach(groups, function(g) {
-            angular.forEach(g.privileges, function(p, key) {
-              if (p.value === true) {
-                params['_' + g.id + '_' + key] = 'on';
-              }
-            });
+            var allowed = (
+                $.inArray(g.id, gnShareConstants.internalGroups) !== -1 &&
+                user.isReviewerOrMore()) ||
+                ($.inArray(g.id, gnShareConstants.internalGroups) === -1);
+
+            if (allowed) {
+              angular.forEach(g.privileges, function(p, key) {
+                if (p.value === true) {
+                  params['_' + g.id + '_' + key] = 'on';
+                }
+              });
+            }
           });
-          $http.get('md.privileges.update@json', {params: params})
+          //TODO: fix service that crash with _content_type parameter
+          $http.get(url, {params: params})
             .success(function(data) {
                 defer.resolve(data);
               }).error(function(data) {

@@ -1,3 +1,26 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 (function() {
   goog.provide('gn_scroll_spy_directive');
 
@@ -49,8 +72,10 @@
           scope.spyElems = [];
           scope.isEnabled = true;
 
+          var previousLabel = '';
           var registerSpy = function() {
-            var id = $(this).attr('id'), currentDepth = $(this).parents(
+            var id = $(this).attr('id'),
+                currentDepth = $(this).parents(
                 'fieldset').length - 1 - rootElementDepth;
 
             if (currentDepth <= depth) {
@@ -86,8 +111,16 @@
                     return spy.id === '#' + parentFieldsetId;
                   });
 
-                  // Add the child
-                  parentSpy[0] && parentSpy[0].children.push(spy);
+                  // Only register section if not the same
+                  // label as the previous one. This may happen
+                  // a lot for service metadata record with numbers
+                  // of coupledResource or operatesOn elements.
+                  // Provide navigation to the first element only.
+                  if (previousLabel != spy.label) {
+                    // Add the child
+                    parentSpy[0] && parentSpy[0].children.push(spy);
+                    previousLabel = spy.label;
+                  }
                 }
               }
 

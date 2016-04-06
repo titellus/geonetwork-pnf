@@ -1,3 +1,26 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.kernel.search;
 
 import jeeves.server.context.ServiceContext;
@@ -13,12 +36,11 @@ import org.fao.geonet.kernel.setting.SettingManager;
 import org.fao.geonet.repository.SettingRepository;
 import org.fao.geonet.repository.Updater;
 import org.jdom.JDOMException;
+import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
 
-import javax.annotation.Nonnull;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URL;
@@ -26,9 +48,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import javax.annotation.Nonnull;
 
-import static org.junit.Assert.*;
-import static org.fao.geonet.kernel.setting.SettingInfo.SearchRequestLanguage.*;
+import static org.fao.geonet.kernel.setting.SettingInfo.SearchRequestLanguage.ONLY_DOC_LOCALE;
+import static org.fao.geonet.kernel.setting.SettingInfo.SearchRequestLanguage.ONLY_LOCALE;
+import static org.fao.geonet.kernel.setting.SettingInfo.SearchRequestLanguage.ONLY_UI_LOCALE;
+import static org.fao.geonet.kernel.setting.SettingInfo.SearchRequestLanguage.PREFER_LOCALE;
+import static org.fao.geonet.kernel.setting.SettingInfo.SearchRequestLanguage.PREFER_UI_LOCALE;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Test the order of search results with regards to language settings.
@@ -138,10 +167,17 @@ public abstract class AbstractLanguageSearchOrderIntegrationTest extends Abstrac
                     MetadataType.METADATA, ReservedGroup.intranet.getId(), Params.GENERATE_UUID);
         }
 
-        this._luceneSearcher = _searchManager.newSearcher(SearchManager.LUCENE, Geonet.File.SEARCH_LUCENE);
+        this._luceneSearcher = _searchManager.newSearcher(SearcherType.LUCENE, Geonet.File.SEARCH_LUCENE);
     }
 
     protected abstract String[] doSearch(String lang) throws Exception;
+
+    @After
+    public void tearDownResources() throws Exception {
+        if (this._luceneSearcher != null) {
+            this._luceneSearcher.close();
+        }
+    }
 
     @Test
     public void freTitleSearch_RequestLangNotSorted_AllLanguagesAllowed() throws Exception {

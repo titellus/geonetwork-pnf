@@ -1,11 +1,32 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.kernel.search.keyword;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
-
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import org.fao.geonet.kernel.AllThesaurus;
 import org.fao.geonet.kernel.KeywordBean;
 import org.fao.geonet.kernel.Thesaurus;
 import org.fao.geonet.kernel.ThesaurusFinder;
@@ -15,17 +36,32 @@ import org.openrdf.sesame.config.AccessDeniedException;
 import org.openrdf.sesame.query.MalformedQueryException;
 import org.openrdf.sesame.query.QueryEvaluationException;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
+import javax.annotation.Nullable;
+
+import static org.fao.geonet.kernel.AllThesaurus.ALL_THESAURUS_KEY;
+
 public class KeywordSearchParams {
 
     private final QueryBuilder<KeywordBean> queryBuilder;
     private final LinkedHashSet<String> thesauriNames;
     private final String thesauriDomainName;
+    private final Comparator<KeywordBean> comparator;
     private int maxResults;
-    public KeywordSearchParams(QueryBuilder<KeywordBean> query, Set<String> thesauriNames, String thesauriDomainName, int maxResults) {
+    public KeywordSearchParams(QueryBuilder<KeywordBean> query, Set<String> thesauriNames, String thesauriDomainName, int maxResults,
+                               Comparator<KeywordBean> comparator) {
         this.queryBuilder = query;
-        this.thesauriNames = new LinkedHashSet<String>(thesauriNames);
+        this.thesauriNames = new LinkedHashSet<>(thesauriNames);
         this.thesauriDomainName = thesauriDomainName;
         this.maxResults = maxResults;
+        this.comparator = comparator;
     }
     
     /**
@@ -36,6 +72,20 @@ public class KeywordSearchParams {
     public List<KeywordBean> search(ThesaurusFinder finder) throws IOException, MalformedQueryException, QueryEvaluationException, AccessDeniedException {
         if(thesauriNames.isEmpty()) {
             return executeAll(queryBuilder, finder);
+        } else if (thesauriNames.contains(ALL_THESAURUS_KEY) && finder.existsThesaurus(ALL_THESAURUS_KEY)) {
+            final Thesaurus allThesaurus = finder.getThesaurusByName(ALL_THESAURUS_KEY);
+            List<KeywordBean> resultsOriginalThesaurus = executeAll(queryBuilder, finder);
+            return Lists.transform(resultsOriginalThesaurus, new Function<KeywordBean, KeywordBean>() {
+                @Nullable
+                @Override
+                public KeywordBean apply(KeywordBean input) {
+                    if (input != null) {
+                        input.setUriCode(AllThesaurus.buildKeywordUri(input));
+                        input.setThesaurusInfo(allThesaurus);
+                    }
+                    return input;
+                }
+            });
         } else if(thesauriNames.size() == 1) {
             return executeOne(queryBuilder, finder);
         } else {
@@ -43,43 +93,103 @@ public class KeywordSearchParams {
         }
     }
     private List<KeywordBean> executeOne(QueryBuilder<KeywordBean> queryBuilder, ThesaurusFinder finder) throws IOException, MalformedQueryException, QueryEvaluationException, AccessDeniedException {
-        List<KeywordBean> results = new ArrayList<KeywordBean>();
+        List<KeywordBean> results = new ArrayList<>();
         int id = 0;
         String thesaurusName = thesauriNames.iterator().next();
         Thesaurus thesaurus = finder.getThesaurusByName(thesaurusName);
         Query<KeywordBean> query = queryBuilder.limit(maxResults-results.size()).build();
         if (thesaurus == null) {
-            throw new IllegalArgumentException("The thesaurus "+thesaurusName+" does not exist, there for the query cannot be excuted: '"+query+"'" );
+            throw new IllegalArgumentException("The thesaurus "+thesaurusName+" does not exist, there for the query cannot be executed: '"+query+"'" );
         }
         for (KeywordBean keywordBean : query.execute(thesaurus)) {
+            if (maxResults > -1 && results.size() >= maxResults) {
+                break;
+            }
             keywordBean.setId(id);
             results.add(keywordBean);
             id++;
         }
         return results;
     }
-    private List<KeywordBean> executeSpecific(QueryBuilder<KeywordBean> queryBuilder, ThesaurusFinder finder) throws IOException, MalformedQueryException, QueryEvaluationException, AccessDeniedException {
-        List<KeywordBean> results = new ArrayList<KeywordBean>();
-        int id = 0;
+    private List<KeywordBean> executeSpecific(QueryBuilder<KeywordBean> queryBuilder, final ThesaurusFinder finder)
+            throws IOException, MalformedQueryException, QueryEvaluationException, AccessDeniedException {
+        return executeAll(queryBuilder, new ThesaurusFinder() {
+            @Override
+            public boolean existsThesaurus(String name) {
+                return thesauriNames.contains(name) && finder.existsThesaurus(name);
+            }
 
+            @Override
+            public Thesaurus getThesaurusByName(String thesaurusName) {
+                if (thesauriNames.contains(thesaurusName)) {
+                    return finder.getThesaurusByName(thesaurusName);
+                }
+                return null;
+            }
+
+            @Override
+            public Thesaurus getThesaurusByConceptScheme(String conceptSchemeUri) {
+                return finder.getThesaurusByName(conceptSchemeUri);
+            }
+
+            @Override
+            public Map<String, Thesaurus> getThesauriMap() {
+                Map<String, Thesaurus> thesaurusMap = Maps.newHashMap();
+                for (String name : thesauriNames) {
+                    Thesaurus th = finder.getThesaurusByName(name);
+                    if (th != null) {
+                        thesaurusMap.put(name, th);
+                    }
+                }
+                return thesaurusMap;
+            }
+        });
+    }
+    private List<KeywordBean> executeAll(QueryBuilder<KeywordBean> queryBuilder, ThesaurusFinder finder) throws
+            IOException, MalformedQueryException, QueryEvaluationException, AccessDeniedException {
+
+        if (comparator != null) {
+            return executeAllSorted(queryBuilder, finder);
+        } else {
+            return executeAllUnsorted(queryBuilder, finder);
+        }
+    }
+
+    private List<KeywordBean> executeAllUnsorted(QueryBuilder<KeywordBean> queryBuilder, ThesaurusFinder finder) throws IOException,
+            MalformedQueryException, QueryEvaluationException, AccessDeniedException {
+        int id = 0;
+        List<KeywordBean> results = new ArrayList<>();
         for (Thesaurus thesaurus : finder.getThesauriMap().values()) {
-            Query<KeywordBean> query = queryBuilder.limit(maxResults-results.size()).build();
-            if(thesauriNames.contains(thesaurus.getKey())) {
+            if (thesaurus.getKey().equals(ALL_THESAURUS_KEY)) {
+                continue;
+            }
+            if (thesauriDomainName == null || thesauriDomainName.equals(thesaurus.getDname())) {
+                Query<KeywordBean> query = queryBuilder.limit(maxResults - results.size()).build();
                 for (KeywordBean keywordBean : query.execute(thesaurus)) {
+                    if (maxResults > -1 && results.size() >= maxResults) {
+                        break;
+                    }
                     keywordBean.setId(id);
                     results.add(keywordBean);
                     id++;
                 }
             }
         }
+
         return results;
     }
-    private List<KeywordBean> executeAll(QueryBuilder<KeywordBean> queryBuilder, ThesaurusFinder finder) throws IOException, MalformedQueryException, QueryEvaluationException, AccessDeniedException {
+
+    private List<KeywordBean> executeAllSorted(QueryBuilder<KeywordBean> queryBuilder, ThesaurusFinder finder) throws IOException,
+            MalformedQueryException, QueryEvaluationException, AccessDeniedException {
         int id = 0;
-        List<KeywordBean> results = new ArrayList<KeywordBean>();
+
+        TreeSet<KeywordBean> results = new TreeSet<>(this.comparator);
         for (Thesaurus thesaurus : finder.getThesauriMap().values()) {
+            if (thesaurus.getKey().equals(ALL_THESAURUS_KEY)) {
+                continue;
+            }
+            Query<KeywordBean> query = queryBuilder.build();
             if(thesauriDomainName==null || thesauriDomainName.equals(thesaurus.getDname())) {
-                Query<KeywordBean> query = queryBuilder.limit(maxResults-results.size()).build();
                 for (KeywordBean keywordBean : query.execute(thesaurus)) {
                     keywordBean.setId(id);
                     results.add(keywordBean);
@@ -88,7 +198,18 @@ public class KeywordSearchParams {
             }
         }
 
-        return results;
+        return TreeSetToList(results);
     }
-    
+
+    private ArrayList<KeywordBean> TreeSetToList(TreeSet<KeywordBean> results) {
+        ArrayList<KeywordBean> list = Lists.newArrayListWithCapacity(Math.min(maxResults, results.size()));
+        for (KeywordBean keywordBean : results) {
+            if (list.size() >= maxResults) {
+                break;
+            }
+            list.add(keywordBean);
+        }
+        return list;
+    }
+
 }

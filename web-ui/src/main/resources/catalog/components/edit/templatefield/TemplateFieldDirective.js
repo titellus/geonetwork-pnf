@@ -1,3 +1,26 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 (function() {
   goog.provide('gn_template_field_directive');
 
@@ -39,8 +62,8 @@
      * is displayed to the end user and the creation codelist value
      * is in the XML template for the field.
      */
-  module.directive('gnTemplateField', ['$http', '$rootScope',
-    function($http, $rootScope) {
+  module.directive('gnTemplateField', ['$http', '$rootScope', '$timeout',
+    function($http, $rootScope, $timeout) {
 
       return {
         restrict: 'A',
@@ -58,10 +81,9 @@
           var fields = scope.keys && scope.keys.split(separator);
           var values = scope.values && scope.values.split(separator);
 
-
           // Replace all occurence of {{fieldname}} by its value
           var generateSnippet = function() {
-            var xmlSnippet = xmlSnippetTemplate, updated = false;
+            var xmlSnippet = xmlSnippetTemplate, isOneFieldDefined = false;
 
             angular.forEach(fields, function(fieldName) {
               var field = $('#' + scope.id + '_' + fieldName);
@@ -71,39 +93,39 @@
               } else {
                 value = field.val() || '';
               }
+
               if (value !== '') {
                 xmlSnippet = xmlSnippet.replace(
                     '{{' + fieldName + '}}',
                     value.replace(/\&/g, '&amp;amp;')
                          .replace(/\"/g, '&quot;'));
-                updated = true;
+
+                // If one value is defined the field
+                // is defined
+                isOneFieldDefined = true;
+              } else {
+                xmlSnippet = xmlSnippet.replace(
+                    '{{' + fieldName + '}}',
+                    '');
               }
             });
 
             // Usually when a template field is link to a
             // gnTemplateFieldAddButton directive, the keys
             // is empty.
-            if (scope.keys === undefined) {
-              updated = true;
+            if (scope.keys === undefined || scope.keys === '') {
+              isOneFieldDefined = true;
             }
 
-            // Reset the snippet if no match were found TODO
-            // which means that no value is defined
-            element[0].innerHTML = '';
-            if (updated) {
+            // Reset the snippet if no match were found
+            // which means that no fields have values
+            if (isOneFieldDefined) {
               element[0].innerHTML = xmlSnippet;
+            } else {
+              element[0].innerHTML = '';
             }
           };
-
           var init = function() {
-            // Register change event on each fields to be
-            // replaced in the XML snippet.
-            angular.forEach(fields, function(value) {
-              $('#' + scope.id + '_' + value).change(function() {
-                generateSnippet();
-              });
-            });
-
             // Initialize all values
             angular.forEach(values, function(value, key) {
               var selector = '#' + scope.id + '_' + fields[key];
@@ -113,6 +135,15 @@
                 $(selector).val(value);
               }
             });
+
+            // Register change event on each fields to be
+            // replaced in the XML snippet.
+            angular.forEach(fields, function(value) {
+              $('#' + scope.id + '_' + value).change(function() {
+                generateSnippet();
+              });
+            });
+
 
             // If template element is not existing in the metadata
             var unsetCheckbox = $('#gn-template-unset-' + scope.notSetCheck);
@@ -133,8 +164,9 @@
               generateSnippet();
             }
           };
-
-          init();
+          $timeout(function() {
+            init();
+          });
         }
       };
     }]);

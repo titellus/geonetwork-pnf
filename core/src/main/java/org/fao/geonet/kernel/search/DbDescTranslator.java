@@ -23,12 +23,14 @@
 
 package org.fao.geonet.kernel.search;
 
-import org.fao.geonet.repository.MetadataCategoryRepository;
-import org.fao.geonet.utils.Log;
+import com.google.common.base.Optional;
+import org.fao.geonet.ApplicationContextHolder;
 import org.fao.geonet.constants.Geonet;
 import org.fao.geonet.domain.Localized;
+import org.fao.geonet.utils.Log;
 import org.jdom.JDOMException;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.io.IOException;
@@ -40,19 +42,18 @@ import java.lang.reflect.Method;
  *
  * @author jesse, francois
  */
-public class DbDescTranslator extends Translator {
+public class DbDescTranslator implements Translator {
 
     private static final long serialVersionUID = 1L;
 
-    private final transient ApplicationContext _applicationContext;
+    private ConfigurableApplicationContext _applicationContext;
     private final String _langCode;
     private Class<? extends JpaRepository> _repositoryClass;
     private final String _methodName;
     private final String _parameterType;
     private String _beanName;
 
-
-    public DbDescTranslator(ApplicationContext applicationContext, String langCode, String param)
+    public DbDescTranslator(ConfigurableApplicationContext applicationContext, String langCode, String param)
             throws IOException, JDOMException, ClassNotFoundException {
         String[] parts = param.split(":", 3);
         try {
@@ -70,16 +71,33 @@ public class DbDescTranslator extends Translator {
 
     public String translate(final String key) {
         try {
-            JpaRepository repository;
-            if (_repositoryClass != null) {
-                repository = _applicationContext.getBean(_repositoryClass);
-            } else {
-                repository = _applicationContext.getBean(_beanName, JpaRepository.class);
+            Localized entity = null;
+
+            if (this._applicationContext == null) {
+                _applicationContext = ApplicationContextHolder.get();
             }
-            final Class<?> repositoryClass = repository.getClass();
 
-            Localized entity = findEntity(key, repository, repositoryClass);
+            final TranslatorCache cache = this._applicationContext.getBean(TranslatorCache.class);
+            Optional<Localized> entityOptional = cache.get(key);
+            if (entityOptional != null) {
+                if (entityOptional.isPresent()) {
+                    entity = entityOptional.get();
+                } else {
+                    entity = null;
+                }
+            } else {
+                JpaRepository repository;
+                if (_repositoryClass != null) {
+                    repository = _applicationContext.getBean(_repositoryClass);
+                } else {
+                    repository = _applicationContext.getBean(_beanName, JpaRepository.class);
+                }
+                final Class<?> repositoryClass = repository.getClass();
 
+                entity = findEntity(key, repository, repositoryClass);
+
+                cache.put(this._applicationContext, key, entity);
+            }
 
             if (entity == null) {
                 return key;
@@ -131,7 +149,7 @@ public class DbDescTranslator extends Translator {
                 if (entity == null) {
                     try {
                         entity = (Localized) method.invoke(repository, key);
-                   } catch (java.lang.IllegalArgumentException e) {
+                    } catch (java.lang.IllegalArgumentException e) {
                         // Call to the method with wrong argument type.
                     }
                 }
@@ -159,5 +177,4 @@ public class DbDescTranslator extends Translator {
             return null;
         }
     }
-
 }

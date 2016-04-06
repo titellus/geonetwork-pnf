@@ -23,28 +23,13 @@
 
 package org.fao.geonet.component.csw;
 
-import java.io.File;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.servlet.ServletContext;
-
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import jeeves.server.context.ServiceContext;
 import jeeves.server.overrides.ConfigurationOverrides;
-import org.fao.geonet.utils.Log;
-import org.fao.geonet.Util;
-import org.fao.geonet.utils.Xml;
-
 import org.apache.commons.lang.StringUtils;
 import org.fao.geonet.GeonetContext;
+import org.fao.geonet.Util;
 import org.fao.geonet.constants.Geonet;
 import org.fao.geonet.csw.common.Csw;
 import org.fao.geonet.csw.common.exceptions.CatalogException;
@@ -53,6 +38,7 @@ import org.fao.geonet.csw.common.exceptions.VersionNegotiationFailedEx;
 import org.fao.geonet.domain.Address;
 import org.fao.geonet.domain.Language;
 import org.fao.geonet.domain.User;
+import org.fao.geonet.kernel.SchemaManager;
 import org.fao.geonet.kernel.csw.CatalogConfiguration;
 import org.fao.geonet.kernel.csw.CatalogService;
 import org.fao.geonet.kernel.csw.services.AbstractOperation;
@@ -64,9 +50,24 @@ import org.fao.geonet.repository.CswCapabilitiesInfo;
 import org.fao.geonet.repository.CswCapabilitiesInfoFieldRepository;
 import org.fao.geonet.repository.LanguageRepository;
 import org.fao.geonet.repository.UserRepository;
+import org.fao.geonet.utils.Log;
+import org.fao.geonet.utils.Xml;
 import org.jdom.Element;
+import org.jdom.Namespace;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Component;
+
+import java.nio.file.Path;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import javax.servlet.ServletContext;
 
 /**
  * TODO javadoc.
@@ -87,7 +88,8 @@ public class GetCapabilities extends AbstractOperation implements CatalogService
     private CatalogConfiguration _catalogConfig;
     @Autowired
     private FieldMapper _fieldMapper;
-
+    @Autowired
+    private SchemaManager _schemaManager;
 	//---------------------------------------------------------------------------
 	//---
 	//--- API methods
@@ -115,13 +117,12 @@ public class GetCapabilities extends AbstractOperation implements CatalogService
 
 		//--- return capabilities
 
-		String FS   = File.separator;
-		String file;
+		Path file;
 
         if (inspireEnabled){
-            file = context.getAppPath() +"xml"+ FS +"csw"+ FS +"capabilities_inspire.xml";
+            file = context.getAppPath().resolve("xml").resolve("csw").resolve("capabilities_inspire.xml");
         } else {
-            file = context.getAppPath() +"xml"+ FS +"csw"+ FS +"capabilities.xml";
+            file = context.getAppPath().resolve("xml").resolve("csw").resolve("capabilities.xml");
         }
 
 		try
@@ -131,7 +132,7 @@ public class GetCapabilities extends AbstractOperation implements CatalogService
             if(context.getServlet() != null) {
                 servletContext = context.getServlet().getServletContext();
             }
-			ConfigurationOverrides.DEFAULT.updateWithOverrides(file, servletContext, context.getAppPath(), capabilities);
+			ConfigurationOverrides.DEFAULT.updateWithOverrides(file.toString(), servletContext, context.getAppPath(), capabilities);
 
             String cswServiceSpecificContraint = request.getChildText(Geonet.Elem.FILTER);
 			setKeywords(capabilities, context, cswServiceSpecificContraint);
@@ -162,14 +163,22 @@ public class GetCapabilities extends AbstractOperation implements CatalogService
                     }
                 }
 
+                String defaultLanguageId = context.getLanguage();
+                try {
+                    Language defaultLanguage = languageRepository.findOneByDefaultLanguage();
 
-                Language defaultLanguage = languageRepository.findOneByDefaultLanguage();
-
-                if (StringUtils.isEmpty(currentLanguage)) {
-                    currentLanguage = defaultLanguage.getId();
+                    if (StringUtils.isEmpty(currentLanguage)) {
+                        currentLanguage = defaultLanguage.getId();
+                        defaultLanguageId = defaultLanguage.getId();
+                    }
+                } catch (EmptyResultDataAccessException e) {
+                    Log.error(Geonet.CSW, "No default language set in database languages table. " +
+                            "You MUST set one default language (using isDefault column). " +
+                            "Using session language as default. Error is: " + e.getMessage());
+                    currentLanguage = context.getLanguage();
                 }
 
-                setInspireLanguages(capabilities, langCodes, currentLanguage, defaultLanguage.getId());
+                setInspireLanguages(capabilities, langCodes, currentLanguage, defaultLanguageId);
             } else {
                 currentLanguage = context.getLanguage();
             }
@@ -561,35 +570,65 @@ public class GetCapabilities extends AbstractOperation implements CatalogService
 				fillGetRecordsParams(op);
 				continue;
 			}
+            if (op.getAttributeValue(Csw.ConfigFile.Operation.Attr.NAME)
+                    .equals(Csw.ConfigFile.Operation.Attr.Value.GET_RECORD_BY_ID)) {
+                populateTypeNameAndOutputSchema(op);
+                continue;
+            }
 			if (op.getAttributeValue(Csw.ConfigFile.Operation.Attr.NAME)
 					.equals(Csw.ConfigFile.Operation.Attr.Value.DESCRIBE_RECORD)) {
-				fillDescribeRecordTypenames(op);
+                populateTypeNameAndOutputSchema(op);
             }
 		}
 	}
 
     /**
-     * TODO javadoc.
+     * Based on loaded schema plugins populate the list of typeNames and outputSchema
+     * available in that catalog.
+     *
+     * <pre>
+     *   <ows:Parameter xmlns:gfc="http://www.isotc211.org/2005/gfc" name="outputSchema">
+     *      <!-- Set depending on schema plugins -->
+     *      <ows:Value>http://www.opengis.net/cat/csw/2.0.2</ows:Value>
+     *      <ows:Value>http://www.isotc211.org/2005/gfc</ows:Value>
+     *      <ows:Value>http://www.isotc211.org/2005/gmd</ows:Value>
+     *    </ows:Parameter>
+     *    <ows:Parameter xmlns:gfc="http://www.isotc211.org/2005/gfc" name="typeNames">
+     *      <!-- Set depending on schema plugins -->
+     *      <ows:Value>csw:Record</ows:Value>
+     *      <ows:Value>gfc:FC_FeatureCatalogue</ows:Value>
+     *      <ows:Value>gmd:MD_Metadata</ows:Value>
+     *    </ows:Parameter>
+     * </pre>
      *
      * @param op
      */
-	private void fillDescribeRecordTypenames(Element op) {
-		Element parameter = new Element("Parameter", Csw.NAMESPACE_OWS)
-			.setAttribute("name", "typeName");
-		
-		Set<String> typenames = _catalogConfig.getDescribeRecordTypename().keySet();
-		for (String typename : typenames) {
-			parameter.addContent(new Element("Value", Csw.NAMESPACE_OWS)
-				.setText(typename));
-		}
-
-		// Add Parameter node before constraint node if exist
-		Element constraintNode = op.getChild("Constraint", Csw.NAMESPACE_OWS);
-		if (constraintNode != null)
-			op.addContent(op.indexOf(constraintNode) - 1, parameter);
-		else
-			op.addContent(parameter);
-	}
+    private void populateTypeNameAndOutputSchema(Element op) {
+        Map<String, Namespace> typenames = _schemaManager.getHmSchemasTypenames();
+        List<Element> operations = op.getChildren("Parameter", Csw.NAMESPACE_OWS);
+        for (Element operation : operations) {
+            if ("typeNames".equals(operation.getAttributeValue("name"))) {
+                Iterator<String> iterator = typenames.keySet().iterator();
+                while(iterator.hasNext()) {
+                    String typeName = iterator.next();
+                    Namespace ns = typenames.get(typeName);
+                    String typename = typeName;
+                    operation.addNamespaceDeclaration(ns);
+                    operation.addContent(new Element("Value", Csw.NAMESPACE_OWS)
+                            .setText(typename));
+                }
+            } else if ("outputSchema".equals(operation.getAttributeValue("name"))) {
+                Iterator<String> iterator = typenames.keySet().iterator();
+                while(iterator.hasNext()) {
+                    String typeName = iterator.next();
+                    Namespace ns = typenames.get(typeName);
+                    operation.addNamespaceDeclaration(ns);
+                    operation.addContent(new Element("Value", Csw.NAMESPACE_OWS)
+                            .setText(ns.getURI()));
+                }
+            }
+        }
+    }
 
     /**
      * TODO javadoc.
@@ -619,6 +658,8 @@ public class GetCapabilities extends AbstractOperation implements CatalogService
 		}
 		op.addContent(isoConstraint);
 		op.addContent(additionalConstraint);
+
+        populateTypeNameAndOutputSchema(op);
 	}
 
 }

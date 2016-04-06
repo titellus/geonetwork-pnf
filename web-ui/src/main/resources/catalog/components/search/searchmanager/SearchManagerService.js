@@ -1,15 +1,38 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 (function() {
   goog.provide('gn_search_manager_service');
 
   var module = angular.module('gn_search_manager_service', []);
 
   module.factory('gnSearchManagerService', [
+    'gnUtilityService',
     '$q',
     '$rootScope',
     '$http',
     'gnHttp',
-    function($q, $rootScope, $http, gnHttp) {
-
+    function(gnUtilityService, $q, $rootScope, $http, gnHttp) {
       /**
        * Utility to format a search response. JSON response
        * when containing one element will not make an array.
@@ -18,7 +41,10 @@
        */
       var format = function(data) {
         // Retrieve facet and add name as property and remove @count
-        var facets = {}, results = -1;
+        var facets = {}, dimension = [], results = -1,
+            listOfArrayFields = ['image', 'link',
+              'format', 'keyword', 'otherConstr',
+              'Constraints', 'SecurityConstraints'];
 
         // When using summaryOnly=true, the facet is the root element
         if (data[0] && data[0]['@count']) {
@@ -28,7 +54,12 @@
 
         // Cleaning facets
         for (var facet in data.summary) {
-          if (facet != '@count' && facet != '@type') {
+          if (facet == 'dimension') {
+            dimension = gnUtilityService.traverse(
+                data.summary.dimension,
+                gnUtilityService.formatObjectPropertyAsArray,
+                'category');
+          } else if (facet != '@count' && facet != '@type') {
             facets[facet] = data.summary[facet];
             facets[facet].name = facet;
           } else if (facet == '@count') {
@@ -43,12 +74,15 @@
               (!$.isArray(data.metadata) && i < 1); i++) {
             var metadata =
                 $.isArray(data.metadata) ? data.metadata[i] : data.metadata;
-            // Fix thumbnail, link which might be string or array of string
-            if (typeof metadata.image === 'string') {
-              metadata.image = [metadata.image];
-            }
-            if (typeof metadata.link === 'string') {
-              metadata.link = [metadata.link];
+
+            // Fix all fields which are arrays and are returned as string
+            // when only one value returned.
+            for (var property in metadata) {
+              if (metadata.hasOwnProperty(property) &&
+                  listOfArrayFields.indexOf(property) != -1 &&
+                  typeof metadata[property] === 'string') {
+                metadata[property] = [metadata[property]];
+              }
             }
 
             // Parse selected to boolean
@@ -66,6 +100,7 @@
 
         return {
           facet: facets,
+          dimension: dimension,
           count: results,
           metadata: records
         };
@@ -119,7 +154,7 @@
               function(key, value) {
                 filter += '&' + key + '=' + value;
               });
-          search('q@json?fast=index' +
+          search('q?_content_type=json&fast=index' +
               filter +
               '&from=' + (pageOptions.currentPage *
               pageOptions.hitsPerPage + 1) +
@@ -165,20 +200,6 @@
             });
         return defer.promise;
       };
-
-      var _select = function(uuid, andClearSelection, action) {
-        var defer = $q.defer();
-        $http.get('metadata.select@json?' +
-            (uuid ? 'id=' + uuid : '') +
-                  (andClearSelection ? '' : '&selected=' + action)).
-            success(function(data, status) {
-              defer.resolve(data);
-            }).
-            error(function(data, status) {
-              defer.reject(error);
-            });
-        return defer.promise;
-      };
       var indexSetOfRecords = function(params) {
         var defer = $q.defer();
         var defaultParams = {
@@ -216,23 +237,36 @@
             });
         return defer.promise;
       };
-      var select = function(uuid, andClearSelection) {
-        return _select(uuid, andClearSelection, 'add');
+      var selected = function() {
+        return $http.get('../api/selections/metadata');
+      };
+      var select = function(uuid) {
+        return $http.put('../api/selections/metadata', null, {
+          params: {
+            uuid: uuid
+          }
+        });
       };
       var unselect = function(uuid) {
-        return _select(uuid, false, 'remove');
+        return $http.delete('../api/selections/metadata', null, {
+          params: {
+            uuid: uuid
+          }
+        });
       };
       var selectAll = function() {
-        return _select(null, false, 'add-all');
+        return $http.put('../api/selections/metadata');
       };
       var selectNone = function() {
-        return _select(null, false, 'remove-all');
+        return $http.delete('../api/selections/metadata');
       };
 
       return {
         search: search,
+        format: format,
         gnSearch: gnSearch,
         register: register,
+        selected: selected,
         select: select,
         unselect: unselect,
         selectAll: selectAll,

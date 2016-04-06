@@ -1,4 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (C) 2001-2016 Food and Agriculture Organization of the
+  ~ United Nations (FAO-UN), United Nations World Food Programme (WFP)
+  ~ and United Nations Environment Programme (UNEP)
+  ~
+  ~ This program is free software; you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation; either version 2 of the License, or (at
+  ~ your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful, but
+  ~ WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  ~ General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program; if not, write to the Free Software
+  ~ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+  ~
+  ~ Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+  ~ Rome - Italy. email: geonetwork@osgeo.org
+  -->
+
 <xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:geonet="http://www.fao.org/geonetwork"
     xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sch="http://www.ascc.net/xml/schematron" xmlns:gml="http://www.opengis.net/gml"
     xmlns:gmd="http://www.isotc211.org/2005/gmd" xmlns:srv="http://www.isotc211.org/2005/srv" xmlns:gco="http://www.isotc211.org/2005/gco"
@@ -6,6 +29,9 @@
 
     <xsl:include href="validate-fn.xsl" />
 
+    <!-- Retrieve GUI language first 2 letters
+    for multilingual schematron using xml:lang attribute. -->
+    <xsl:variable name="language" select="substring(/root/gui/language, 1, 2)"/>
     <xsl:variable name="metadataSchema" select="/root/response/schema"/>
 
     <xsl:template match="/">
@@ -108,8 +134,9 @@
             </displayPriority>
             <label>
                 <xsl:variable name="translatedTitle"
-                    select="/root/response/schematronTranslations/*[name() = $rulename]/strings/schematron.title" />
-                <xsl:variable name="defaultTitle" select="svrl:schematron-output/@title" />
+                              select="/root/response/schematronTranslations/*[name() = $rulename]/strings/schematron.title" />
+                <xsl:variable name="defaultTitle"
+                              select="svrl:schematron-output/@title" />
                 <xsl:choose>
                     <xsl:when test="$translatedTitle">
                         <xsl:value-of select="$translatedTitle" />
@@ -146,7 +173,15 @@
     <xsl:template name="pattern">
         <pattern>
             <title>
+                <xsl:variable name="attributeName"
+                              select="concat('name_', $language)"/>
                 <xsl:choose>
+                    <xsl:when test="attribute::*[name() = $attributeName] != ''">
+                      <xsl:value-of select="attribute::*[name() = $attributeName]"/>
+                    </xsl:when>
+                    <xsl:when test="attribute::*[name() = 'name_en'] != ''">
+                      <xsl:value-of select="attribute::*[name() = 'name_en']"/>
+                    </xsl:when>
                     <xsl:when test="normalize-space(@name) != ''">
                         <xsl:value-of select="@name" />
                     </xsl:when>
@@ -178,7 +213,17 @@
                 <xsl:value-of select="@location" />
             </details>
             <msg>
-                <xsl:value-of select="normalize-space(svrl:text)" />
+              <xsl:choose>
+                <xsl:when test="svrl:diagnostic-reference[@xml:lang = $language]">
+                  <xsl:value-of select="svrl:diagnostic-reference[@xml:lang = $language]"/>
+                </xsl:when>
+                <xsl:when test="svrl:diagnostic-reference[@xml:lang = 'en']">
+                  <xsl:value-of select="svrl:diagnostic-reference[@xml:lang = 'en']"/>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:value-of select="normalize-space(svrl:text)" />
+                </xsl:otherwise>
+              </xsl:choose>
             </msg>
         </rule>
     </xsl:template>

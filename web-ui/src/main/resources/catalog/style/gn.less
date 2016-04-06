@@ -1,6 +1,110 @@
-@import "../lib/style/bootstrap-3.0.1/bootstrap.less";
-@import "../lib/style/font-awesome-4.0.3/less/font-awesome.less";
+// GN Styles
+@import "../lib/style/font-awesome/less/font-awesome.less";
+@import "gn_bootstrap.less";
+
+@import (less) "../lib/ol.css";
+@import (less) "../lib/angular.ext/hotkeys/hotkeys.min.css";
+@import "../lib/bootstrap.ext/tagsinput/bootstrap-tagsinput.less";
+// import the css files as less files so they are included in the final output of wro4j
+@import (less) "../lib/bootstrap.ext/datepicker/datepicker.css";
+@import (less) "../lib/style/datetimepicker.css";
 @import "gn_doc.less";
+@import "gn_icons.less";
+
+@import "ellipsis.less";
+
+@fa-version: '4.3.0';
+@fa-font-path: '../catalog/lib/style/font-awesome/fonts';
+
+
+div[gn-transfer-ownership] * .list-group {
+  max-height: 45em;
+  overflow-y: auto;
+}
+
+.gn-pager {
+  .pager {
+    margin: 0;
+    text-align: left;
+    display: inline-block;
+    li > a {
+      padding: 2px 5px;
+      border-radius: 6px;
+      font-size: 120%;
+    }
+    em {
+      font-style: normal;
+    }
+  }
+}
+
+.btn-circle {
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  padding: 6px 0;
+  font-size: 12px;
+  line-height: 1.428571429;
+  border-radius: 15px;
+}
+.btn-circle.btn-lg {
+  width: 50px;
+  height: 50px;
+  padding: 10px 16px;
+  font-size: 18px;
+  line-height: 1.33;
+  border-radius: 25px;
+}
+.btn-circle.btn-xl {
+  width: 70px;
+  height: 70px;
+  padding: 10px 16px;
+  font-size: 24px;
+  line-height: 1.33;
+  border-radius: 35px;
+}
+
+
+
+/* An update to 3.2 could provide responsive class
+  for block or inline layout.
+  http://getbootstrap.com/css/#responsive-utilities
+
+  Display button label in top tool bar using inline mode.
+ */
+.gn-top-bar {
+    border-radius: 0px;
+    padding: 0 20px;
+    .navbar-collapse {
+ //       padding-right: 5px;
+    }
+  .visible-lg {
+    display: none !important;
+  }
+  @media (min-width: 1200px) {
+    .visible-lg {
+      display: inline !important;
+    }
+  }
+  @media (max-width: 767px) {
+    .hidden-xs {
+      display: none !important;
+    }
+  }
+  .gn-account {
+    a {
+    }
+  }
+}
+
+a {
+  word-wrap: break-word;
+}
+.gn-break {
+  word-wrap: break-word;
+  word-break: break-word;
+}
+
 
 /**
  * Nav bar title may be longer than default
@@ -13,6 +117,38 @@
 [ng-cloak],
 .ng-cloak{
   display:none !important;
+}
+
+[gn-img-modal], [data-gn-img-modal] {
+  cursor: pointer;
+
+}
+.gn-img-modal {
+  width: 95vw;
+
+  img {
+    width: 100%
+  }
+  .gn-img-background {
+    background-image: linear-gradient(to bottom,transparent,rgba(0,0,0,0.74));
+    bottom: 0;
+    height: 60px;
+    position: absolute;
+    width: 100%;
+  }
+  .gn-img-thumbnail-caption {
+    line-height: 24px;
+    max-height: 48px;
+    overflow: hidden;
+    margin-bottom: 4px;
+    width: 100%;
+    font-size: 150%;
+  }
+}
+.gn-btn-modal-img {
+  position: absolute;
+  top: -1.2em;
+  right: -1.2em;
 }
 
 /**
@@ -42,7 +178,7 @@
  * Logo in nav bar can't be big
  */
 .gn-logo {
-  max-height: 20px;
+  max-height: 23px;
 }
 
 /**
@@ -61,6 +197,8 @@ div.gn-scroll-spy {
   font-size: 80%;
   width: 150px;
   z-index: 999;
+  max-height: 99vh;
+  overflow: auto;
   background-color: @panel-bg;
   border-top-left-radius: @panel-border-radius;
   border-top: 1px solid @panel-default-border;
@@ -100,13 +238,22 @@ div.gn-scroll-spy {
   }
 }
 
+.dropdown-menu {
+  li {
+    cursor: pointer !important;
+  }
+  li.disabled {
+    cursor: not-allowed !important;
+  }
+}
+
 .gn-popup {
   display: none;
   overflow: hidden;
   min-width: 200px;
   max-width: 600px;
   min-height: 100px;
-  max-height: 800px;
+  max-height: ~"calc(100% - 89px)";
   z-index: 2000;
 
   .gn-share-grid {
@@ -130,23 +277,53 @@ div.gn-scroll-spy {
   }
 }
 
-.onlinesrc-popup {
+.onlinesrc-popup, .gn-modal-lg {
   max-width: none;
   max-height: none;
   display: none;
-}
-.onlinesrc-popup .modal-content {
-  width: 750px;
+  .modal-content {
+    width: 90vw;
+    max-height: 90vh;
+    .modal-body {
+      max-height: 76vh;
+      overflow: auto;
+    }
+  }
+  .modal-dialog {
+    margin: 10px 5vw;
+
+    .list-group-item {
+      word-wrap: break-word;
+    }
+  }
 }
 img.thumb-small {
-max-width: 80px;
-max-height: 80px;
-min-height: 40px;
+  max-width: 100%;
+  max-height: 80px;
+  min-height: 40px;
+}
+.gn-list-thumb {
+  position: relative;
+  margin: 2px;
+  width: 32%;
+  height: 92px;
+  a.onlinesrc-remove {
+    position: absolute;
+    z-index: 99;
+    top: 0px;
+    right: 0px;
+  }
 }
 .gn-layers-grid-container {
-overflow:auto;
-height:200px;
-font-size: small;
+  overflow:auto;
+  max-height:200px;
+  font-size: small;
+
+  tr.success {
+    td {
+      font-weight: bold;
+    }
+  }
 }
 .gn-layers-grid-container tr {
   cursor: pointer;
@@ -164,13 +341,10 @@ font-size: small;
           box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
 }
 
-.tt-hint {
-  color: #999
-}
 
 .tt-dropdown-menu {
   width: 422px;
-  margin-top: 12px;
+  margin-top: 4px;
   padding: 8px 0;
   background-color: #fff;
   border: 1px solid #ccc;
@@ -181,6 +355,22 @@ font-size: small;
   -webkit-box-shadow: 0 5px 10px rgba(0,0,0,.2);
      -moz-box-shadow: 0 5px 10px rgba(0,0,0,.2);
           box-shadow: 0 5px 10px rgba(0,0,0,.2);
+  /* Limit typeahead height to a percentage of the
+     viewport height in order to not have to scroll
+     too much when the autocompletion list is long.
+     User should be able to see the full list on the
+     screen and then use the scrollbar in the menu. */
+  overflow: auto;
+  max-height: 70vh;
+  width: inherit;
+}
+
+/* Do not show scrollbar as this dropdown contains
+   dropdown button (eg. for choosing contact role)
+   whose content will not be displayed properly
+   with a scrollbar. */
+*[data-gn-directory-entry-selector] .tt-dropdown-menu {
+  overflow: visible;
 }
 
 .tt-suggestion {
@@ -191,7 +381,7 @@ font-size: small;
 
 .tt-suggestion.tt-is-under-cursor {
   color: #fff;
-  background-color: #0097cf;
+  background-color: #428bca;
 
 }
 
@@ -199,10 +389,230 @@ font-size: small;
   margin: 0;
 }
 
+
+.tt-hint {
+  color: #999;
+  width: 100% !important;
+  border: none !important;
+}
+
+.tt-suggestion.tt-cursor {
+  color: #fff;
+  background-color: #428bca;
+  cursor: pointer;
+}
+
 .bootstrap-tagsinput {
   width: 100%;
+}
+/* No border for typeahead in tagsinput */
+.bootstrap-tagsinput .tt-input {
+  width: 100% !important;
+  border: none !important;
 }
 
 span.twitter-typeahead {
   display: block !important;
+}
+
+.row {
+    margin: auto 0px;
+}
+
+@gn-popup-max-height: 400px;
+
+[gn-popup] {
+  display: none;
+  min-width: 200px;
+  max-width: 600px;
+  min-height: 100px;
+  max-height: ~"calc(100% - 89px)";
+  z-index: 2000;
+
+  @media (max-width: @screen-tablet) {
+    z-index: 1500;
+    left: 2%;
+    right: 2%;
+    top: 2%;
+    bottom: 2%;
+    max-height: none;
+    max-width: none;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  @media (max-width: @screen-phone) {
+    position: fixed !important;
+    overflow: hidden;
+  }
+}
+
+.gn-popup-content {
+  overflow: auto;
+  max-width: inherit;
+  max-height: ~"calc(100% - 149px)";
+  font-size: 12px;
+  @media (max-width: @screen-phone) {
+    width: 100%;
+    height: auto;
+    max-height: none;
+    position: absolute;
+    top: 36px;
+    bottom: 10px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    table {
+      width: 100% !important;
+      td {
+        vertical-align: top;
+      }
+    }
+  }
+}
+.fileupload-buttonbar .btn, .fileupload-buttonbar .toggle {
+  margin-bottom: 5px;
+}
+.fileinput-button {
+  position: relative;
+  overflow: hidden;
+}
+.fileinput-button input {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 0;
+  opacity: 0;
+  -ms-filter: 'alpha(opacity=0)';
+  font-size: 200px;
+  direction: ltr;
+  cursor: pointer;
+}
+input[type=file] {
+  display: block;
+}
+
+/* alerts */
+.gn-alerts {
+  position: absolute;
+  top: 1em;
+  left: 50%;
+  width: 300px;
+  margin-left: -150px;
+  text-align: center;
+  z-index: 1000;
+}
+
+.gn-recordtype-n:before { content: @fa-var-file-text }
+.gn-recordtype-s:before { content: @fa-var-bookmark-o }
+.gn-recordtype-y:before { content: @fa-var-file-o }
+
+[data-gn-slide-toggle] {
+  padding-left: 20px;
+  cursor: pointer;
+}
+[data-gn-slide-toggle]:before {
+  content: "\f0d7";
+  font-family: FontAwesome;
+  font-style: normal;
+  font-weight: normal;
+  text-decoration: inherit;
+  position: absolute;
+  margin-left: -14px;
+  font-size: 16px;
+}
+[data-gn-slide-toggle].collapsed:before {
+  content: "\f0da"
+}
+legend[data-gn-slide-toggle] {
+  border: none;
+  color: #333333;
+}
+legend[data-gn-slide-toggle]:before {
+  margin-top: 3px;
+}
+
+i.fa-times.delete {
+  vertical-align: top;
+}
+i.fa-times.delete:hover {
+    color:  #a94442;
+}
+
+
+.gn-search-page {
+  .gn-status {
+    border: 3px solid darken(@brand-info, 5%);
+    position: absolute;
+    top: 95px;
+    left: 2px;
+    border-radius: 15px;
+    padding: 2px;
+    -ms-transform: rotate(-30deg);
+    -webkit-transform: rotate(-30deg);
+    transform: rotate(-30deg);
+    color: @brand-info;
+    font-weight: bold;
+    font-size: 80%;
+    background-color: rgba(255, 255, 255 , 0.7);
+  }
+  .gn-status-mdview {
+    font-size: 120%;
+    position: relative;
+    float: right;
+    top: -52px;
+    margin-right: -20px;
+  }
+  /* Decide here which status should be displayed
+  or not and with which colors */
+  .gn-status-completed {
+    border-color: darken(@brand-success, 5%);
+    color: @brand-success;
+  }
+  .gn-status-historicalArchive {
+    border-color: darken(@brand-warning, 5%);
+    color: @brand-warning;
+  }
+  .gn-status-obsolete {
+    border-color: darken(@brand-danger, 5%);
+    color: @brand-danger;
+  }
+}
+
+// Language specific layout
+html[lang=eng] {
+  .gn-scale,
+  [data-facet=denominators] span.gn-facet-label,
+  .gn-facet-denominators span.gn-facet-label {
+    &:before {
+      content: "1/";
+    }
+  }
+}
+html[lang=fre] {
+  .gn-scale,
+  [data-facet=denominators] span.gn-facet-label,
+  .gn-facet-denominators span.gn-facet-label {
+    &:before {
+      content: "1:";
+    }
+  }
+}
+
+.checkbox.disabled label, .radio.disabled label, fieldset[disabled] .checkbox label, fieldset[disabled] .radio label {
+  cursor: not-allowed;
+  color: #d3d3d3;
+}
+
+button, .btn, .btn:active, a {
+  &:focus {
+    outline: none;
+  }
+}
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+  background-color: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background-color: gray;
+  border-radius: 4px;
 }

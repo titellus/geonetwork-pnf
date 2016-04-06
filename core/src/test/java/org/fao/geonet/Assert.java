@@ -1,15 +1,38 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet;
 
 import org.fao.geonet.utils.Xml;
+import org.jdom.Attribute;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.Namespace;
+import org.jdom.Text;
 
 import java.util.Arrays;
 import java.util.Collection;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import java.util.List;
 
 /**
  * Useful extensions to Junit TestCase.
@@ -48,14 +71,26 @@ public final class Assert extends junit.framework.TestCase {
      * @param namespaces the namespaces required for xpath
      */
     public static void assertEqualsText(String expected, Element xml, String xpath, Namespace... namespaces) throws JDOMException {
-        final Element element;
+        final List element;
         if (namespaces == null || namespaces.length == 0) {
-            element = Xml.selectElement(xml, xpath);
+            element = Xml.selectNodes(xml, xpath);
         } else {
-            element = Xml.selectElement(xml, xpath, Arrays.asList(namespaces));
+            element = Xml.selectNodes(xml, xpath, Arrays.asList(namespaces));
         }
-        assertNotNull("No element found at: " + xpath + " in \n" + Xml.getString(xml), element);
-        assertEquals(expected, element.getText());
+        assertEquals("Expected 1 element but found " + element.size() + "No element found at: " + xpath + " in \n" + Xml.getString(xml),
+                1, element.size());
+        String text;
+        if (element.get(0) instanceof Element) {
+            text = ((Element) element.get(0)).getText();
+        } else if (element.get(0) instanceof Attribute) {
+            text = ((Attribute) element.get(0)).getValue();
+        } else if (element.get(0) instanceof Text) {
+            text = ((Text) element.get(0)).getText();
+        } else {
+            fail("Handling of " + element.get(0).getClass() + " is not yet implemented");
+            text = "";
+        }
+        assertEquals(Xml.getString(xml), expected, text);
     }
 
 }

@@ -1,16 +1,39 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.services;
 
-import org.fao.geonet.exceptions.MissingParameterEx;
 import jeeves.server.context.ServiceContext;
-import org.fao.geonet.Util;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.TopDocs;
 import org.fao.geonet.GeonetContext;
+import org.fao.geonet.Util;
 import org.fao.geonet.constants.Geonet;
 import org.fao.geonet.constants.Params;
+import org.fao.geonet.exceptions.MissingParameterEx;
 import org.fao.geonet.kernel.DataManager;
 import org.fao.geonet.kernel.search.IndexAndTaxonomy;
 import org.fao.geonet.kernel.search.SearchManager;
@@ -18,10 +41,7 @@ import org.fao.geonet.kernel.search.index.GeonetworkMultiReader;
 import org.jdom.Element;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class Utils {
@@ -85,12 +105,16 @@ public class Utils {
 
     public static String lookupMetadataIdFromFileId(GeonetContext gc, String fileId) throws IOException,
             InterruptedException {
-        TermQuery query = new TermQuery(new Term("fileId", fileId));
-
         SearchManager searchManager = gc.getBean(SearchManager.class);
 
+        return lookupMetadataIdFromFileId(fileId, searchManager);
+    }
+
+    public static String lookupMetadataIdFromFileId(String fileId, SearchManager searchManager) throws IOException, InterruptedException {
+        TermQuery query = new TermQuery(new Term("fileId", fileId));
+
         IndexAndTaxonomy indexAndTaxonomy = searchManager.getIndexReader(null, -1);
-		GeonetworkMultiReader reader = indexAndTaxonomy.indexReader;
+        GeonetworkMultiReader reader = indexAndTaxonomy.indexReader;
 
         try {
             IndexSearcher searcher = new IndexSearcher(reader);

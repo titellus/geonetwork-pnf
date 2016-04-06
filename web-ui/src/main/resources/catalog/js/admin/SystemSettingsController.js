@@ -1,3 +1,26 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 (function() {
   goog.provide('gn_system_settings_controller');
 
@@ -5,6 +28,17 @@
   var module = angular.module('gn_system_settings_controller',
       []);
 
+  module.filter('hideLanguages', function() {
+    return function(input) {
+      var filtered = [];
+      angular.forEach(input, function(el) {
+        if (el['@name'].indexOf('system/site/labels/') === -1) {
+          filtered.push(el);
+        }
+      });
+      return filtered;
+    }
+  });
   module.filter('orderObjectBy', function() {
     return function(input, attribute) {
       if (!angular.isObject(input)) return input;
@@ -43,6 +77,29 @@
       $scope.processTitle = '';
       $scope.orderProperty = '@position';
       $scope.reverse = false;
+      $scope.systemInfo = {
+        'stagingProfile': 'production'
+      };
+      $scope.stagingProfiles = ['production', 'development', 'integration'];
+      $scope.updateProfile = function() {
+
+        $http.get('systeminfo/staging?newProfile=' +
+            $scope.systemInfo.stagingProfile)
+          .success(function(data) {
+              $rootScope.$broadcast('StatusUpdated', {
+                msg: $translate('profileUpdated'),
+                timeout: 2,
+                type: 'success'});
+            }).error(function(data) {
+              $rootScope.$broadcast('StatusUpdated', {
+                msg: $translate('profileUpdatedFailed'),
+                timeout: 2,
+                type: 'danger'});
+            });
+      };
+
+      $scope.loadTplReport = null;
+      $scope.atomFeedType = '';
 
       /**
          * Load catalog settings as a flat list and
@@ -53,7 +110,17 @@
          * element name in XML Jeeves request element).
          */
       function loadSettings() {
-        $http.get('admin.config.list@json?asTree=false')
+
+        $http.get('info?type=systeminfo&_content_type=json')
+          .success(function(data) {
+              $scope.systemInfo = data.systemInfo;
+            });
+        // load log files
+        $http.get('admin.logfile.list?_content_type=json')
+          .success(function(data) {
+              $scope.logfiles = data.logFile;
+            });
+        $http.get('admin.config.list?asTree=false&_content_type=json')
           .success(function(data) {
 
               var sectionsLevel1 = [];
@@ -95,7 +162,7 @@
       }
 
       function loadUsers() {
-        $http.get('admin.user.list@json').success(function(data) {
+        $http.get('admin.user.list?_content_type=json').success(function(data) {
           $scope.systemUsers = data;
         });
       }
@@ -151,7 +218,28 @@
               by: buildUrl($scope.settings)
             });
       };
+      $scope.resourceIdProcessName = null;
+      $scope.processRecommendedForId = function(processName) {
+        $scope.resourceIdProcessName = processName;
+        $scope.processResourceTitle =
+            $translate('processRecommendedOnHostChange-help', {
+              old: buildUrl($scope.initalSettings),
+              by: buildUrl($scope.settings)
+            });
+      };
 
+      $scope.testMailConfiguration = function() {
+        $http.get('../api/0.1/tools/mail/test')
+          .then(function(response) {
+              $rootScope.$broadcast('StatusUpdated', {
+                title: response.data});
+            }, function(response) {
+              $rootScope.$broadcast('StatusUpdated', {
+                title: response.data,
+                timeout: 0,
+                type: 'danger'});
+            });
+      };
       var buildUrl = function(settings) {
         var port = filterBySection(settings, 'system/server/port')[0]['#text'];
         var host = filterBySection(settings, 'system/server/host')[0]['#text'];
@@ -165,14 +253,32 @@
        *
        * TODO: set the process to use and select all
        */
-      $scope.saveAndProcessSettings = function(formId) {
+      $scope.saveAndProcessSettings = function(formId, process) {
         $scope.saveSettings(formId);
 
-        $location.path('/tools/batch/select/all/process/url-host-relocator')
+        $location.path('/tools/batch/select/all/process/' + process)
           .search(
             'urlPrefix=' + buildUrl($scope.initalSettings) +
             '&newUrlPrefix=' + buildUrl($scope.settings));
       };
+
+
+      /**
+       * Execute Atom feed harvester
+       */
+      $scope.executeAtomHarvester = function() {
+        $http.get('atomharvester?_content_type=json').success(function(data) {
+          $scope.loadTplReport = data;
+
+          $('#atomHarvesterModal').modal();
+
+        }).error(function(data) {
+          $scope.loadTplReport = data;
+
+          $('#atomHarvesterModal').modal();
+        });
+      };
+
 
 
       /**

@@ -1,5 +1,29 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.domain;
 
+import org.apache.commons.lang.StringUtils;
 import org.fao.geonet.entitylistener.AddressEntityListenerManager;
 
 import javax.persistence.*;
@@ -151,19 +175,19 @@ public class Address extends GeonetEntity implements Serializable {
      * @param mergeNullData if true then also set null values from other address. If false then only merge non-null data
      */
     public void mergeAddress(final Address otherAddress, final boolean mergeNullData) {
-        if (mergeNullData || otherAddress.getAddress() != null) {
+        if (mergeNullData || StringUtils.isNotBlank(otherAddress.getAddress())) {
             setAddress(otherAddress.getAddress());
         }
-        if (mergeNullData || otherAddress.getCity() != null) {
+        if (mergeNullData || StringUtils.isNotBlank(otherAddress.getCity())) {
             setCity(otherAddress.getCity());
         }
-        if (mergeNullData || otherAddress.getState() != null) {
+        if (mergeNullData || StringUtils.isNotBlank(otherAddress.getState())) {
             setState(otherAddress.getState());
         }
-        if (mergeNullData || otherAddress.getZip() != null) {
+        if (mergeNullData || StringUtils.isNotBlank(otherAddress.getZip())) {
             setZip(otherAddress.getZip());
         }
-        if (mergeNullData || otherAddress.getCountry() != null) {
+        if (mergeNullData || StringUtils.isNotBlank(otherAddress.getCountry())) {
             setCountry(otherAddress.getCountry());
         }
     }

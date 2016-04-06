@@ -1,8 +1,30 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.kernel.harvest;
 
 import jeeves.server.context.ServiceContext;
 import org.fao.geonet.Logger;
-
 import org.fao.geonet.domain.Metadata;
 import org.fao.geonet.domain.MetadataCategory;
 import org.fao.geonet.kernel.DataManager;
@@ -10,13 +32,12 @@ import org.fao.geonet.kernel.harvest.harvester.AbstractHarvester;
 import org.fao.geonet.kernel.harvest.harvester.CategoryMapper;
 import org.fao.geonet.kernel.harvest.harvester.GroupMapper;
 import org.fao.geonet.kernel.harvest.harvester.Privileges;
-import org.fao.geonet.kernel.search.MetadataRecordSelector;
 import org.fao.geonet.repository.MetadataCategoryRepository;
 import org.fao.geonet.repository.MetadataRepository;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * 
@@ -31,16 +52,24 @@ import java.util.Map;
  */
 public abstract class BaseAligner {
 
+    public final AtomicBoolean cancelMonitor;
+
+    public BaseAligner(AtomicBoolean cancelMonitor) {
+        this.cancelMonitor = cancelMonitor;
+    }
+
+
     /**
      * TODO Javadoc.
      *
      * @param categories
      * @param localCateg
      * @param log
+     * @param saveMetadata
      * @throws Exception
      */
     public void addCategories(Metadata metadata, Iterable<String> categories, CategoryMapper localCateg, ServiceContext context,
-                              Logger log, String serverCategory) {
+                              Logger log, String serverCategory, boolean saveMetadata) {
 
         final MetadataCategoryRepository categoryRepository = context.getBean(MetadataCategoryRepository.class);
         Map<String, MetadataCategory> nameToCategoryMap = new HashMap<String, MetadataCategory>();
@@ -81,7 +110,9 @@ public abstract class BaseAligner {
                 }
             }
         }
-        context.getBean(MetadataRepository.class).save(metadata);
+        if (saveMetadata) {
+            context.getBean(MetadataRepository.class).save(metadata);
+        }
     }
 
     /**

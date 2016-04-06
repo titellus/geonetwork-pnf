@@ -10,6 +10,7 @@
     data-ng-include="'../../catalog/templates/editor/top-toolbar.html'">
   </div>
   <div class="row gn-editor-container">
+    <div class="modal-backdrop fade in" data-ng-show="gnCurrentEdit.working"></div>
     <div class="col-md-8">
       
       <div class="alert alert-danger" data-ng-if="unsupportedSchema" 
@@ -22,7 +23,7 @@
     <div class="col-md-4" 
       data-ng-if="gnSchemaConfig.related.display === true || gnSchemaConfig.validation.display === true || gnSchemaConfig.suggestion.display === true">
       <div class="gn-editor-tools-container">
-        
+
         <div data-gn-onlinesrc-list="" data-ng-if="gnSchemaConfig.related.display === true"></div>
         
         <div data-ng-if="gnCurrentEdit.geoPublisherConfig" gn-geo-publisher=""
@@ -34,7 +35,7 @@
 
         <div data-gn-suggestion-list="" data-ng-if="gnSchemaConfig.suggestion.display === true"></div>
 
-        <div data-gn-need-help="editor"></div>
+        <div data-gn-need-help="user-guide/describing-information/creating-metadata.html"></div>
       </div>
     </div>
   </div>
@@ -91,7 +92,7 @@
 <div data-gn-modal="" class="onlinesrc-popup"
   data-gn-popup-options="{title:'applySuggestion'}"
   id="runsuggestion-popup">
-  <div data-gn-run-suggestion="" id="run-suggestion"></div>
+  <div data-gn-run-suggestion="" id="runsuggestion"></div>
 </div>
 
 <div data-gn-modal="" class="onlinesrc-popup"
@@ -99,4 +100,7 @@
   id="linktosibling-popup">
   <div data-gn-link-to-sibling="#linktosibling-popup" id="link-to-sibling"
     class="link-sibling-md"></div>
+</div>
+
+<div data-ng-include="'../../catalog/templates/info.html'">
 </div>

@@ -1,3 +1,26 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.services.metadata.replace;
 
 import jeeves.server.context.ServiceContext;
@@ -17,7 +40,12 @@ import org.fao.geonet.utils.Xml;
 import org.jdom.Element;
 
 import java.io.File;
-import java.util.*;
+import java.nio.file.Path;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  *  Class to apply replacements to a metadata selection.
@@ -180,7 +208,7 @@ public class MassiveXslMetadataReindexer extends MetadataIndexerProcessor {
                 processedMetadata = Xml.transformWithXmlParam(md, filePath, paramNameXml, paramXml);
 
                 // Get changes
-                String filePath2 = schemaMan.getSchemaDir(schema) + "/process/massive-content-update-extract-changes.xsl";
+                Path filePath2 = schemaMan.getSchemaDir(schema).resolve("process/massive-content-update-extract-changes.xsl");
                 List<Element> changesEl = Xml.transform(processedMetadata, filePath2).getChildren("change");
 
                 boolean hasChanges = (changesEl.size() > 0);
@@ -198,9 +226,31 @@ public class MassiveXslMetadataReindexer extends MetadataIndexerProcessor {
 
                 // --- save metadata and return status
                 if ((changesEl.size() > 0) && (!params.getChildText("test").equalsIgnoreCase("true"))) {
-                    // Clean geonet:changes elements
-                    String filePath3 = schemaMan.getSchemaDir(schema) + "/process/massive-content-update-clean-changes.xsl";
-                    processedMetadata = Xml.transform(processedMetadata, filePath3);
+                    Path filePath3 = schemaMan.getSchemaDir(schema).resolve("process/massive-content-update-clean-changes.xsl");
+
+                    // Remove empty elements or vacuum record
+                    if (!StringUtils.isEmpty(params.getChildText("vacuum-mode"))) {
+                        String mode = params.getChildText("vacuum-mode");
+                        // Search and replace, then vacuum record
+                        if ("record".equals(mode)) {
+                            processedMetadata = Xml.transform(processedMetadata, filePath3);
+
+                            Path vacuumXsltPath = schemaMan.getSchemaDir(schema).resolve("process/vacuum.xsl");
+                            if (vacuumXsltPath.toFile().exists()) {
+                                processedMetadata = Xml.transform(processedMetadata, vacuumXsltPath);
+                            }
+                        } else {
+                            // Clean geonet:changes elements and remove
+                            // elements having an empty new value.
+                            Map<String, Object> params = new HashMap<>(1);
+                            params.put("removeEmptyElement", "true");
+                            processedMetadata = Xml.transform(processedMetadata, filePath3, params);
+                        }
+                    } else {
+                        // Clean geonet:changes elements
+                        processedMetadata = Xml.transform(processedMetadata, filePath3);
+                    }
+
 
                     dataMan.updateMetadata(context, id, processedMetadata,
                             false, true, true,

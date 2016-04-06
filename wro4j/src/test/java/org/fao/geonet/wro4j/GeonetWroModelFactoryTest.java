@@ -8,7 +8,9 @@ import org.apache.commons.io.IOUtils;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+import ro.isdc.wro.config.Context;
 import ro.isdc.wro.config.ReadOnlyContext;
+import ro.isdc.wro.manager.factory.standalone.StandaloneContext;
 import ro.isdc.wro.model.WroModel;
 import ro.isdc.wro.model.group.Group;
 import ro.isdc.wro.model.resource.Resource;
@@ -21,11 +23,31 @@ import java.io.InputStream;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
-import java.util.*;
+import java.net.URLEncoder;
+import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import org.apache.http.client.utils.URIUtils;
+import org.eclipse.jetty.util.URIUtil;
 
 import static org.fao.geonet.wro4j.ClosureDependencyUriLocator.PATH_TO_WEBAPP_BASE_FROM_CLOSURE_BASE_JS_FILE;
-import static org.fao.geonet.wro4j.GeonetWroModelFactory.*;
-import static org.junit.Assert.*;
+import static org.fao.geonet.wro4j.GeonetWroModelFactory.CLASSPATH_PREFIX;
+import static org.fao.geonet.wro4j.GeonetWroModelFactory.CSS_SOURCE_EL;
+import static org.fao.geonet.wro4j.GeonetWroModelFactory.GROUP_NAME_CLOSURE_DEPS;
+import static org.fao.geonet.wro4j.GeonetWroModelFactory.INCLUDE_EL;
+import static org.fao.geonet.wro4j.GeonetWroModelFactory.JS_SOURCE_EL;
+import static org.fao.geonet.wro4j.GeonetWroModelFactory.PATH_ON_DISK_ATT;
+import static org.fao.geonet.wro4j.GeonetWroModelFactory.REQUIRE_EL;
+import static org.fao.geonet.wro4j.GeonetWroModelFactory.WEBAPP_ATT;
+import static org.fao.geonet.wro4j.GeonetWroModelFactory.WRO_SOURCES_KEY;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Test GeonetWroModelFactory.
@@ -38,7 +60,7 @@ public class GeonetWroModelFactoryTest {
 
     private static final String PATH_TO_ROOT_OF_TEST_RESOURCES = "wro4j/src/test/resources/org/fao/geonet/wro4j";
     private static final String TEMPLATE_URI_PREFIX = "template://";
-    
+
     @Test
     public void testCreateUsingRequire() throws Exception {
 
@@ -97,11 +119,16 @@ public class GeonetWroModelFactoryTest {
         String jsTestBaseDirAsPath = jsTestBaseDir.replace('\\', '/');
         if (jsTestBaseDirAsPath.charAt(0) == '/') {
             jsTestBaseDirAsPath = jsTestBaseDirAsPath.substring(1);
+
+            // let's encode the filesystem path as it should be encoded by wro
+            jsTestBaseDirAsPath = URIUtil.encodePath(jsTestBaseDirAsPath);
+
         }
+
 
         assertEquals(7, resources.size());
         for (Resource resource : resources) {
-            final UriLocatorFactory uriLocatorFactory = new GeonetworkMavenWrojManagerFactory().newUriLocatorFactory();
+            final UriLocatorFactory uriLocatorFactory = createManagerFactory().newUriLocatorFactory();
             final UriLocator instance = uriLocatorFactory.getInstance(resource.getUri());
             final String deps = IOUtils.toString(instance.locate(resource.getUri()), "UTF-8");
             if (resource.getUri().contains("sampleFile1a.js")) {
@@ -183,7 +210,7 @@ public class GeonetWroModelFactoryTest {
     }
 
     @Test
-    public void testCreateDeclaredGroups() throws IOException {
+    public void testCreateDeclaredGroups() throws Exception {
         String sourcesXml = "<sources>\n"
                             + "    <declarative name=\"groupName\" pathOnDisk=\"wro4j/src/test/resources/org/fao/geonet/wro4j\">\n"
                             + "        <jsSource webappPath=\"sampleFile1a.js\" pathOnDisk=\"" + PATH_TO_ROOT_OF_TEST_RESOURCES + "\"/>\n"
@@ -205,7 +232,7 @@ public class GeonetWroModelFactoryTest {
         assertEquals(4, resources.size());
 
         List<String> resourceNames = new ArrayList<String>(resources.size());
-        final UriLocatorFactory uriLocatorFactory = new GeonetworkMavenWrojManagerFactory().newUriLocatorFactory();
+        final UriLocatorFactory uriLocatorFactory = createManagerFactory().newUriLocatorFactory();
 
         for (Resource resource : resources) {
             resourceNames.add(resource.getUri());
@@ -227,11 +254,11 @@ public class GeonetWroModelFactoryTest {
 
     }
 
-    private WroModel createRequireModel(String sourcesXml) throws IOException {
+    private WroModel createRequireModel(String sourcesXml) throws Exception {
         return createRequireModel(sourcesXml, Optional.<File>absent());
     }
 
-    private WroModel createRequireModel(String sourcesXml, Optional<File> sourcesFileOption) throws IOException {
+    private WroModel createRequireModel(String sourcesXml, Optional<File> sourcesFileOption) throws Exception {
 
 
         final File wroSources;
@@ -310,7 +337,8 @@ public class GeonetWroModelFactoryTest {
 
     private void assertRequireModel(WroModel wroModel, boolean testMinimized) throws IOException {
         Set<String> groupNames = new HashSet<String>();
-        final UriLocatorFactory uriLocatorFactory = new GeonetworkMavenWrojManagerFactory().newUriLocatorFactory();
+        final GeonetworkMavenWrojManagerFactory wrojManagerFactory = createManagerFactory();
+        final UriLocatorFactory uriLocatorFactory = wrojManagerFactory.newUriLocatorFactory();
 
         Set<String> nonMinifiedFiles = Sets.newHashSet("1a.css", "sampleFile2a.js", "sampleFile1b.js");
 
@@ -362,6 +390,16 @@ public class GeonetWroModelFactoryTest {
         assertTrue(groupNames.contains(GROUP_NAME_CLOSURE_DEPS));
     }
 
+    public static GeonetworkMavenWrojManagerFactory createManagerFactory() throws IOException {
+        final GeonetworkMavenWrojManagerFactory wrojManagerFactory = new GeonetworkMavenWrojManagerFactory();
+        File propertiesFile = File.createTempFile("abc", "properties");
+        Files.write(propertiesFile.toPath(), (WRO_SOURCES_KEY + "=\n").getBytes("UTF-8"));
+        wrojManagerFactory.setExtraConfigFile(propertiesFile);
+        Context.set(Context.standaloneContext());
+        wrojManagerFactory.initialize(new StandaloneContext());
+        return wrojManagerFactory;
+    }
+
     private String createSourcesXmlWithPathOnGroup() {
         return createSourcesXmlWithPathOnGroup(PATH_TO_ROOT_OF_TEST_RESOURCES);
     }
@@ -385,7 +423,7 @@ public class GeonetWroModelFactoryTest {
                + "</sources>";
     }
 
-    public String getGeonetworkRootDirectory() {
+    public String getGeonetworkRootDirectory() throws Exception {
         final File jsTestBaseDir = ClosureRequireDependencyManagerTest.getJsTestBaseDir();
         return GeonetWroModelFactory.findGeonetworkRootDirectory(jsTestBaseDir.getAbsolutePath());
     }

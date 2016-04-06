@@ -38,6 +38,7 @@ import org.fao.geonet.kernel.ThesaurusManager;
 import org.fao.geonet.languages.IsoLanguagesMapper;
 import org.jdom.Element;
 
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -55,7 +56,7 @@ public class AddElement implements Service {
     public static final String DEFINITION = "definition";
     public static final String PREF_LAB = "label";
 
-	public void init(String appPath, ServiceConfig params) throws Exception {
+	public void init(Path appPath, ServiceConfig params) throws Exception {
 	}
 
 	// --------------------------------------------------------------------------
@@ -129,7 +130,8 @@ public class AddElement implements Service {
 			elResp.addContent(new Element("selected").setText(ref));
 			elResp.addContent(new Element("mode").setText("edit"));
 		} else {
-			elResp.addContent(new Element("error").addContent(new Element("message").setText("Code value already exists in thesaurus")));
+			elResp.addContent(new Element("error").setAttribute("message",
+                    String.format("Code value '%s' already exists in thesaurus", newid)));
 		}
 
 		return elResp;

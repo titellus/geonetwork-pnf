@@ -7,14 +7,21 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Tests that javascript dependencies are correctly parsed from javascript files.
@@ -27,7 +34,7 @@ public class ClosureRequireDependencyManagerTest {
     private ClosureRequireDependencyManager _depManager;
 
     @Before
-    public void configureTestFile() throws IOException {
+    public void configureTestFile() throws Exception {
         this._depManager = new ClosureRequireDependencyManager();
         final File rootOfSearch = getJsTestBaseDir();
         final Iterator<File> fileIterator = FileUtils.iterateFiles(rootOfSearch, new String[]{"js"}, true);
@@ -42,14 +49,14 @@ public class ClosureRequireDependencyManagerTest {
 
     }
 
-    static File getJsTestBaseDir() {
+    static File getJsTestBaseDir() throws Exception {
         final Class<ClosureRequireDependencyManagerTest> cls = ClosureRequireDependencyManagerTest
                 .class;
         final URL resource = cls.getResource(cls.getSimpleName() + ".class");
         if (resource == null) {
             throw new Error("Programming error");
         }
-        return new File(resource.getFile()).getParentFile();
+        return new File(resource.toURI()).getParentFile();
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -64,7 +71,7 @@ public class ClosureRequireDependencyManagerTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testAddFileNoRequireString() throws Exception {
-        _depManager.addFile("abc", "goog.require()", Collections.<String>emptySet());
+        _depManager.addFile("abc", "goog.require('qrt)", Collections.<String>emptySet());
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -84,9 +91,10 @@ public class ClosureRequireDependencyManagerTest {
         _depManager.validateGraph();
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testAddFileNoProvide() throws Exception {
-        _depManager.addFile("abc", "goog.require('ab2'", Collections.<String>emptySet());
+        final ClosureRequireDependencyManager.Node abc = _depManager.addFile("qrt/abc.js", "goog.require('ab2'", Collections.<String>emptySet());
+        assertEquals("abc", abc.id);
     }
 
     @Test(expected = IllegalArgumentException.class)

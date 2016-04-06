@@ -1,3 +1,26 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.kernel.schema;
 
 import org.fao.geonet.domain.Pair;
@@ -5,12 +28,11 @@ import org.fao.geonet.kernel.EditLib;
 import org.fao.geonet.utils.Xml;
 import org.jdom.Content;
 import org.jdom.Element;
-import org.jdom.JDOMException;
 import org.jdom.Text;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.File;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -27,7 +49,7 @@ import static org.junit.Assert.assertTrue;
  * Created by Jesse on 1/31/14.
  */
 public class StrictInspireTest extends AbstractInspireTest {
-    protected File schematronXsl;
+    protected Path schematronXsl;
     protected Element inspire_schematron;
 
     private static final Map<String, String> CONFORMITY_STRING = new HashMap<String, String>();
@@ -44,13 +66,12 @@ public class StrictInspireTest extends AbstractInspireTest {
     @Before
     public void before() {
         super.before();
-        String schematronFile = "iso19139/schematron/schematron-rules-inspire-strict.disabled.sch";
-        Pair<Element,File> compiledResult = compileSchematron(new File(SCHEMA_PLUGINS, schematronFile));
+        Pair<Element,Path> compiledResult = compileSchematron(getSchematronFile("iso19139", "schematron-rules-inspire-strict.disabled.sch"));
         inspire_schematron = compiledResult.one();
         schematronXsl = compiledResult.two();
     }
 
-    protected File getSchematronXsl() {
+    protected Path getSchematronXsl() {
         return schematronXsl;
     }
 
@@ -97,11 +118,11 @@ public class StrictInspireTest extends AbstractInspireTest {
                     )
             ));
 
-            Element results = Xml.transform(testMetadata, getSchematronXsl().getPath(), params);
+            Element results = Xml.transform(testMetadata, getSchematronXsl(), params);
             assertEquals(Xml.getString(results), 2, countFailures(results));
 
             title.setContent(new Element("CharacterString", GCO).setText(expectedTitle));
-            results = Xml.transform(testMetadata, getSchematronXsl().getPath(), params);
+            results = Xml.transform(testMetadata, getSchematronXsl(), params);
             assertEquals(0, countFailures(results));
 
             title.setContent(new Element("PT_FreeText", GMD).addContent(
@@ -111,14 +132,14 @@ public class StrictInspireTest extends AbstractInspireTest {
                                     setText(expectedTitle)
                     )
             ));
-            results = Xml.transform(testMetadata, getSchematronXsl().getPath(), params);
+            results = Xml.transform(testMetadata, getSchematronXsl(), params);
             assertEquals(0, countFailures(results));
         }
     }
 
     private void checkFailure(Element testMetadata, Map.Entry<String, String> lang, String invalidText, String expectedTitle) throws
             Exception {
-        Element results = Xml.transform(testMetadata, getSchematronXsl().getPath(), params);
+        Element results = Xml.transform(testMetadata, getSchematronXsl(), params);
 
         assertEquals(Xml.getString(results), 1, countFailures(results));
 
@@ -147,7 +168,7 @@ public class StrictInspireTest extends AbstractInspireTest {
             content.detach();
         }
 
-        Element results = Xml.transform(testMetadata, getSchematronXsl().getPath(), params);
+        Element results = Xml.transform(testMetadata, getSchematronXsl(), params);
         assertEquals(1, countFailures(results));
     }
 
@@ -162,7 +183,7 @@ public class StrictInspireTest extends AbstractInspireTest {
             content.detach();
         }
 
-        Element results = Xml.transform(testMetadata, getSchematronXsl().getPath(), params);
+        Element results = Xml.transform(testMetadata, getSchematronXsl(), params);
         assertEquals(2, countFailures(results));
     }
 }

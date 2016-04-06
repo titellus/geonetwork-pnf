@@ -853,6 +853,7 @@ public class Harvest extends AbstractOperation implements CatalogService {
                     settingManager.getValue("system/feedback/mailServer/username"), 
                     settingManager.getValue("system/feedback/mailServer/password"), 
                     settingManager.getValueAsBool("system/feedback/mailServer/ssl"), 
+                    settingManager.getValueAsBool("system/feedback/mailServer/tls"),
                     "noreply@geonetwork.org",
                     "GeoNetwork CSW Server", to, null, "Asynchronous CSW Harvest results delivery", harvestResponse);
         }
@@ -957,13 +958,14 @@ public class Harvest extends AbstractOperation implements CatalogService {
                 config.setAuthenticationEnabled(false);
                 method.setConfig(config.build());
 
+                final String requestHost =  method.getURI().getHost();
                 final ClientHttpResponse httpResponse = applicationContext.getBean(GeonetHttpRequestFactory.class).execute(method,
                         new Function<HttpClientBuilder, Void>() {
                             @Nullable
                             @Override
                             public Void apply(@Nonnull HttpClientBuilder input) {
                                 SettingManager settingManager = applicationContext.getBean(SettingManager.class);
-                                Lib.net.setupProxy(settingManager, input);
+                                Lib.net.setupProxy(settingManager, input, requestHost);
                                 input.setRetryHandler(new DefaultHttpRequestRetryHandler());
                                 return null;
                             }

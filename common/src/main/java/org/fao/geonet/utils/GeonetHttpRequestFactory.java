@@ -1,3 +1,26 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.utils;
 
 import com.google.common.base.Function;
@@ -13,6 +36,7 @@ import org.apache.http.config.SocketConfig;
 import org.apache.http.conn.ConnectionRequest;
 import org.apache.http.conn.HttpClientConnectionManager;
 import org.apache.http.conn.routing.HttpRoute;
+import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
@@ -101,7 +125,7 @@ public class GeonetHttpRequestFactory {
      * @return the XmlRequest.
      */
     public final XmlRequest createXmlRequest(URL url) {
-        final int port = url.getPort() == -1 ? url.getDefaultPort() : url.getPort();
+        final int port = url.getPort();
         final XmlRequest request = createXmlRequest(url.getHost(), port,
                 url.getProtocol());
 
@@ -109,7 +133,7 @@ public class GeonetHttpRequestFactory {
         request.setQuery(url.getQuery());
         request.setFragment(url.getRef());
         request.setUserInfo(url.getUserInfo());
-
+        request.setCookieStore(new BasicCookieStore());
         return request;
     }
 
@@ -156,7 +180,8 @@ public class GeonetHttpRequestFactory {
         final HttpClientBuilder clientBuilder = getDefaultHttpClientBuilder();
         configurator.apply(clientBuilder);
         CloseableHttpClient httpClient = clientBuilder.build();
-        if (r.isPreemptiveBasicAuth()) {
+
+        if (r.isPreemptiveBasicAuth() || r.getHttpClientContext() != null) {
             return new AdaptingResponse(httpClient, httpClient.execute(request, r.getHttpClientContext()));
         } else {
             return new AdaptingResponse(httpClient, httpClient.execute(request));

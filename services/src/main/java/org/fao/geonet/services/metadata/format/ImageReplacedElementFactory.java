@@ -1,9 +1,31 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.services.metadata.format;
 
-import java.io.InputStream;
-import java.net.URL;
-import java.net.URLEncoder;
-
+import com.google.common.collect.Sets;
+import com.google.common.io.Files;
+import com.itextpdf.text.Image;
 import org.apache.commons.io.IOUtils;
 import org.fao.geonet.constants.Geonet;
 import org.fao.geonet.utils.Log;
@@ -12,14 +34,20 @@ import org.xhtmlrenderer.extend.ReplacedElement;
 import org.xhtmlrenderer.extend.ReplacedElementFactory;
 import org.xhtmlrenderer.extend.UserAgentCallback;
 import org.xhtmlrenderer.layout.LayoutContext;
+import org.xhtmlrenderer.pdf.EmptyReplacedElement;
 import org.xhtmlrenderer.pdf.ITextFSImage;
 import org.xhtmlrenderer.pdf.ITextImageElement;
 import org.xhtmlrenderer.render.BlockBox;
 import org.xhtmlrenderer.simple.extend.FormSubmissionListener;
 
-import com.lowagie.text.Image;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.util.Set;
+import javax.imageio.ImageIO;
 
 public class ImageReplacedElementFactory implements ReplacedElementFactory {
+    private static Set<String> imgFormatExts = null;
     private final ReplacedElementFactory superFactory;
     private String baseURL;
 
@@ -39,10 +67,9 @@ public class ImageReplacedElementFactory implements ReplacedElementFactory {
         String nodeName = element.getNodeName();
         String src = element.getAttribute("src");
         if ("img".equals(nodeName) && src.contains("region.getmap.png")) {
-            InputStream input = null;
+            StringBuilder builder = new StringBuilder(baseURL);
             try {
                 String[] parts = src.split("\\?|&");
-                StringBuilder builder = new StringBuilder(baseURL);
                 builder.append(parts[0]);
                 builder.append('?');
                 for (int i = 1; i < parts.length ; i++) {
@@ -54,29 +81,77 @@ public class ImageReplacedElementFactory implements ReplacedElementFactory {
                     builder.append('=');
                     builder.append(URLEncoder.encode(param[1], "UTF-8"));
                 }
-                input = new URL(builder.toString()).openStream();
-                byte[] bytes = IOUtils.toByteArray(input);
-                Image image = Image.getInstance(bytes);
-
-                float factor = layoutContext.getDotsPerPixel();
-                image.scaleAbsolute(image.getPlainWidth() * factor, image.getPlainHeight() * factor);
-                FSImage fsImage = new ITextFSImage(image);
-                
-                if(cssHeight > -1 && cssWidth > -1) {
-                    fsImage.scale(cssWidth, cssHeight);
-                }
-                
-                return new ITextImageElement(fsImage);
             } catch (Exception e) {
-                Log.error(Geonet.GEONETWORK, "Error writing metadata to PDF", e);
-            } finally {
-                if (input != null) {
-                    org.apache.commons.io.IOUtils.closeQuietly(input);
+                Log.warning(Geonet.GEONETWORK, "Error writing metadata to PDF", e);
+            }
+            float factor = layoutContext.getDotsPerPixel();
+            return loadImage(layoutContext, box, userAgentCallback, cssWidth, cssHeight, builder.toString(), factor);
+        } else if ("img".equals(nodeName) && isSupportedImageFormat(src)) {
+            float factor = layoutContext.getDotsPerPixel();
+            return loadImage(layoutContext, box, userAgentCallback, cssWidth, cssHeight, src, factor);
+        }
+
+        try {
+            return superFactory.createReplacedElement(layoutContext, box, userAgentCallback, cssWidth, cssHeight);
+        } catch (Throwable e) {
+            return new EmptyReplacedElement(cssWidth, cssHeight);
+        }
+    }
+
+    private boolean isSupportedImageFormat(String imgUrl) {
+        String ext = Files.getFileExtension(imgUrl);
+        return ext.trim().isEmpty() || getSupportedExts().contains(ext);
+    }
+
+    private static Set<String> getSupportedExts() {
+        if (imgFormatExts == null) {
+            synchronized (ImageReplacedElementFactory.class) {
+                if (imgFormatExts == null) {
+                    imgFormatExts = Sets.newHashSet();
+                    for (String ext : ImageIO.getReaderFileSuffixes()) {
+                        imgFormatExts.add(ext.toLowerCase());
+                    }
                 }
             }
         }
 
-        return superFactory.createReplacedElement(layoutContext, box, userAgentCallback, cssWidth, cssHeight);
+        return imgFormatExts;
+    }
+
+    private ReplacedElement loadImage(LayoutContext layoutContext, BlockBox box, UserAgentCallback userAgentCallback,
+                                      int cssWidth, int cssHeight, String url, float scaleFactor) {
+        InputStream input = null;
+        try {
+            input = new URL(url).openStream();
+            byte[] bytes = IOUtils.toByteArray(input);
+            Image image = Image.getInstance(bytes);
+
+            image.scaleAbsolute(image.getPlainWidth() * scaleFactor, image.getPlainHeight() * scaleFactor);
+            FSImage fsImage = new ITextFSImage(image);
+
+            if(cssHeight > -1 && cssWidth > -1) {
+                fsImage.scale(cssWidth, cssHeight);
+            }
+            int maxWidth = (int) (900 * scaleFactor);
+            if (fsImage.getWidth() > maxWidth) {
+                int ratio = fsImage.getWidth() / maxWidth;
+                fsImage.scale(maxWidth, fsImage.getHeight() / ratio);
+            }
+
+            return new ITextImageElement(fsImage);
+        } catch (Exception e) {
+            Log.error(Geonet.GEONETWORK, "Error writing metadata to PDF", e);
+
+            try {
+                return superFactory.createReplacedElement(layoutContext, box, userAgentCallback, cssWidth, cssHeight);
+            } catch (Throwable e2) {
+                return new EmptyReplacedElement(cssWidth, cssHeight);
+            }
+        } finally {
+            if (input != null) {
+                IOUtils.closeQuietly(input);
+            }
+        }
     }
 
     @Override

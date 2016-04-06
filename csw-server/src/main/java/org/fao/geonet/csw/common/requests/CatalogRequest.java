@@ -23,33 +23,22 @@
 
 package org.fao.geonet.csw.common.requests;
 
-import static org.fao.geonet.utils.AbstractHttpRequest.Method;
 import jeeves.server.context.ServiceContext;
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
-import org.fao.geonet.utils.GeonetHttpRequestFactory;
-import org.fao.geonet.utils.Log;
-import org.fao.geonet.Util;
-
 import org.apache.commons.lang.StringUtils;
-import org.fao.geonet.constants.Geonet;
 import org.fao.geonet.csw.common.Csw;
 import org.fao.geonet.csw.common.exceptions.CatalogException;
-import org.fao.geonet.csw.common.util.Xml;
 import org.fao.geonet.lib.Lib;
+import org.fao.geonet.utils.GeonetHttpRequestFactory;
 import org.fao.geonet.utils.XmlRequest;
-import org.jdom.Document;
 import org.jdom.Element;
-import org.jdom.JDOMException;
 import org.jdom.Namespace;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+
+import static org.fao.geonet.utils.AbstractHttpRequest.Method;
 
 //=============================================================================
 
@@ -64,7 +53,7 @@ public abstract class CatalogRequest {
 
 	//---------------------------------------------------------------------------
 
-	public CatalogRequest(final ServiceContext context, final String host) { this(context, host, 80); }
+	public CatalogRequest(final ServiceContext context, final String host) { this(context, host, -1); }
 
     //---------------------------------------------------------------------------
 
@@ -118,7 +107,7 @@ public abstract class CatalogRequest {
 	 * preserved (and {@link CatalogRequest#excludedParameters} are
 	 * excluded). A complete GetCapabilities URL may be used for initialization.
 	 */
-	public void setUrl(URL url)
+	public void setUrl(ServiceContext context, URL url)
 	{
         client.setUrl(url);
 
@@ -135,6 +124,9 @@ public abstract class CatalogRequest {
 				}
 			}
 		}
+
+        // Setup the proxy if applies, checking the url in the proxy ignore list
+        Lib.net.setupProxy(context, client);
 	}
 
 	//---------------------------------------------------------------------------
@@ -198,8 +190,7 @@ public abstract class CatalogRequest {
 	protected void fill(String param, Iterable<?> iter, String prefix)
 	{
 		Iterator<?> i = iter.iterator();
-
-		if (!i.hasNext())
+        if (!i.hasNext())
 			return;
 
 		StringBuffer sb = new StringBuffer();
@@ -210,7 +201,7 @@ public abstract class CatalogRequest {
 			sb.append(i.next());
 
 			if (i.hasNext())
-				sb.append(',');
+				sb.append( ",");
 		}
 
 		addParam(param, sb.toString());
@@ -299,30 +290,28 @@ public abstract class CatalogRequest {
 		el.setAttribute(name, sb.toString());
 	}
 
-    	//---------------------------------------------------------------------------
 
-	protected void setAttribComma(Element el, String name, Iterable<?> iter, String prefix)
-	{
-		Iterator<?> i = iter.iterator();
+    protected void setAttribSpaceSeparated(Element el, String name, Iterable<?> iter, String prefix) {
+        Iterator<?> i = iter.iterator();
 
-		if (!i.hasNext())
-			return;
+        if (!i.hasNext())
+            return;
 
-		StringBuffer sb = new StringBuffer();
+        StringBuffer sb = new StringBuffer();
 
-		while(i.hasNext())
-		{
+        while(i.hasNext())
+        {
             Object value =  i.next();
 
             sb.append(prefix);
             sb.append(value.toString());
 
-			if (i.hasNext())
-				sb.append(',');
-		}
+            if (i.hasNext())
+                sb.append(" ");
+        }
 
-		el.setAttribute(name, sb.toString());
-	}
+        el.setAttribute(name, sb.toString());
+    }
 	//--------------------------------------------------------------------------
 	//--- Parameters facilities (POST)
 	//---------------------------------------------------------------------------
@@ -346,7 +335,9 @@ public abstract class CatalogRequest {
 
 	protected void addParam(String name, Object value, String prefix)
 	{
-        client.addParam(name, prefix+value.toString());
+        if (value != null) {
+            client.addParam(name, prefix + value.toString());
+        }
 	}
 
 	protected String outputSchema;

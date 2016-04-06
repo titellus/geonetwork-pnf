@@ -1,3 +1,26 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 (function() {
   'use strict';
   goog.provide('gn_schematronadmin_editcriteriadirective');
@@ -159,7 +182,8 @@
                scope.editing = false;
              };
              scope.updateTypeAhead = function() {
-               var input, criteriaType, typeaheadOptions, parseResponseFunction;
+               var input, criteriaType, source, typeaheadOptions,
+               parseResponseFunction;
                input = findValueInput();
                input.typeahead('destroy');
 
@@ -219,25 +243,50 @@
                  if (criteriaType.remote) {
                    if (criteriaType.remote.cacheTime &&
                    criteriaType.remote.cacheTime > 0) {
-                     typeaheadOptions.prefetch = {
-                       url: criteriaType.remote.url,
-                       ttl: parseInt(criteriaType.remote.cacheTime),
-                       filter: parseResponseFunction
-                     };
+                     source = new Bloodhound({
+                       datumTokenizer:
+                       Bloodhound.tokenizers.obj.whitespace('value'),
+                       queryTokenizer: Bloodhound.tokenizers.whitespace,
+                       prefetch: {
+                         url: criteriaType.remote.url,
+                         ttl: parseInt(criteriaType.remote.cacheTime),
+                         filter: parseResponseFunction
+                       },
+                       limit: 30
+                     });
                    } else {
-                     typeaheadOptions.remote = {
-                       url: criteriaType.remote.url,
-                       cache: false,
-                       timeout: 1000,
-                       wildcard: '@@search@@',
-                       filter: parseResponseFunction
-                     };
+                     source = new Bloodhound({
+                       datumTokenizer:
+                       Bloodhound.tokenizers.obj.whitespace('value'),
+                       queryTokenizer: Bloodhound.tokenizers.whitespace,
+                       remote: {
+                         url: criteriaType.remote.url,
+                         cache: false,
+                         timeout: 1000,
+                         wildcard: '@@search@@',
+                         filter: parseResponseFunction
+                       },
+                       limit: 30
+                     });
                    }
                  } else {
-                   typeaheadOptions.local = criteriaType.local;
+                   var source = new Bloodhound({
+                     datumTokenizer:
+                     Bloodhound.tokenizers.obj.whitespace('value'),
+                     queryTokenizer: Bloodhound.tokenizers.whitespace,
+                     local: data,
+                     limit: 30
+                   });
                  }
-
-                 input.typeahead(typeaheadOptions);
+                 source.initialize();
+                 input.typeahead({
+                   minLength: 0,
+                   highlight: true
+                 }, {
+                   name: typeaheadOptions.name,
+                   displayKey: 'value',
+                   source: source.ttAdapter()
+                 });
                  input.on('typeahead:selected', function(event, data) {
                    scope.criteria.value = data.data;
                    scope.criteria.uivalue = data.value;

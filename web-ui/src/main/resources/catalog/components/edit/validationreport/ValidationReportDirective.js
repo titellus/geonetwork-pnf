@@ -1,3 +1,26 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 (function() {
   goog.provide('gn_validation_report_directive');
 
@@ -17,7 +40,8 @@
                 'partials/validationreport.html',
             scope: {},
             link: function(scope) {
-              scope.showErrorsOnly = true;
+              scope.showErrors = false;
+              scope.showSuccess = false;
               scope.gnCurrentEdit = gnCurrentEdit;
               scope.loading = false;
               scope.ruleTypes = [];
@@ -25,7 +49,9 @@
               scope.load = function() {
                 scope.numberOfRules = 0;
                 scope.ruleTypes = [];
+                scope.hasRequiredErrors = false;
                 scope.hasErrors = false;
+                scope.hasSuccess = false;
                 scope.loading = true;
 
                 gnValidation.get().then(function(ruleTypes) {
@@ -40,13 +66,18 @@
                     ruleType.error = parseInt(ruleType.error);
                     ruleType.expanded = false;
 
+                    scope.hasRequiredErrors = scope.hasRequiredErrors ||
+                        (ruleType.requirement === 'REQUIRED' &&
+                        ruleType.error > 0);
                     scope.hasErrors = scope.hasErrors || ruleType.error > 0;
                     angular.forEach(ruleType.patterns, function(pat) {
-                      scope.numberOfRules += pat.rules.length;
+                      scope.numberOfRules +=
+                          pat.rules ? pat.rules.length : 0;
                     });
                   });
 
                   scope.ruleTypes = scope.ruleTypes.concat(optional);
+                  scope.hasSuccess = scope.ruleTypes.length > 0;
                   scope.loading = false;
                 });
               };
@@ -61,18 +92,26 @@
               };
 
               scope.toggleShowErrors = function() {
-                scope.showErrorsOnly = !scope.showErrorsOnly;
+                scope.showErrors = !scope.showErrors;
+              };
+              scope.toggleShowSuccess = function() {
+                scope.showSuccess = !scope.showSuccess;
               };
 
               scope.getClass = function(type) {
                 if (scope.numberOfRules > 0) {
                   if (type === 'icon') {
-                    return scope.hasErrors ?
+                    return scope.hasRequiredErrors ?
                         'fa-thumbs-o-down' : 'fa-thumbs-o-up';
                   }
-                  return scope.hasErrors ? 'panel-danger' : 'panel-success';
+                  return scope.hasRequiredErrors ?
+                      'panel-danger' : 'panel-success';
                 }
-                return '';
+                if (type === 'icon') {
+                  return 'fa-check';
+                } else {
+                  return '';
+                }
               };
 
               // When saving is done, refresh validation report

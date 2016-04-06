@@ -1,4 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (C) 2001-2016 Food and Agriculture Organization of the
+  ~ United Nations (FAO-UN), United Nations World Food Programme (WFP)
+  ~ and United Nations Environment Programme (UNEP)
+  ~
+  ~ This program is free software; you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation; either version 2 of the License, or (at
+  ~ your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful, but
+  ~ WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  ~ General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program; if not, write to the Free Software
+  ~ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+  ~
+  ~ Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+  ~ Rome - Italy. email: geonetwork@osgeo.org
+  -->
+
 <xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:gn="http://www.fao.org/geonetwork"
   xmlns:gn-fn-metadata="http://geonetwork-opensource.org/xsl/functions/metadata"
@@ -6,6 +29,28 @@
   exclude-result-prefixes="#all">
   <!-- Provides XSL function related to metadata management like
   retrieving labels, helper, -->
+
+
+  <!--
+      Return the original node with its context when a node
+       is retrieved using the evaluate template (which cause the
+       element to lost its context. Only works on an enumerated
+       metadocument (ie. in editing mode).
+    -->
+  <xsl:function name="gn-fn-metadata:getOriginalNode" as="node()">
+    <xsl:param name="metadata" as="node()"/>
+    <xsl:param name="evaluatedNode" as="node()"/>
+
+    <xsl:variable name="nodeRef" select="$evaluatedNode/gn:element/@ref"/>
+    <xsl:variable name="node" select="$metadata//*[gn:element/@ref = $nodeRef]"/>
+
+    <!--<xsl:message>#getOriginalNode ==================</xsl:message>
+    <xsl:message><xsl:value-of select="$evaluatedNode/*/gn:element/@ref"/></xsl:message>
+    <xsl:message>Match with ref: <xsl:value-of select="$node/gn:element/@ref"/></xsl:message>
+    <xsl:message><xsl:copy-of select="$node"/></xsl:message>-->
+
+    <xsl:sequence select="if ($node) then $node else $evaluatedNode"/>
+  </xsl:function>
 
   <!-- 
     Return the label of an element looking in <schema>/loc/<lang>/labels.xml
@@ -33,17 +78,31 @@
     Add try/catch block to log out when a label id duplicated
     in loc files. XSLv3 could be useful for that.
     -->
-    <!--<xsl:message>#<xsl:value-of select="$name"/></xsl:message>
-    <xsl:message>#<xsl:value-of select="$xpath"/></xsl:message>
-    <xsl:message>#<xsl:value-of select="$parent"/></xsl:message>-->
-    
+    <!--
+    <xsl:message>#gn-fn-metadata:getLabel</xsl:message>
+    <xsl:message>#Element name: <xsl:value-of select="$name"/></xsl:message>
+    <xsl:message>#XPath: <xsl:value-of select="$xpath"/></xsl:message>
+    <xsl:message>#Parent: <xsl:value-of select="$parent"/></xsl:message>
+    -->
+
+    <xsl:variable name="escapedName">
+      <xsl:choose>
+        <xsl:when test="matches($name, '.*CHOICE_ELEMENT.*')">
+          <xsl:value-of select="substring-before($name, 'CHOICE_ELEMENT')"/>
+        </xsl:when>
+        <xsl:when test="matches($name, '.*GROUP_ELEMENT.*')">
+          <xsl:value-of select="substring-before($name, 'GROUP_ELEMENT')"/>
+        </xsl:when>
+        <xsl:otherwise><xsl:value-of select="$name"/></xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
     
     <!-- Name with context in current schema -->
     <xsl:variable name="schemaLabelWithContext"
-      select="$labels/element[@name=$name and (@context=$xpath or @context=$parent or @context=$parentIsoType)]"/>
+      select="$labels/element[@name=$escapedName and (@context=$xpath or @context=$parent or @context=$parentIsoType)]"/>
     
     <!-- Name in current schema -->
-    <xsl:variable name="schemaLabel" select="$labels/element[@name=$name and not(@context)]"/>
+    <xsl:variable name="schemaLabel" select="$labels/element[@name=$escapedName and not(@context)]"/>
 
     <xsl:choose>
       <xsl:when test="$schemaLabelWithContext">
@@ -61,7 +120,7 @@
           <xsl:otherwise>
             <element>
               <label>
-                <xsl:value-of select="$name"/>
+                <xsl:value-of select="$escapedName"/>
               </label>
             </element>
             <xsl:message>gn-fn-metadata:getLabel | missing translation in schema <xsl:value-of
@@ -100,7 +159,7 @@
     <xsl:param name="codelists" as="node()"/>
     <xsl:copy-of select="gn-fn-metadata:getCodeListValues($schema, $name, $codelists, false())"/>
   </xsl:function>
-  
+
   <xsl:function name="gn-fn-metadata:getCodeListValues" as="node()">
     <xsl:param name="schema" as="xs:string"/>
     <xsl:param name="name" as="xs:string"/>
@@ -109,8 +168,15 @@
 
     <xsl:variable name="codelists" select="$codelists/codelist[@name=$name]"
       exclude-result-prefixes="#all"/>
-    
-    <!-- Conditional helpers which may define an xpath expression to evaluate 
+
+    <!--
+    <xsl:message>#gn-fn-metadata:getCodeListValues</xsl:message>
+    <xsl:message>#Schema: <xsl:value-of select="$schema"/> </xsl:message>
+    <xsl:message>#Element name: <xsl:value-of select="$name"/> </xsl:message>
+    <xsl:message>#Codelist found: <xsl:copy-of select="$codelists"/> </xsl:message>
+    -->
+
+    <!-- Conditional helpers which may define an xpath expression to evaluate
         if the xpath match. Check all codelists if one define an expression.
         If the expression return a node, this codelist will be returned. -->
     <xsl:variable name="conditionalCodelist">
@@ -118,10 +184,10 @@
         <xsl:for-each select="$codelists">
           <xsl:if test="@displayIf">
             <xsl:variable name="match">
-              <xsl:call-template name="evaluate-iso19139">
+              <saxon:call-template name="{concat('evaluate-', $schema)}">
                 <xsl:with-param name="base" select="$metadata/descendant-or-self::node()[gn:element/@ref = $node/gn:element/@ref]"/>
-                <xsl:with-param name="in" select="@displayIf"/>
-              </xsl:call-template>
+                <xsl:with-param name="in" select="concat('/', @displayIf)"/>
+              </saxon:call-template>
             </xsl:variable>
             <xsl:if test="$match != ''">
               <xsl:copy-of select="."/>
@@ -138,6 +204,7 @@
       <xsl:when test="$codelists">
         <!-- Return the default -->
         <codelist>
+          <xsl:copy-of select="$codelists[not(@displayIf)]/@*"/>
           <xsl:copy-of select="$codelists[not(@displayIf)]/*[not(@hideInEditMode)]"/>
         </codelist>
       </xsl:when>
@@ -189,23 +256,36 @@
         <!-- Search for the related element identifier -->
         <xsl:variable name="relatedElementRef"
           select="$node/../*[name()=$helper/@rel]/*/gn:element/@ref"/>
-        
-        
+
         <helper>
           <xsl:attribute name="relElementRef" select="$relatedElementRef"/>
           <xsl:copy-of select="$helper/@*"/>
-          <xsl:for-each select="$helper[@displayIf]">
-            <xsl:variable name="match">
-              <saxon:call-template name="{concat('evaluate-', $schema)}">
-                <xsl:with-param name="base" select="$metadata/descendant-or-self::node()[gn:element/@ref = $node/gn:element/@ref]"/>
-                <xsl:with-param name="in" select="concat('/', @displayIf)"/>
-              </saxon:call-template>
-            </xsl:variable>
-            
-            <xsl:if test="$match/*">
-              <xsl:copy-of select="option"/>
-            </xsl:if>
-          </xsl:for-each>
+
+          <xsl:variable name="helpersMatchingCurrentRecord">
+            <xsl:for-each select="$helper[@displayIf]">
+              <xsl:variable name="match">
+                <saxon:call-template name="{concat('evaluate-', $schema)}">
+                  <xsl:with-param name="base" select="$metadata/descendant-or-self::node()[gn:element/@ref = $node/gn:element/@ref]"/>
+                  <xsl:with-param name="in" select="concat('/', @displayIf)"/>
+                </saxon:call-template>
+              </xsl:variable>
+
+              <xsl:if test="$match/*">
+                <xsl:copy-of select="option"/>
+              </xsl:if>
+            </xsl:for-each>
+          </xsl:variable>
+
+          <xsl:choose>
+            <xsl:when
+                    test="count($helpersMatchingCurrentRecord/*) > 0">
+              <xsl:copy-of select="$helpersMatchingCurrentRecord"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <!-- The default helper is the one with no condition. -->
+              <xsl:copy-of select="$helper[not(@displayIf)]/*"/>
+            </xsl:otherwise>
+          </xsl:choose>
         </helper>
       </xsl:when>
       
@@ -280,22 +360,33 @@
   <!-- Return the directive to use for add control if a custom one 
   is defined. Eg. Adding from a thesaurus propose a list of available
   thesaurus. -->
-  <xsl:function name="gn-fn-metadata:getFieldAddDirective" as="xs:string">
+  <xsl:function name="gn-fn-metadata:getFieldAddDirective" as="node()">
     <xsl:param name="configuration" as="node()"/>
     <xsl:param name="name" as="xs:string"/>
     
-    <xsl:variable name="type" select="normalize-space($configuration/editor/fields/for[@name = $name]/@addDirective)"/>
-    
-    <xsl:value-of
-      select="if ($type != '')
-      then $type 
-      else ''"
-    />
+    <xsl:variable name="type" select="$configuration/editor/fields/for[@name = $name and @addDirective]"/>
+    <xsl:choose>
+      <xsl:when test="$type">
+        <xsl:copy-of select="$type" copy-namespaces="no"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <null/>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:function>
 
+  <xsl:function name="gn-fn-metadata:getFieldAddDirectiveAttributes"
+                as="attribute()*">
+    <xsl:param name="configuration" as="node()"/>
+    <xsl:param name="name" as="xs:string"/>
+
+    <xsl:copy-of select="$configuration/editor/fields/
+          for[@name = $name and @addDirective]/
+          directiveAttributes/@*"/>
+  </xsl:function>
 
   <!-- Return if a flat mode exception has been defined in the current view for a field. -->
-  <xsl:function name="gn-fn-metadata:getFieldFlatModeException" as="xs:boolean">
+  <xsl:function name="gn-fn-metadata:isFieldFlatModeException" as="xs:boolean">
     <xsl:param name="configuration" as="node()"/>
     <xsl:param name="name" as="xs:string"/>
 
@@ -312,6 +403,14 @@
     <xsl:param name="node" as="node()"/>
     
     <xsl:value-of select="gn-fn-metadata:getXPath($node, false())"/>
+  </xsl:function>
+
+  <xsl:function name="gn-fn-metadata:positionOfType" as="xs:string">
+    <xsl:param name="node" as="node()"/>
+    <xsl:variable name="nodePosition" select="$node/position()" />
+    <xsl:variable name="allPrecedingSiblings" select="$node/preceding-sibling::*[name() = name($node)]" />
+    <!--<xsl:value-of select="count($node/../*[name = name($node) and position() &lt; $nodePosition]) + 1"/>-->
+    <xsl:value-of select="count($allPrecedingSiblings) + 1"/>
   </xsl:function>
 
   <!-- 
@@ -331,7 +430,7 @@
     <xsl:variable name="xpath">
       <xsl:for-each select="$ancestors[position() != $untilIndex]">
         <xsl:value-of select="if ($withPosition) 
-          then concat($xpathSeparator, name(.), '[', position(), ']')
+          then concat($xpathSeparator, name(.), '[', gn-fn-metadata:positionOfType(.), ']')
           else concat($xpathSeparator, name(.))"/>
       </xsl:for-each>
     </xsl:variable>
@@ -340,7 +439,7 @@
       select="if ($isAttribute) 
       then concat($xpath, $xpathSeparator, '@', $elementName) 
       else if ($withPosition) 
-        then concat($xpath, $xpathSeparator, $elementName, '[', $node/position(), ']')
+        then concat($xpath, $xpathSeparator, $elementName, '[', gn-fn-metadata:positionOfType($node), ']')
         else concat($xpath, $xpathSeparator, $elementName)
       "
     />

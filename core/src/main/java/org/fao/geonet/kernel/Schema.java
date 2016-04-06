@@ -1,3 +1,26 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.kernel;
 
 import jeeves.server.dispatchers.guiservices.XmlFile;
@@ -6,6 +29,7 @@ import org.fao.geonet.kernel.schema.MetadataSchema;
 
 import org.jdom.Element;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -115,7 +139,7 @@ public class Schema {
 		this.schemaInfo = schemaInfo;
 	}
 
-	private String dir;
+	private Path dir;
 
 	/**
 	 * Get file system directory in which schema resides - used by methods that need to access xslt files in the schema
@@ -123,7 +147,7 @@ public class Schema {
 	 *
      * @return
      */
-	public String getDir() { return dir; }
+	public Path getDir() { return dir; }
 
 	/**
 	 * Set file system directory in which schema resides.
@@ -131,7 +155,7 @@ public class Schema {
 	 * @param dir file system directory in which schema resides
 	 *
 	 */
-	public void setDir(String dir) { 
+	public void setDir(Path dir) {
 		this.dir = dir; 
 	}
 
@@ -225,7 +249,7 @@ public class Schema {
 	/**
 	 * Set List of XML elements whose text values are the names of schemas that this schema depends upon.
 	 *
-	 * @param  dependList of JDOM elements
+	 * @param  dependElements of JDOM elements
 	 *
 	 */
 	public void setDependElements(List<Element> dependElements) { 

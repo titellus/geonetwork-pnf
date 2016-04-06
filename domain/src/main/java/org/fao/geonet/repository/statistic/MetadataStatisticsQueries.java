@@ -1,3 +1,26 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.repository.statistic;
 
 import com.google.common.base.Optional;
@@ -296,32 +319,108 @@ public class MetadataStatisticsQueries {
      */
     public Map<MetadataValidationStatus, Integer> getMetadataValidationStatusToStatMap(MetadataStatisticSpec spec) {
         final CriteriaBuilder cb = _entityManager.getCriteriaBuilder();
-        final CriteriaQuery<Tuple> cbQuery = cb.createQuery(Tuple.class);
-        final Root<Metadata> metadataRoot = cbQuery.from(Metadata.class);
-        final Root<MetadataValidation> metadataValidationRoot = cbQuery.from(MetadataValidation.class);
-
-        final Path<MetadataValidationStatus> statusPath = metadataValidationRoot.get(MetadataValidation_.status);
-        final Expression<Integer> metadataIdPath = metadataRoot.get(Metadata_.id);
-        Expression<Integer> metadataValidationMetadataIdPath = metadataValidationRoot.get(MetadataValidation_.id).get
-                (MetadataValidationId_.metadataId);
-
-
-        final Long notValidatedCount = calculateNotValidatedStat(spec, cb);
-
-        cbQuery.select(cb.tuple(statusPath, spec.getSelection(cb, metadataRoot)))
-                .where(cb.equal(metadataIdPath, metadataValidationMetadataIdPath))
-                .groupBy(statusPath);
-
         Map<MetadataValidationStatus, Integer> results = new HashMap<MetadataValidationStatus, Integer>();
 
+        // Compute number of not validate record
+        final Long notValidatedCount = calculateNotValidatedStat(spec, cb);
         results.put(MetadataValidationStatus.NEVER_CALCULATED, notValidatedCount.intValue());
-        for (Tuple tuple : _entityManager.createQuery(cbQuery).getResultList()) {
-            results.put(tuple.get(0, MetadataValidationStatus.class), tuple.get(1, Long.class).intValue());
-        }
+
+
+        final Long invalidCount = calculateInvalidatedStat(spec, cb);
+        results.put(MetadataValidationStatus.INVALID, invalidCount.intValue());
+
+        final Long validCount = calculateValidatedStat(spec, cb);
+        results.put(MetadataValidationStatus.VALID, validCount.intValue());
 
         return results;
     }
 
+
+    // Invalid record
+    // SELECT count(distinct(id)) as valid FROM metadata WHERE
+    // id IN (SELECT metadataid FROM Validation WHERE status = 0)
+    private Long calculateInvalidatedStat(MetadataStatisticSpec spec, CriteriaBuilder cb) {
+        final CriteriaQuery<Number> invalidatedQuery = cb.createQuery(Number.class);
+        final Root<Metadata> metadataRoot = invalidatedQuery.from(Metadata.class);
+        final Subquery<Integer> selectMetadataValidationMetadataIds = invalidatedQuery.subquery(Integer.class);
+        final Root<MetadataValidation> metadataValidationRoot = selectMetadataValidationMetadataIds
+                .from(MetadataValidation.class);
+        final Path<MetadataValidationStatus> statusPath = metadataValidationRoot.get(MetadataValidation_.status);
+        final Path<Integer> metadataValidationMetadataIdPath = metadataValidationRoot.get(MetadataValidation_.id).get
+                (MetadataValidationId_.metadataId);
+
+
+        selectMetadataValidationMetadataIds.select(metadataValidationMetadataIdPath);
+
+
+        final Path<Integer> metadataIdPath = metadataRoot.get(Metadata_.id);
+        invalidatedQuery
+                .select(spec.getSelection(cb, metadataRoot))
+                .where(
+                        metadataIdPath.in(
+                                selectMetadataValidationMetadataIds
+                                        .where(cb.equal(statusPath, MetadataValidationStatus.INVALID))
+                        )
+                );
+
+        final Number singleResult = _entityManager.createQuery(invalidatedQuery).getSingleResult();
+        if (singleResult == null) {
+            return 0L;
+        }
+        return singleResult.longValue();
+    }
+    // Valid record
+    // SELECT count(*) as valid FROM metadata WHERE
+    // id IN (SELECT metadataid FROM Validation WHERE status = 1) AND
+    // id NOT IN (SELECT metadataid FROM Validation WHERE status = 0)
+    private Long calculateValidatedStat(MetadataStatisticSpec spec, CriteriaBuilder cb) {
+        final CriteriaQuery<Number> validatedQuery = cb.createQuery(Number.class);
+        final Root<Metadata> metadataRoot = validatedQuery.from(Metadata.class);
+        final Subquery<Integer> selectValidMetadataIds = validatedQuery.subquery(Integer.class);
+        final Subquery<Integer> selectInvalidMetadataIds = validatedQuery.subquery(Integer.class);
+        final Root<MetadataValidation> metadataValidRoot = selectValidMetadataIds
+                .from(MetadataValidation.class);
+        final Root<MetadataValidation> metadataInvalidRoot = selectInvalidMetadataIds
+                .from(MetadataValidation.class);
+        final Path<MetadataValidationStatus> statusPath =
+                metadataValidRoot.get(MetadataValidation_.status);
+        final Path<MetadataValidationStatus> statusInvalidPath =
+                metadataInvalidRoot.get(MetadataValidation_.status);
+        final Path<Integer> validMetadataIdPath =
+                metadataValidRoot
+                        .get(MetadataValidation_.id)
+                        .get(MetadataValidationId_.metadataId);
+        final Path<Integer> invalidMetadataIdPath =
+                metadataInvalidRoot
+                        .get(MetadataValidation_.id)
+                        .get(MetadataValidationId_.metadataId);
+
+
+        selectValidMetadataIds.select(validMetadataIdPath);
+        selectInvalidMetadataIds.select(invalidMetadataIdPath);
+
+        final Path<Integer> metadataIdPath = metadataRoot.get(Metadata_.id);
+        validatedQuery
+                .select(spec.getSelection(cb, metadataRoot))
+                .where(
+                        cb.and(
+                                metadataIdPath.in(
+                                        selectValidMetadataIds
+                                                .where(cb.equal(statusPath, MetadataValidationStatus.VALID))
+                                ),
+                                cb.not(metadataIdPath.in(
+                                        selectInvalidMetadataIds
+                                                .where(cb.equal(statusInvalidPath, MetadataValidationStatus.INVALID))
+                                ))
+                        )
+                );
+
+        final Number singleResult = _entityManager.createQuery(validatedQuery).getSingleResult();
+        if (singleResult == null) {
+            return 0L;
+        }
+        return singleResult.longValue();
+    }
     private Long calculateNotValidatedStat(MetadataStatisticSpec spec, CriteriaBuilder cb) {
         final CriteriaQuery<Number> notValidatedQuery = cb.createQuery(Number.class);
         final Root<Metadata> metadataRoot = notValidatedQuery.from(Metadata.class);

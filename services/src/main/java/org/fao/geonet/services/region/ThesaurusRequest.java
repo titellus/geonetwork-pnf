@@ -1,6 +1,31 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.services.region;
 
+import com.google.common.base.Optional;
 import jeeves.server.context.ServiceContext;
+import org.fao.geonet.constants.Geonet;
 import org.fao.geonet.kernel.KeywordBean;
 import org.fao.geonet.kernel.SingleThesaurusFinder;
 import org.fao.geonet.kernel.Thesaurus;
@@ -13,7 +38,9 @@ import org.fao.geonet.kernel.search.keyword.KeywordRelation;
 import org.fao.geonet.kernel.search.keyword.KeywordSearchParamsBuilder;
 import org.fao.geonet.kernel.search.keyword.KeywordSearchType;
 import org.fao.geonet.util.LangUtils;
+import org.fao.geonet.utils.Log;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.jdom.JDOMException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import java.util.*;
@@ -124,8 +151,19 @@ public class ThesaurusRequest extends Request {
             }
             Map<String, String> categoryLabels = categoryTranslations.get(categoryLabelKey);
             if(categoryLabels == null) {
-                categoryLabels = LangUtils.translate(serviceContext, "categories", categoryLabelKey);
-                categoryTranslations.put(categoryLabelKey, categoryLabels);
+                try {
+                    categoryLabels = LangUtils.translate(serviceContext.getApplicationContext(), "categories", categoryLabelKey);
+                    categoryTranslations.put(categoryLabelKey, categoryLabels);
+                } catch (JDOMException e) {
+                    Log.debug(Geonet.THESAURUS_MAN,
+                            String.format("Category key %s is not valid for JDOM element." +
+                                            "Region thesaurus should use rdf:about element " +
+                                            "with the following structure <prefix>#<id> " +
+                                            "where the id could be a valid XML element name. " +
+                                            "Error is %s.",
+                                    categoryLabelKey, e.getMessage()));
+                    categoryLabels = new WeakHashMap<String, String>();
+                }
             }
             if (categoryLabels.isEmpty()) {
                 for (String loc : localesToLoad) {
@@ -150,4 +188,8 @@ public class ThesaurusRequest extends Request {
         return this;
     }
 
+    @Override
+    public Optional<Long> getLastModified() {
+        return Optional.of(thesaurus.getLastModifiedTime().toMillis());
+    }
 }

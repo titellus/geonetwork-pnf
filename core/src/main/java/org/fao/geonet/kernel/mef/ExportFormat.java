@@ -1,16 +1,45 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.kernel.mef;
 
-import com.google.common.base.Optional;
 import jeeves.server.context.ServiceContext;
+import org.fao.geonet.GeonetContext;
+import org.fao.geonet.constants.Geonet;
 import org.fao.geonet.domain.Metadata;
 import org.fao.geonet.domain.Pair;
+import org.fao.geonet.kernel.DataManager;
 import org.fao.geonet.kernel.GeonetworkExtension;
+import org.fao.geonet.kernel.schema.ExportablePlugin;
+import org.fao.geonet.kernel.schema.MetadataSchema;
+import org.fao.geonet.kernel.schema.SchemaPlugin;
+import org.fao.geonet.utils.Log;
 import org.fao.geonet.utils.Xml;
 import org.jdom.Element;
 
-import java.io.InputStream;
-import java.util.Iterator;
-import java.util.List;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.*;
 
 /**
  * An extension point called to create files to export as part of the MEF export.
@@ -19,17 +48,45 @@ import java.util.List;
  * Date: 11/8/13
  * Time: 3:21 PM
  */
-public abstract class ExportFormat implements GeonetworkExtension {
+public class ExportFormat implements GeonetworkExtension {
     /**
      * Return a list of &lt;filename, fileContents>.
-     *
      *
      * @param context
      * @param metadata the metadata to convert to files.
      *
      * @return
      */
-    public abstract Iterable<Pair<String, String>> getFormats(ServiceContext context, Metadata metadata) throws Exception;
+    public static Iterable<Pair<String, String>>  getFormats(ServiceContext context, Metadata metadata) throws Exception {
+        String schema = metadata.getDataInfo().getSchemaId();
+        GeonetContext gc = (GeonetContext) context.getHandlerContext(Geonet.CONTEXT_NAME);
+        DataManager dm = gc.getBean(DataManager.class);
+        MetadataSchema metadataSchema = dm.getSchema(schema);
+        SchemaPlugin schemaPlugin = metadataSchema.getSchemaPlugin();
+        if (schemaPlugin instanceof ExportablePlugin) {
+            Map<String, String> allFormats = ((ExportablePlugin) schemaPlugin).getExportFormats();
+            Iterator<String> allFiles = allFormats.keySet().iterator();
+            Set<Pair<String, String>> allExports = new HashSet<>();
+            while (allFiles.hasNext()) {
+                String xslFileName = allFiles.next();
+                String outputFileName = allFormats.get(xslFileName);
+                Path path = metadataSchema.getSchemaDir().resolve(xslFileName);
+                if (Files.isRegularFile(path)) {
+                    String outputData = formatData(metadata, true, path);
+                    allExports.add(Pair.read(outputFileName, outputData));
+                } else {
+                    // A conversion that does not exist
+                    if (Log.isDebugEnabled(Geonet.MEF)) {
+                        Log.debug(Geonet.MEF, String.format("Exporting MEF file for '%s' schema plugin formats. File '%s' not found",
+                                metadataSchema.getName(),
+                                path.getFileName()));
+                    }
+                }
+            }
+            return allExports;
+        }
+        return Collections.emptyList();
+    };
 
 
     /**
@@ -40,13 +97,10 @@ public abstract class ExportFormat implements GeonetworkExtension {
      * @return ByteArrayInputStream
      * @throws Exception
      */
-    public static String formatData(Metadata metadata, boolean transform, String stylePath) throws Exception {
+    public static String formatData(Metadata metadata, boolean transform, Path stylePath) throws Exception {
         String xmlData = metadata.getData();
 
         Element md = Xml.loadString(xmlData, false);
-
-        // Resolving Xlinks before export
-        // md = Processor.processXLink(md);
 
         // Apply a stylesheet transformation when schema is ISO profil
         if (transform) {

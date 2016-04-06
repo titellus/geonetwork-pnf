@@ -41,6 +41,7 @@ import org.fao.geonet.kernel.search.keyword.SortDirection;
 import org.fao.geonet.languages.IsoLanguagesMapper;
 import org.jdom.Element;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 
 //=============================================================================
@@ -50,7 +51,7 @@ import java.util.ArrayList;
  */
 
 public class EditElement implements Service {
-	public void init(String appPath, ServiceConfig params) throws Exception {
+	public void init(Path appPath, ServiceConfig params) throws Exception {
 	}
 
 	// --------------------------------------------------------------------------
@@ -126,9 +127,8 @@ public class EditElement implements Service {
 			KeywordsSearcher searcherBNR = new KeywordsSearcher(context, thesaurusMan);
 			
 			for (int i = 0; i <= reqType.size() - 1; i++) {
-				searcherBNR.searchForRelated(uri, ref, reqType.get(i), lang);
-			
-				searcherBNR.sortResults(KeywordSort.defaultLabelSorter(SortDirection.DESC));
+				searcherBNR.searchForRelated(uri, ref, reqType.get(i), KeywordSort.defaultLabelSorter(SortDirection.DESC), lang);
+
 				String type;
 				
 				if (reqType.get(i) == KeywordRelation.BROADER) {

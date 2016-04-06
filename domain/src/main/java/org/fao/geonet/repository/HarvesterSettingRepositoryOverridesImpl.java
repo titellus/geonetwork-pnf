@@ -1,16 +1,50 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.repository;
 
-import com.google.common.collect.Lists;
+import static org.fao.geonet.repository.HarvesterSettingRepository.ID_PREFIX;
+import static org.fao.geonet.repository.HarvesterSettingRepository.SEPARATOR;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.StringTokenizer;
+
+import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaDelete;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+
+import org.apache.commons.collections.CollectionUtils;
 import org.fao.geonet.domain.HarvesterSetting;
 import org.fao.geonet.domain.HarvesterSetting_;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.criteria.*;
-import java.util.*;
-
-import static org.fao.geonet.repository.HarvesterSettingRepository.ID_PREFIX;
-import static org.fao.geonet.repository.HarvesterSettingRepository.SEPARATOR;
+import com.google.common.collect.Lists;
 
 /**
  * Override delete methods in {@link org.springframework.data.jpa.repository.support.SimpleJpaRepository} so that full subtree
@@ -95,20 +129,20 @@ public class HarvesterSettingRepositoryOverridesImpl extends GeonetRepositoryImp
             }
         }
 
-        List<HarvesterSetting> currentSettings = null;
+        List<HarvesterSetting> currentSettings = new ArrayList<HarvesterSetting>();
         String firstSegment = pathSegments.get(0);
         if (firstSegment.startsWith(ID_PREFIX)) {
             int id = Integer.parseInt(firstSegment.substring(ID_PREFIX.length()));
             HarvesterSetting setting = _entityManager.find(HarvesterSetting.class, id);
             if (setting == null) {
-                currentSettings = Collections.emptyList();
-                pathSegments = Collections.emptyList();
+                pathSegments = new ArrayList<String>();
             } else {
-                currentSettings = Collections.singletonList(setting);
+                currentSettings.add(setting);
                 pathSegments = pathSegments.subList(1, pathSegments.size());
             }
         } else {
-            currentSettings = findRoots();
+        	// get all settings
+    		currentSettings = findRoots();
             for (HarvesterSetting currentSetting : currentSettings) {
                 if (currentSetting.getName().equals(firstSegment)) {
                     pathSegments.remove(0);
@@ -120,7 +154,7 @@ public class HarvesterSettingRepositoryOverridesImpl extends GeonetRepositoryImp
 
         for (String childName : pathSegments) {
             List<HarvesterSetting> oldSettings = currentSettings;
-            currentSettings = new LinkedList<HarvesterSetting>();
+        	currentSettings  = new LinkedList<HarvesterSetting>();
             for (HarvesterSetting setting : oldSettings) {
                 List<HarvesterSetting> children = findChildrenByName(setting.getId(), childName);
                 currentSettings.addAll(children);
@@ -182,6 +216,20 @@ public class HarvesterSettingRepositoryOverridesImpl extends GeonetRepositoryImp
         Predicate equalParentId = criteriaBuilder.equal(root.get(HarvesterSetting_.parent), parentid);
         Predicate equalName = criteriaBuilder.equal(root.get(HarvesterSetting_.name), name);
         query.where(criteriaBuilder.and(equalParentId, equalName));
+
+        return _entityManager.createQuery(query).getResultList();
+    }
+    
+    @Override
+    public List<HarvesterSetting> findAllByNames(List<String> names) {
+        CriteriaBuilder criteriaBuilder = _entityManager.getCriteriaBuilder();
+        CriteriaQuery<HarvesterSetting> query = criteriaBuilder.createQuery(HarvesterSetting.class);
+
+        Root<HarvesterSetting> root = query.from(HarvesterSetting.class);
+        query.select(root);
+        if (CollectionUtils.isNotEmpty(names)) {        	
+        	query.where(root.get(HarvesterSetting_.name).in(names));
+        }
 
         return _entityManager.createQuery(query).getResultList();
     }

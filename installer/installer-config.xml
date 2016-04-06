@@ -1,5 +1,28 @@
 <?xml version="1.0" encoding="iso-8859-1" standalone="yes"?>
 
+<!--
+  ~ Copyright (C) 2001-2016 Food and Agriculture Organization of the
+  ~ United Nations (FAO-UN), United Nations World Food Programme (WFP)
+  ~ and United Nations Environment Programme (UNEP)
+  ~
+  ~ This program is free software; you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation; either version 2 of the License, or (at
+  ~ your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful, but
+  ~ WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  ~ General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program; if not, write to the Free Software
+  ~ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+  ~
+  ~ Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+  ~ Rome - Italy. email: geonetwork@osgeo.org
+  -->
+
 <installation version="1.0">
 	
 	<!-- =================================================================================== -->
@@ -8,10 +31,10 @@
 		<appname>geonetwork</appname>
 		<appversion>@version@ @subVersion@</appversion>
 		<authors>
-			<author name="OSGeo"               email="geonetwork@osgeo.org"/>					
+			<author name="OSGeo"               email="geonetwork@osgeo.org"/>
 			<author name="FAO GeoNetwork Team" email="GeoNetwork@fao.org"/>
 			<author name="VAM WFP"             email="vamsie@wfp.org"/>
-			<author name="UNEP.net"            email="info@unep.net"/>			 
+			<author name="UNEP.net"            email="info@unep.net"/>
 			<author name="OCHA"                email="ochageodata@un.org"/>				 
 		</authors>
 		<url>http://geonetwork-opensource.org/</url>
@@ -36,39 +59,14 @@
         <langpack iso3="fra"/>
         <langpack iso3="spa"/>        
 	</locale>
-	
-	<!-- =================================================================================== -->
-		
-	<conditions>
-		<condition type="variable" id="guidefault">
-			<name>gui.radio</name>
-			<value>default</value>
-		</condition>
-		<condition type="variable" id="guihtml5widget">
-			<name>gui.radio</name>
-			<value>html5widget</value>
-		</condition>
-	</conditions>
-	
-	<dynamicvariables>
-		<variable name="defaultGUI" condition="guidefault">
-			<value><![CDATA[<client type="redirect" widget="false" url="main.home" />]]></value>
-		</variable>
-		<variable name="defaultGUI" condition="guihtml5widget">
-			<value><![CDATA[<client type="redirect" widget="true" url="search" createParameter="#create" stateId="s"/>]]></value>
-		</variable>
-	</dynamicvariables>
-	
-	<!-- =================================================================================== -->
-	
+
 	<resources>
-		<res id="HTMLLicencePanel.licence"     src="../docs/license.html"/>
-		<res id="HTMLLicencePanel.licence_fra" src="../docs/license_fra.html"/>
-        <res id="HTMLLicencePanel.licence_spa" src="../docs/license_spa.html"/>
+		<res id="HTMLLicencePanel.licence"     src="license.html"/>
+		<res id="HTMLLicencePanel.licence_fra" src="license_fra.html"/>
+		<res id="HTMLLicencePanel.licence_spa" src="license_spa.html"/>
 		<res id="HTMLInfoPanel.info"           src="../.props/readme.html"/>
 		<res id="HTMLInfoPanel.info_fra"       src="../.props/readme_fra.html"/>
-        <res id="HTMLInfoPanel.info_spa"       src="../.props/readme_spa.html"/>
-		<res id="userInputSpec.xml"            src="userInputSpec.xml"/>
+		<res id="HTMLInfoPanel.info_spa"       src="../.props/readme_spa.html"/>
 		<res id="userInputLang.xml"            src="userInputLang.xml"/>
 		<res id="userInputLang.xml_fra"        src="userInputLang.xml_fra.xml"/>
 	 	<res id="userInputLang.xml_spa"        src="userInputLang.xml_spa.xml"/>
@@ -76,9 +74,9 @@
 		<res id="shortcutSpec.xml"         	   src="windows-shortcuts.xml"/>
 		<res id="Unix_shortcutSpec.xml"        src="unix-shortcuts.xml"/>
 		<res id="Win_shortcutSpec.xml"         src="windows-shortcuts.xml"/>
-        <res id="packsLang.xml"                src="packsLang.xml"/>
-        <res id="packsLang.xml_fra"            src="packsLang.xml_fra"/>
-        <res id="packsLang.xml_spa"            src="packsLang.xml_spa"/>
+		<res id="packsLang.xml"                src="packsLang.xml"/>
+		<res id="packsLang.xml_fra"            src="packsLang.xml_fra"/>
+		<res id="packsLang.xml_spa"            src="packsLang.xml_spa"/>
 	</resources>
 	
 	<!-- =================================================================================== -->
@@ -88,7 +86,6 @@
 		<panel classname="HTMLLicencePanel" id="htmlLicensePanel"/>
 		<panel classname="TargetPanel" id="targetPanel"/>
 		<panel classname="PacksPanel" id="packsPanel"/>
-		<panel classname="UserInputPanel" id="userInputPanel"/>
 		<panel classname="InstallPanel" id="installPanel"/>
 		<panel classname="ShortcutPanel" id="shortcutPanel"/>
 		<panel classname="HTMLInfoPanel" id="htmlInfoPanel"/>
@@ -122,11 +119,9 @@
 			
             <fileset dir="../web-client/target/classes/apps" targetdir="$INSTALL_PATH/web/geonetwork/apps" />
 			
-			<!-- Update the config-gui.xml to reflect the selected GUI -->
-			<parsable targetfile="$INSTALL_PATH/web/geonetwork/WEB-INF/config-gui.xml" />
-				
-			<executable targetfile="$INSTALL_PATH/bin/start-geonetwork.sh" />
-			<executable targetfile="$INSTALL_PATH/bin/stop-geonetwork.sh" />
+
+			<executable targetfile="$INSTALL_PATH/bin/startup.sh" />
+			<executable targetfile="$INSTALL_PATH/bin/shutdown.sh" />
 		</pack>
 
 

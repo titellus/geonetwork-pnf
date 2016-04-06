@@ -1,24 +1,44 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.kernel;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.nio.channels.FileChannel;
-
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
-import org.fao.geonet.kernel.rdf.QueryBuilder;
 import org.fao.geonet.kernel.search.keyword.KeywordRelation;
 import org.fao.geonet.languages.IsoLanguagesMapper;
+import org.fao.geonet.utils.IO;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
+import org.junit.rules.TemporaryFolder;
 import org.openrdf.sesame.Sesame;
 import org.openrdf.sesame.config.ConfigurationException;
 import org.openrdf.sesame.config.RepositoryConfig;
 import org.openrdf.sesame.config.SailConfig;
 import org.openrdf.sesame.constants.RDFFormat;
 import org.openrdf.sesame.repository.local.LocalRepository;
-import org.springframework.context.support.GenericXmlApplicationContext;
+
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 public abstract class AbstractThesaurusBasedTest {
 	protected static final String THESAURUS_KEYWORD_NS = "http://abstract.thesaurus.test#";
@@ -30,7 +50,10 @@ public abstract class AbstractThesaurusBasedTest {
 			_isoLanguagesMap639.put("it", "ita");
 		}
 	};
-    protected File thesaurusFile;
+    @Rule
+    public TemporaryFolder folder = new TemporaryFolder();
+
+    protected Path thesaurusFile;
     protected Thesaurus thesaurus;
     
     protected final static int keywords = 1000;
@@ -43,79 +66,42 @@ public abstract class AbstractThesaurusBasedTest {
     
     @Before
     public void beforeTest() throws Exception {
-        generateTestThesaurus();
+        createTestThesaurus();
 
         if(!readonly) {
-            File directory = new File(getClass().getResource(getClass().getSimpleName()+".class").getFile()).getParentFile();
-            File template = thesaurusFile;
+            final String className = getClass().getSimpleName() + ".class";
+            Path template = thesaurusFile;
             
             // Now make copy for this test
-            this.thesaurusFile = new File(directory, getClass().getSimpleName()+"TestThesaurus.rdf");
-            this.thesaurusFile.deleteOnExit();
-            FileChannel to = null;
-            FileChannel from = null;
-            try {
-                to = new FileOutputStream(thesaurusFile).getChannel();
-                from = new FileInputStream(template).getChannel();
-            	to.transferFrom(from, 0, template.length());
-            } finally {
-            	IOUtils.closeQuietly(from);
-            	IOUtils.closeQuietly(to);
-            }
-            FileUtils.copyFile(template, thesaurusFile);
-            GenericXmlApplicationContext appContext = new GenericXmlApplicationContext();
-            appContext.getBeanFactory().registerSingleton("IsoLangMapper", isoLangMapper);
-            this.thesaurus = new Thesaurus(appContext, thesaurusFile.getName(), "test", "test", thesaurusFile, "http://concept");
+            this.thesaurusFile = this.folder.getRoot().toPath().resolve(getClass().getSimpleName()+"TestThesaurus.rdf");
+
+            Files.copy(template, thesaurusFile);
+            this.thesaurus = new Thesaurus(isoLangMapper, thesaurusFile.getFileName().toString(), "test", "test",
+                    thesaurusFile, "http://concept");
         }
-        setRepository(this.thesaurus);
+        this.thesaurus.initRepository();
     }
 
     @After
     public void afterTest() throws Exception {
         thesaurus.getRepository().shutDown();
         if(!readonly) {
-            this.thesaurusFile.delete();
+            Files.deleteIfExists(this.thesaurusFile);
         }
     }
     
-    private void generateTestThesaurus() throws Exception {
-        File directory = new File(AbstractThesaurusBasedTest.class.getResource(AbstractThesaurusBasedTest.class.getSimpleName()+".class").getFile()).getParentFile();
+    private void createTestThesaurus() throws Exception {
+        final String className = AbstractThesaurusBasedTest.class.getSimpleName() + ".class";
+        Path directory = IO.toPath(AbstractThesaurusBasedTest.class.getResource(className).toURI()).getParent();
 
-        this.thesaurusFile = new File(directory, "testThesaurus.rdf");
-        GenericXmlApplicationContext appContext = new GenericXmlApplicationContext();
-        appContext.getBeanFactory().registerSingleton("IsoLangMapper", isoLangMapper);
-        this.thesaurus = new Thesaurus(appContext, thesaurusFile.getName(), null, null, "test", "test", thesaurusFile, "http://concept", true);
-        setRepository(this.thesaurus);
-        
-        if (thesaurusFile.exists() && thesaurusFile.length() > 0) {
-            try {
-            	QueryBuilder.builder().selectId().limit(1).build().rawExecute(thesaurus);
-            } catch (Exception e) {
-                this.thesaurusFile.delete();
-                populateThesaurus();
-            }
-        } else {
-            populateThesaurus();
-        }
-        thesaurus.getRepository().shutDown();
+        this.thesaurusFile = directory.resolve("testThesaurus.rdf");
+        this.thesaurus = new Thesaurus(isoLangMapper, thesaurusFile.getFileName().toString(), null, null, "test", "test",
+                thesaurusFile, "http://concept", true);
+        this.thesaurus.initRepository();
     }
 
-	protected static void setRepository(Thesaurus thesaurus) throws ConfigurationException {
-		RepositoryConfig repConfig = new RepositoryConfig(thesaurus.getKey());
-
-        SailConfig syncSail = new SailConfig("org.openrdf.sesame.sailimpl.sync.SyncRdfSchemaRepository");
-        SailConfig memSail = new org.openrdf.sesame.sailimpl.memory.RdfSchemaRepositoryConfig(thesaurus.getFile().getAbsolutePath(),
-                RDFFormat.RDFXML);
-        repConfig.addSail(syncSail);
-        repConfig.addSail(memSail);
-        repConfig.setWorldReadable(true);
-        repConfig.setWorldWriteable(true);
-
-        LocalRepository thesaurusRepository = Sesame.getService().createRepository(repConfig);
-        thesaurus.setRepository(thesaurusRepository);
-	}
 	private void populateThesaurus() throws Exception {
-	    populateThesaurus(this.thesaurus, keywords, THESAURUS_KEYWORD_NS, "testValue", "testNote",languages);
+	    populateThesaurus(this.thesaurus, keywords, THESAURUS_KEYWORD_NS, "testValue", "testNote", languages);
 	}
 	/**
 	 * Generate a thesaurus with the provided number of words etc...

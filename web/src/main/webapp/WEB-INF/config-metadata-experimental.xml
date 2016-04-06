@@ -1,4 +1,27 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+  ~ Copyright (C) 2001-2016 Food and Agriculture Organization of the
+  ~ United Nations (FAO-UN), United Nations World Food Programme (WFP)
+  ~ and United Nations Environment Programme (UNEP)
+  ~
+  ~ This program is free software; you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation; either version 2 of the License, or (at
+  ~ your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful, but
+  ~ WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  ~ General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program; if not, write to the Free Software
+  ~ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+  ~
+  ~ Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+  ~ Rome - Italy. email: geonetwork@osgeo.org
+  -->
+
 <geonet>
   <services package="org.fao.geonet">
 
@@ -14,13 +37,6 @@
 
     <service name="metadata.suggestion">
       <class name=".services.metadata.GetSuggestion"/>
-    </service>
-
-
-    <service name="metadata.thumbnail.set.new">
-      <class name=".services.thumbnail.Set"/>
-      <!-- FIXME : this is a default success response XSL -->
-      <output sheet="admin-logo-add.xsl"/>
     </service>
 
     <service name="metadata.thumbnail.unset.new">
@@ -41,7 +57,6 @@
         <call name="position" class=".guiservices.util.GetPositionMD"/>
         <call name="groups" class=".guiservices.groups.GetMine"/>
         <call name="sources" class=".guiservices.util.Sources"/>
-        <call name="regions"       class =".guiservices.regions.Get"/>
         <call name="isoLang" class=".guiservices.isolanguages.Get"/>
         <call name="subtemplates" class="jeeves.services.db.Select">
           <param name="db" value="main-db"/>
@@ -90,31 +105,6 @@
       </output>
     </service>
 
-
-    <service name="metadata.processing.new">
-      <class name=".services.metadata.XslProcessing"/>
-      <output forward="edit"/>
-    </service>
-    
-    <service name="resource.upload.and.link">
-      <class name=".services.resources.UploadAndProcess"/>
-      
-      <!-- FIXME : this is a default success response XSL -->
-      <output sheet="admin-logo-add.xsl"/>
-      
-      <error sheet="error-modal.xsl">
-        <xml name="error" file="xml/file-upload-unsuccessful.xml"/>
-      </error>
-    </service>
-    
-    <service name="resource.del.and.detach">
-      <class name=".services.resources.RemoveAndProcess"/>
-      
-      <error sheet="error-modal.xsl">
-        <xml name="error" file="xml/file-upload-unsuccessful.xml"/>
-      </error>
-    </service>
-    
     <service name="metadata.create.new">
       <class name=".services.metadata.Create">
         <param name="editTab" value="true"/>
@@ -123,12 +113,10 @@
       <output forward="edit"/>
     </service>
 
-
-
     <service name="resources.del.new">
       <class name=".services.resources.Remove"/>
 
-      <error id="file-not-found" sheet="error.xsl" statusCode="404">
+      <error id="file-not-found" sheet="../xslt/common/error.xsl" statusCode="404">
         <xml name="error" file="xml/file-not-found-error.xml"/>
       </error>
 
@@ -140,7 +128,7 @@
 
       <output forward="edit"/>
 
-      <error id="client" sheet="metadata-error.xsl"/>
+      <error id="client" sheet="../xslt/error/error-xml.xsl"/>
     </service>
 
     <service name="resources.upload.new">
@@ -163,7 +151,7 @@
 
       <output forward="edit"/>
 
-      <error id="client" sheet="metadata-error.xsl"/>
+      <error id="client" sheet="../xslt/error/error-xml.xsl"/>
     </service>
 
 

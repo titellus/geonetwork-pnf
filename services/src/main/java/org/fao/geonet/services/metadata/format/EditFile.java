@@ -23,44 +23,53 @@
 
 package org.fao.geonet.services.metadata.format;
 
-import jeeves.server.ServiceConfig;
+import java.net.URLDecoder;
+import java.nio.file.Files;
+import java.nio.file.Path;
+
+import jeeves.interfaces.Service;
 import jeeves.server.context.ServiceContext;
-import org.apache.commons.io.FileUtils;
+
 import org.fao.geonet.Constants;
 import org.fao.geonet.Util;
 import org.fao.geonet.constants.Params;
+import org.fao.geonet.exceptions.BadParameterEx;
+import org.fao.geonet.kernel.GeonetworkDataDirectory;
+import org.fao.geonet.kernel.SchemaManager;
 import org.jdom.Element;
-
-import java.io.File;
-import java.net.URLDecoder;
 
 /**
  * Allows a user to set the xsl used for displaying metadata.
  * 
  * @author jeichar
  */
-public class EditFile extends AbstractFormatService {
+public class EditFile extends AbstractFormatService implements Service {
 
     public Element exec(Element params, ServiceContext context) throws Exception {
-        ensureInitializedDir(context);
-
         String xslid = Util.getParam(params, Params.ID);
         String file = URLDecoder.decode(Util.getParam(params, Params.FNAME), Constants.ENCODING);
+        String schema = Util.getParam(params, Params.SCHEMA, null);
+        Path schemaDir = null;
+        if (schema != null) {
+            schemaDir = context.getBean(SchemaManager.class).getSchemaDir(schema);
+        }
 
-        File formatDir = getAndVerifyFormatDir(Params.ID, xslid);
+        Path formatDir = getAndVerifyFormatDir(context.getBean(GeonetworkDataDirectory.class), Params.ID, xslid, schemaDir);
+
+        // Check that the requested file is actually nested into formatDir
+        String absformatDir = formatDir.toAbsolutePath().toString();
+        String absFile = formatDir.resolve(file).toAbsolutePath().toString();
+        if (! absFile.startsWith(absformatDir)) {
+            throw new BadParameterEx("fname", absFile);
+        }
 
         Element result = new Element("data");
 
-        String data = FileUtils.readFileToString(new File(formatDir, file.replace('/', File.separatorChar)), Constants.ENCODING);
+        String data = new String(Files.readAllBytes(formatDir.resolve(file)), Constants.ENCODING);
 
         result.setText(data);
 
         return result;
-    }
-
-    @Override
-    public void init(String appPath, ServiceConfig params) throws Exception {
-        super.init(appPath, params);
     }
 
 }

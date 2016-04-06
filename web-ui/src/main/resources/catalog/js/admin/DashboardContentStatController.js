@@ -1,3 +1,26 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 (function() {
   goog.provide('gn_dashboard_content_stat_controller');
 
@@ -49,10 +72,11 @@
                        .tooltipContent(function(key, y, e, graph) {
                 // TODO : %age should be relative to
                 // the current set of displayed values
+                var value = d3.format('.0f')(y.replace(',', ''));
                 return '<h3>' + key + '</h3>' +
-                    '<p>' + parseInt(y).toFixed() + ' ' +
+                    '<p>' + value + ' ' +
                     $translate('records') + ' (' +
-                    (y / total * 100).toFixed() + '%)</p>';
+                    (value / total * 100).toFixed() + '%)</p>';
               })
                        .showLabels(true);
 
@@ -71,7 +95,8 @@
           sortBy: 'popularity'
         };
         $scope.statistics.md.rating = {
-          sortBy: 'rating'
+          sortBy: '_rating',
+          _rating: '1 or 2 or 3 or 4 or 5'
         };
 
         $scope.paginationInfo = {
@@ -80,7 +105,7 @@
           hitsPerPage: 10
         };
 
-        $http.get('statistics-content@json')
+        $http.get('statistics-content?_content_type=json')
         .success(function(data) {
               $scope.statistics.md.mainStatistics = data;
             }).error(function(data) {
@@ -91,7 +116,7 @@
       function getMetadataStat(by, isTemplate) {
         isTemplate = isTemplate || 'n';
         // Search by service type statistics
-        $http.get('statistics-content-metadata@json?' +
+        $http.get('statistics-content-metadata?_content_type=json?' +
                 'by=' + by +
                 '&isTemplate=' + encodeURIComponent(isTemplate))
                   .success(function(data) {
@@ -147,6 +172,37 @@
       getMetadataStat('owner');
       getMetadataStat('groupowner');
 
+    }]);
+
+  module.filter('mdRated', function() {
+    return function(input) {
+      var ret = [];
+      if (angular.isArray(input)) {
+        for (var i = 0; i < input.length; ++i) {
+          if (input[i].rating > 0) {
+            ret.push(input[i]);
+          }
+        }
+      }
+      return ret;
+    }
+  });
+
+  module.controller('GnDashboardContentStatControllerPopularity', [
+    '$scope',
+    function($scope) {
+      $scope.searchObj = {
+        permalink: false,
+        params: $scope.statistics.md.popularity
+      };
+    }]);
+  module.controller('GnDashboardContentStatControllerRating', [
+    '$scope',
+    function($scope) {
+      $scope.searchObj = {
+        permalink: false,
+        params: $scope.statistics.md.rating
+      };
     }]);
 
 })();

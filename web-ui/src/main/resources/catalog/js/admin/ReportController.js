@@ -1,3 +1,26 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 (function() {
   goog.provide('gn_report_controller');
 
@@ -49,31 +72,15 @@
       $scope.report = {};
       $scope.report.suggestedDate = '';
 
-      $scope.report.dateFrom = moment().format('YYYY-MM-DD');
-      $scope.report.dateTo = moment().format('YYYY-MM-DD');
+      $scope.report.dateFrom = new Date(moment().format('YYYY-MM-DD'));
+      $scope.report.dateTo = new Date(moment().format('YYYY-MM-DD'));
 
       /**
        * Creates the records updated report
        */
       $scope.createReport = function(formId, service) {
-        $http({
-          method: 'POST',
-          url: service,
-          data: $(formId).serialize(),
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-          }
-        })
-          .success(function(data) {
-              // Download the csv file. The AngularJs friendly way!
-              var element = angular.element('<a/>');
-              element.attr({
-                href: 'data:attachment/csv;charset=utf-8,' + encodeURI(data),
-                target: '_blank',
-                download: service
-              })[0].click();
-
-            });
+        $(formId).attr('action', service);
+        $(formId).submit();
       };
 
       /**
@@ -98,9 +105,10 @@
               var month = today.format('MM');
               var year = today.format('YYYY');
 
-              $scope.report.dateFrom = year + '-' + month + '-' + '01';
-              $scope.report.dateTo = year + '-' + month + '-' +
-                  today.daysInMonth();
+              $scope.report.dateFrom =
+                  new Date(year + '-' + month + '-' + '01');
+              $scope.report.dateTo = new Date(year + '-' + month + '-' +
+                  today.daysInMonth());
 
             } else if (newValue === 'previousMonth') {
               // Set previous month
@@ -109,15 +117,16 @@
               var month = today.format('MM');
               var year = today.format('YYYY');
 
-              $scope.report.dateFrom = year + '-' + month + '-' + '01';
-              $scope.report.dateTo = year + '-' + month + '-' +
-                  today.daysInMonth();
+              $scope.report.dateFrom =
+                  new Date(year + '-' + month + '-' + '01');
+              $scope.report.dateTo = new Date(year + '-' + month + '-' +
+                  today.daysInMonth());
 
             } else if (newValue == 'currentYear') {
               var year = today.format('YYYY');
 
-              $scope.report.dateFrom = year + '-' + '01' + '-' + '01';
-              $scope.report.dateTo = year + '-' + '12' + '-' + '31';
+              $scope.report.dateFrom = new Date(year + '-' + '01' + '-' + '01');
+              $scope.report.dateTo = new Date(year + '-' + '12' + '-' + '31');
 
             } else if (newValue == 'previousYear') {
               // Set previous year
@@ -125,8 +134,8 @@
 
               var year = today.format('YYYY');
 
-              $scope.report.dateFrom = year + '-' + '01' + '-' + '01';
-              $scope.report.dateTo = year + '-' + '12' + '-' + '31';
+              $scope.report.dateFrom = new Date(year + '-' + '01' + '-' + '01');
+              $scope.report.dateTo = new Date(year + '-' + '12' + '-' + '31');
 
             }
           });

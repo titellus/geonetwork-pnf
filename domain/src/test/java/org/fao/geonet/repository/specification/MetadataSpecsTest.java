@@ -1,10 +1,37 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.repository.specification;
 
 import org.fao.geonet.domain.Metadata;
 import org.fao.geonet.domain.MetadataCategory;
 import org.fao.geonet.domain.MetadataType;
 import org.fao.geonet.domain.Metadata_;
-import org.fao.geonet.repository.*;
+import org.fao.geonet.repository.AbstractSpringDataTest;
+import org.fao.geonet.repository.MetadataCategoryRepository;
+import org.fao.geonet.repository.MetadataCategoryRepositoryTest;
+import org.fao.geonet.repository.MetadataRepository;
+import org.fao.geonet.repository.SortUtils;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
@@ -12,12 +39,22 @@ import org.springframework.data.jpa.domain.Specification;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
 import static org.fao.geonet.repository.MetadataRepositoryTest.newMetadata;
-import static org.fao.geonet.repository.specification.MetadataSpecs.*;
+import static org.fao.geonet.repository.specification.MetadataSpecs.hasCategory;
+import static org.fao.geonet.repository.specification.MetadataSpecs.hasExtra;
+import static org.fao.geonet.repository.specification.MetadataSpecs.hasHarvesterUuid;
+import static org.fao.geonet.repository.specification.MetadataSpecs.hasMetadataId;
+import static org.fao.geonet.repository.specification.MetadataSpecs.hasMetadataIdIn;
+import static org.fao.geonet.repository.specification.MetadataSpecs.hasMetadataUuid;
+import static org.fao.geonet.repository.specification.MetadataSpecs.hasSchemaId;
+import static org.fao.geonet.repository.specification.MetadataSpecs.hasSource;
+import static org.fao.geonet.repository.specification.MetadataSpecs.hasType;
+import static org.fao.geonet.repository.specification.MetadataSpecs.isHarvested;
+import static org.fao.geonet.repository.specification.MetadataSpecs.isOwnedByOneOfFollowingGroups;
+import static org.fao.geonet.repository.specification.MetadataSpecs.isType;
 
 /**
  * Test for MetadataSpecs.
@@ -59,6 +96,26 @@ public class MetadataSpecsTest extends AbstractSpringDataTest {
         assertEquals(md1.getId(), _repository.findOne(hasType(MetadataType.METADATA)).getId());
         assertEquals(md2.getId(), _repository.findOne(hasType(MetadataType.SUB_TEMPLATE)).getId());
         assertEquals(md3.getId(), _repository.findOne(hasType(MetadataType.TEMPLATE)).getId());
+    }
+
+    @Test
+    public void testHasSchemaId() throws Exception {
+        String schemaId1 = "schemaId1";
+        String schemaId2 = "schemaId2";
+        final Metadata metadata = newMetadata(_inc);
+        metadata.getDataInfo().setSchemaId(schemaId1);
+        Metadata md1 = _repository.save(metadata);
+
+        final Metadata metadata2 = newMetadata(_inc);
+        metadata2.getDataInfo().setSchemaId(schemaId2);
+        Metadata md2 = _repository.save(metadata2);
+
+        assertEquals(1, _repository.findAll(hasSchemaId(schemaId1)).size());
+        assertEquals(1, _repository.findAll(hasSchemaId(schemaId2)).size());
+        assertEquals(0, _repository.findAll(hasSchemaId("other")).size());
+
+        assertEquals(md1.getId(), _repository.findOne(hasSchemaId(schemaId1)).getId());
+        assertEquals(md2.getId(), _repository.findOne(hasSchemaId(schemaId2)).getId());
     }
 
     @Test
@@ -196,6 +253,18 @@ public class MetadataSpecsTest extends AbstractSpringDataTest {
         Metadata md1 = _repository.save(newMetadata(_inc));
         Specification<Metadata> spec = hasSource(md1.getSourceInfo().getSourceId());
         assertFindsCorrectMd(md1, spec, true);
+    }
+
+    @Test
+    public void testHasExtra() throws Exception {
+        final Metadata entity = newMetadata(_inc);
+        final String extra = "extra data";
+        entity.getDataInfo().setExtra(extra);
+        Metadata md1 = _repository.save(entity);
+
+        assertFindsCorrectMd(md1, hasExtra(extra), true);
+
+        assertEquals(0, _repository.count(hasExtra("wrong extra")));
     }
 
     private void assertFindsCorrectMd(Metadata md1, Specification<Metadata> spec, boolean addNewMetadata) {

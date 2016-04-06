@@ -1,14 +1,37 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.repository;
 
 
 import org.fao.geonet.domain.Service;
+import org.fao.geonet.domain.ServiceParam;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.concurrent.atomic.AtomicInteger;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.util.HashMap;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.Assert.assertEquals;
 
@@ -37,8 +60,6 @@ public class ServiceRepositoryTest extends AbstractSpringDataTest {
         final Service found = _repo.findOne(service.getId());
         assertEquals(2, found.getParameters().size());
         assertSameContents(service, found);
-
-
     }
 
     @Test
@@ -65,11 +86,10 @@ public class ServiceRepositoryTest extends AbstractSpringDataTest {
         service.setName("name" + val);
         service.setClassName("classname" + val);
         service.setDescription("description" + val);
+        service.setExplicitQuery("+explicitQuery:" + val);
 
-        HashMap<String, String> params = new HashMap<String, String>();
-        params.put("name_1_" + val, "value_1_" + val);
-        params.put("name_2_" + val, "value_2_" + val);
-        service.setParameters(params);
+        service.addParameter(new ServiceParam("name_1_" + val, "value_1_" + val)).
+                addParameter(new ServiceParam("name_2_" + val, "value_2_" + val));
 
         return service;
     }

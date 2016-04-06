@@ -26,27 +26,26 @@ package org.fao.geonet.kernel.search;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import jeeves.server.context.ServiceContext;
-import org.fao.geonet.Util;
+import javax.annotation.Nullable;
 
+import org.fao.geonet.Util;
 import org.fao.geonet.constants.Geonet;
+import org.fao.geonet.exceptions.TermNotFoundException;
 import org.fao.geonet.kernel.KeywordBean;
 import org.fao.geonet.kernel.Thesaurus;
 import org.fao.geonet.kernel.ThesaurusFinder;
-import org.fao.geonet.kernel.rdf.Query;
-import org.fao.geonet.kernel.rdf.QueryBuilder;
-import org.fao.geonet.kernel.rdf.Selectors;
-import org.fao.geonet.kernel.rdf.Wheres;
 import org.fao.geonet.kernel.search.keyword.KeywordRelation;
 import org.fao.geonet.kernel.search.keyword.KeywordSearchParams;
 import org.fao.geonet.kernel.search.keyword.KeywordSearchParamsBuilder;
 import org.fao.geonet.languages.IsoLanguagesMapper;
 import org.jdom.Element;
+
+import jeeves.server.context.ServiceContext;
 
 /**
  *
@@ -85,32 +84,43 @@ public class KeywordsSearcher {
      * @param languages translations to load into the keyword bean
      *  
      * @return keywordbean with the requested translations
-     * 
-     * @throws Exception
      */
-	public KeywordBean searchById(String id, String sThesaurusName, String... languages) throws Exception {
-        Query<KeywordBean> query = QueryBuilder.keywordQueryBuilder(_isoLanguageMapper, languages).where(Wheres.ID(id)).build();
+    public KeywordBean searchById(String id, String sThesaurusName, String... languages) {
+        KeywordBean result = null;
 
         Thesaurus thesaurus = _thesaurusFinder.getThesaurusByName(sThesaurusName);
-        List<KeywordBean> kws = query.execute(thesaurus); 
-        if(kws.isEmpty()) {
-            return null;
-        } else {
-            return kws.get(0);
-        }
-	}
 
-	   public void search(KeywordSearchParams params) throws Exception {
+        try {
+            result = thesaurus.getKeyword(id, languages);
+        } catch (TermNotFoundException e) {
+        }
+
+        return result;
+    }
+
+		public void searchTopConcepts(String sThesaurusName, String... languages) throws Exception {
+
+	    _results.clear();
+      Thesaurus thesaurus = _thesaurusFinder.getThesaurusByName(sThesaurusName);
+	    for (KeywordBean keywordBean : thesaurus.getTopConcepts(languages)) {
+       	_results.add(keywordBean);
+			}
+		}
+														  
+	  public void search(KeywordSearchParams params) throws Exception {
 	       this._results = params.search(_thesaurusFinder);
-	   }
+	  }
+
     /**
      * TODO javadoc.
      *
-     * @param srvContext servicecontext
      * @param params params
      * @throws Exception hmm
      */
 	public void search(String contextLanguage, Element params) throws Exception {
+		search(contextLanguage, params, null);
+	}
+	public void search(String contextLanguage, Element params, Comparator<KeywordBean> comparator) throws Exception {
 		if(contextLanguage == null) {
 			contextLanguage = Geonet.DEFAULT_LANGUAGE;
 		}
@@ -118,6 +128,7 @@ public class KeywordsSearcher {
         if(paramsBuilder.getLangs().isEmpty()) {
             paramsBuilder.addLang(contextLanguage);
         }
+		paramsBuilder.setComparator(comparator);
         search(paramsBuilder.build());
 	}
 
@@ -132,16 +143,17 @@ public class KeywordsSearcher {
      * 
      * @param params parameters
      * @param request request
-     * @param extraLangs the languages to load
-     * @throws Exception hmm
+	 * @param comparator the comparator to use for sorting the results.  it can be null.
+     * @param languages the languages to load
      */
-	public void searchForRelated(Element params, KeywordRelation request, String... languages) throws Exception {
+	public void searchForRelated(Element params, KeywordRelation request, @Nullable Comparator<KeywordBean> comparator,
+								 String... languages) {
         //System.out.println("KeywordsSearcher searchBN");
 		// TODO : Add geonetinfo elements.
 		String id = Util.getParam(params, "id");
 		String sThesaurusName = Util.getParam(params, "thesaurus");
 
-		searchForRelated(id, sThesaurusName, request, languages);
+		searchForRelated(id, sThesaurusName, request, comparator, languages);
 	}
 
     /**
@@ -150,16 +162,20 @@ public class KeywordsSearcher {
      * @param id id
      * @param sThesaurusName thesaurus name
      * @param request request
+	 * @param comparator the comparator to use for sorting the results.  it can be null.
      * @param languages the languages to load
-     * @throws Exception hmm
      */
-	public void searchForRelated(String id, String sThesaurusName, KeywordRelation request, String... languages) throws Exception {
+	public void searchForRelated(String id, String sThesaurusName, KeywordRelation request, @Nullable Comparator<KeywordBean> comparator,
+								 String... languages) {
 	    _results.clear();
         Thesaurus thesaurus = _thesaurusFinder.getThesaurusByName(sThesaurusName);
-	    Query<KeywordBean> query = QueryBuilder.keywordQueryBuilder(_isoLanguageMapper, languages).select(Selectors.related(id,request), true).build();
-	    for (KeywordBean keywordBean : query.execute(thesaurus)) {
+	    for (KeywordBean keywordBean : thesaurus.getRelated(id, request, languages)) {
             _results.add(keywordBean);
         }
+
+		if (comparator != null) {
+			Collections.sort(_results, comparator);
+		}
 	}
 
     /**
@@ -169,15 +185,6 @@ public class KeywordsSearcher {
      */
 	public int getNbResults() {
 		return _results.size();
-	}
-
-    /**
-     * Sort the results according to the comparator.  Build in comparators can be found in the {@link org.fao.geonet.kernel.search.keyword.KeywordSort} class
-     *
-     * @param comparator the comparator to use for sorting
-     */
-	public void sortResults(Comparator<KeywordBean> comparator) {
-		Collections.sort(_results, comparator);
 	}
 
 	public List<KeywordBean> getResults() {
@@ -237,9 +244,9 @@ public class KeywordsSearcher {
         // TODO : Add Thesaurus name
 
         if (kb.isSelected()) {
-        	elSelected.addContent("true");
+            elSelected.addContent("true");
         } else {
-        	elSelected.addContent("false");
+            elSelected.addContent("false");
         }
         
         String defaultLang = kb.getDefaultLang();
@@ -283,7 +290,7 @@ public class KeywordsSearcher {
 		@SuppressWarnings("unchecked")
         List<Element> listIdKeywordsSelected = params.getChildren("pIdKeyword");
 		
-		Set<String> ids = new HashSet<String>();
+		Set<String> ids = new LinkedHashSet<String>();
         for (Element el : listIdKeywordsSelected) {
             ids.add(el.getTextTrim());
         }

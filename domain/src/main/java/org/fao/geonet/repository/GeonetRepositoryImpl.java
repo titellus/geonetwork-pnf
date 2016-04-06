@@ -1,20 +1,52 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.repository;
 
 import org.fao.geonet.domain.GeonetEntity;
 import org.fao.geonet.repository.statistic.PathSpec;
 import org.jdom.Element;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.Serializable;
+import java.util.List;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.Query;
-import javax.persistence.criteria.*;
-import java.io.Serializable;
-import java.util.List;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaDelete;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Order;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
 /**
  * Abstract super class of Geonetwork repositories that contains extra useful implementations.
@@ -70,13 +102,25 @@ public class GeonetRepositoryImpl<T extends GeonetEntity, ID extends Serializabl
     @Nonnull
     @Override
     public Element findAllAsXml() {
-        return findAllAsXml(null, null);
+        return findAllAsXml(null, (Pageable) null);
     }
 
     @Nonnull
     @Override
     public Element findAllAsXml(final Specification<T> specification) {
-        return findAllAsXml(specification, null);
+        return findAllAsXml(specification, (Pageable) null);
+    }
+
+    @Nonnull
+    @Override
+    public Element findAllAsXml(@Nullable Pageable pageable) {
+        return findAllAsXml(null, pageable);
+    }
+
+    @Nonnull
+    @Override
+    public Element findAllAsXml(@Nullable Specification<T> specification, @Nullable Pageable pageable) {
+        return findAllAsXml(_entityManager, _entityClass, specification, pageable);
     }
 
     @Nonnull
@@ -104,11 +148,12 @@ public class GeonetRepositoryImpl<T extends GeonetEntity, ID extends Serializabl
     @Nonnull
     @Override
     public Element findAllAsXml(final Specification<T> specification, final Sort sort) {
-        return findAllAsXml(_entityManager, _entityClass, specification, sort);
+        PageRequest request = new PageRequest(0, Integer.MAX_VALUE, sort);
+        return findAllAsXml(_entityManager, _entityClass, specification, request);
     }
 
     protected static <T extends GeonetEntity> Element findAllAsXml(EntityManager entityManager, Class<T> entityClass,
-                                                                   Specification<T> specification, Sort sort) {
+                                                                   Specification<T> specification, Pageable pageable) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<T> query = cb.createQuery(entityClass);
         Root<T> root = query.from(entityClass);
@@ -118,14 +163,21 @@ public class GeonetRepositoryImpl<T extends GeonetEntity, ID extends Serializabl
             query.where(predicate);
         }
 
-        if (sort != null) {
-            List<Order> orders = SortUtils.sortToJpaOrders(cb, sort, root);
-            query.orderBy(orders);
+        if (pageable != null) {
+            if (pageable.getSort() != null) {
+                List<Order> orders = SortUtils.sortToJpaOrders(cb, pageable.getSort(), root);
+                query.orderBy(orders);
+            }
         }
 
         Element rootEl = new Element(entityClass.getSimpleName().toLowerCase());
 
-        for (T t : entityManager.createQuery(query).getResultList()) {
+        final TypedQuery<T> typedQuery = entityManager.createQuery(query);
+        if (pageable != null) {
+            typedQuery.setFirstResult(pageable.getOffset());
+            typedQuery.setMaxResults(pageable.getPageSize());
+        }
+        for (T t : typedQuery.getResultList()) {
             rootEl.addContent(t.asXml());
         }
         return rootEl;

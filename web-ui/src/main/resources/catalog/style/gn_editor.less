@@ -1,32 +1,21 @@
-@import "gn.less";
 @import "../lib/bootstrap.ext/tagsinput/bootstrap-tagsinput.less";
-@import "../lib/style/ol.css";
-@import "../lib/style/datetimepicker.css";
-@import "../lib/jquery.ext/jquery.fileupload-ui.css";
+// import the css files as less files so they are included in the final output of wro4j
+@import (less) "../lib/style/ol.css";
+@import (less) "../lib/style/datetimepicker.css";
+@import (less) "../lib/jquery.ext/jquery.fileupload-ui.css";
+@import "gn.less";
 
 body {
   
 }
 
+.gn-line-height {
+       line-height: 1.8 !important;
+ }
+
 input[type=text], input[type=number], select {
   .form-control;
 }
-
-/* Cancel the rule above for tagsinput and typeahead */
-.bootstrap-tagsinput input,
-.bootstrap-tagsinput input:focus {
-  border: none;
-  box-shadow: none;
-  background: transparent;
-  padding: 0;
-  margin: 0;
-  width: auto !important;
-  max-width: inherit;
-}
-span.twitter-typeahead {
-  display: inline-block !important;
-}
-
 
 
 .gn-drawmap-panel {
@@ -72,15 +61,55 @@ span.twitter-typeahead {
   }
 }
 
+[data-gn-metadata-category-updater] .dropdown-menu > .disabled > a:hover,
+[data-gn-metadata-group-updater] .dropdown-menu > .disabled > a:hover {
+  cursor: pointer !important;
+}
 
 .gn-editor-container {
-  padding: 10px;
+  padding: 20px 5px;
+  margin-top: 45px;
+}
+
+
+#gn-directory-container {
+  .gn-facet-dropdown {
+    min-width: 300px;
+  }
+}
+
+.gn-editor-board {
+  .table.gn-results-editor td {
+    padding: 2px;
+
+    :nth-of-type(1) {
+      font-size: 120%;
+      padding-top: 8px;
+    }
+
+    .gn-record-details {
+      padding-left: 38px;
+    }
+  }
+}
+
+.gn-autocomplete-list {
+  position: absolute;
+  margin-top: 35px;
+  width: inherit;
+  z-index: 999;
+
+  /**/
+  .tt-suggestion:hover {
+    color: #fff;
+    background-color: #0097cf;
+  }
 }
 
 form.gn-editor {
   /* Move each sub fieldset to the left */
   @editor-fieldset-padding-left: 5px;
-  
+
   /**
    * Make space on the following element of a well 
    */
@@ -92,12 +121,21 @@ form.gn-editor {
     margin-bottom: 0px;
   }
 
+  div[data-gn-toggle] {
+    position: absolute;
+    left: -4px;
+    top: 2px;
+    button {
+      padding: 2px;
+    }
+  }
+
   /**
    * Add bottom line
    */
   fieldset > div.form-group.gn-field,
   fieldset > div.row.gn-field {
-    border-top: 1px solid #EEE;
+//    border-top: 1px solid #EEE;
 //    padding-left:  (@grid-gutter-width / 2);
     padding-top: 5px;
   }
@@ -115,13 +153,16 @@ form.gn-editor {
     white-space: nowrap;
   }
 
+  .gn-associated-resource-btn {
+    .button-variant(@btn-default-color; @btn-default-bg; @btn-default-border);
+  }
 
   fieldset fieldset {
     padding-left: @editor-fieldset-padding-left;
   }
   
   .form-group {
-    margin-bottom: 5px;
+    margin-bottom: 0px;
   }
   
   legend {
@@ -136,9 +177,11 @@ form.gn-editor {
   
   .gn-autocomplete-list {
     position: absolute;
-    margin-top: 4px;
+    margin-top: 35px;
     width: inherit;
     z-index: 999;
+    max-height: 80vh;
+    overflow: auto;
 
     /**/
     .tt-suggestion:hover {
@@ -152,15 +195,19 @@ form.gn-editor {
   }
   
   .control-label {
-    color: #858585;
+      color: #6a6a6a;
+      font-weight: 200;
+      padding-top: 0px;
+      line-height: 22px;
+
   }
   
   .gn-required > label {
-    color: #333333;
+ //   color: #333333;
   }
   
   .gn-move {
-    .pull-right();
+//    .pull-right();
   }
   
   legend > div.gn-move {
@@ -176,19 +223,7 @@ form.gn-editor {
   
   .gn-has-xlink {
     label, fieldset > legend {
-      opacity: .7;
-    }
-  }
-  
-  .gn-multilingual-field {
-    .nav > li > a {
-      padding: 2px 5px;
-      margin-top: 2px;
-      font-size: 8px;
-    }
-    .label {
-      line-height: 2;
-      font-size: 8px;
+  //    opacity: .7;
     }
   }
 
@@ -197,14 +232,34 @@ form.gn-editor {
    * line instead of 100% width in input group.
    */
   .gn-date-picker {
-    > input.gn-date {
-      width: 50%;
+    > input[type=date] {
+      width: 60%;
+    }
+    > input[type=time] {
+      width: 40%;
+    }
+    > input[type=date].gn-notime {
+      width: 100%;
+    }
+    > input[type=time].hidden {
+      width: 0%;
     }
     .gn-indeterminate-position {
       display: table-cell;
       > select {
         border-bottom-right-radius: 0px;
         border-top-right-radius: 0px;
+      }
+    }
+    &.gn-time-with-ind-position {
+      > select.gn-indeterminate-position {
+        width: 20%;
+      }
+      > input[type=date] {
+        width: 40%;
+      }
+      > input[type=time] {
+        width: 40%;
       }
     }
   }
@@ -230,6 +285,79 @@ form.gn-editor {
    *[data-gn-keyword-selector] {
        margin-bottom: 10px;
    }
+
+  .bootstrap-tagsinput {
+    min-height: 34px;
+    .tag {
+      white-space: pre-wrap;
+      word-break: break-word;
+      display: inline-flex;
+      margin-top: 2px;
+    }
+
+    .twitter-typeahead {
+      margin-top: 4px;
+    }
+    .tt-input {
+      border: none;
+      box-shadow: none;
+      background-color: #FFFFFF !important;
+    }
+  }
+  .gn-maxtags .bootstrap-tagsinput {
+    .twitter-typeahead, .twitter-typeahead > input {
+      display: none !important;
+    }
+  }
+
+  /* Avoid to apply img logo css to fieldset in editor */
+  fieldset.gn-logo {
+    max-height: inherit;
+  }
+  fieldset {
+      padding: 5px;
+      border: 1px solid #ebebeb;
+      border-radius: 3px;
+  }
+  .gn-field {
+      border-radius: 3px;
+      margin: 0px;
+      padding-top: 4px;
+      padding-bottom: 4px;
+  }
+  .field-bg {
+      background-color: #f7f7f7;
+  }
+  .gn-move {
+      border: none;
+  }
+  i.btn.fa-times.text-danger {
+      visibility: hidden;
+      padding: 5px;
+  }
+  .show {
+      visibility: visible;
+  } 
+  .gn-value .col-xs-8 {
+      padding-left: 0px;
+  }
+  .gn-value .col-xs-4 {
+      padding-right: 0px;
+  }
+
+  .gn-required > label:after {
+      content: "*";
+      font-size: 2.5em;
+      margin: 7px 0 0 7px;
+      position: absolute;
+      color: #a94442;
+      font-weight: normal;
+  }
+  .form-horizontal .form-group {
+      margin-left: 0px;
+      margin-right: 0px;
+  }
+
 }
 
 form.gn-tab-inspire {
@@ -242,14 +370,43 @@ form.gn-tab-inspire {
 }
 
 /* Onlinesrc styles */
-.onlinesrc-container {
-  width: 680px;
+.gn-onlinesrc-panel {
+  .list-group-item {
+    padding-left: 4px;
+    padding-right: 4px;
+    .row > div {
+      padding-left: 1px;
+      padding-right: 1px;
+
+      .onlinesrc-remove {
+        padding: 0px;
+      }
+    }
+  }
+}
+.onlinesrc-container, [gn-directory-entry-list-selector] {
   .list-group {
     max-height:50%;
     overflow: auto;
   }
   .list-group.fixed {
-    height: 400px;
+    min-height: 100px;
+    /* Avoid the content of the div
+    to be higher than view port
+    as the modal does not have overflow. */
+    max-height: 50vh;
+    li.active {
+        background-color: #428bca;
+    }
+  }
+}
+
+table.gn-data-store {
+  td {
+    word-break: break-all;
+    .btn {
+      padding: 1px 1px;
+    }
   }
 }
 
@@ -276,4 +433,50 @@ form.gn-tab-inspire {
 
 .gn-schematron-title {
   word-wrap: break-word;
+}
+.navbar-collapse {
+  padding-right: 0px;
+}
+
+.open > .dropdown-menu {
+  max-height: 25em;
+  overflow-y: auto;
+}
+
+.schematron-result-list-label-info .text-info {
+  color: @label-primary-bg;
+}
+
+.gn-multilingual-field {
+  .nav > li > a {
+    padding: 2px 5px;
+    margin-top: 2px;
+    font-size: 8px;
+  }
+  .label {
+    line-height: 2;
+    font-size: 8px;
+  }
+  .no-data a {
+    color: @gray-light;
+  }
+}
+
+.gn-batch-editor {
+  .gn-resultview li.list-group-item {
+    margin-bottom: 0px;
+    padding: 4px;
+  }
+  li.gn-batch-editor-info {
+    margin-top: 11px;
+  }
+  [data-ng-search-form] .gn-top-search .gn-form-any {
+    max-width: 80vw;
+  }
+}
+
+form.gn-tab-xml {
+  div[data-gn-toggle] {
+    display:none;
+  }
 }

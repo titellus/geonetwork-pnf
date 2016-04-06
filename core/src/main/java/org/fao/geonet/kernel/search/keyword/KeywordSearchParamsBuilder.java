@@ -1,15 +1,30 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.kernel.search.keyword;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
-
-import org.fao.geonet.exceptions.BadInputEx;
 import org.fao.geonet.Util;
-
+import org.fao.geonet.exceptions.BadInputEx;
 import org.fao.geonet.kernel.KeywordBean;
 import org.fao.geonet.kernel.rdf.QueryBuilder;
 import org.fao.geonet.kernel.rdf.Selector;
@@ -18,6 +33,14 @@ import org.fao.geonet.kernel.rdf.Where;
 import org.fao.geonet.kernel.rdf.Wheres;
 import org.fao.geonet.languages.IsoLanguagesMapper;
 import org.jdom.Element;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Represents the parameters for doing a broad keyword search.
@@ -35,7 +58,8 @@ public class KeywordSearchParamsBuilder {
     private LinkedList<Selector> selectClauses = new LinkedList<Selector>();
     private boolean lenient;
     private boolean requireBoundedBy = false;
-    
+    private Comparator<KeywordBean> comparator;
+
     public KeywordSearchParamsBuilder(IsoLanguagesMapper mapper) {
         this.isoLangMapper = mapper;
     }
@@ -56,9 +80,8 @@ public class KeywordSearchParamsBuilder {
         if(keyword != null) {
             KeywordSearchType searchType = KeywordSearchType.parseString(Util.getParam(params, XmlParams.pTypeSearch, KeywordSearchType.MATCH.name()));
             parsedParams.keyword(keyword, searchType, true);
-            parsedParams.uri(keyword);
         }
-        
+
         String uri = Util.getParam(params, XmlParams.pUri, null);
         if(uri != null) {
             parsedParams.uri(uri);
@@ -96,13 +119,14 @@ public class KeywordSearchParamsBuilder {
         
         return parsedParams;
     }
+
+
     /**
      * if set to true then the params will not throw exceptions when incorrectly configured.
      * 
      * This parameter is for backwards compatibility.
      * 
-     * @param b
-     * @return
+     * @param lenient
      */
     public KeywordSearchParamsBuilder lenient(boolean lenient) {
         this.lenient = lenient;
@@ -203,7 +227,7 @@ public class KeywordSearchParamsBuilder {
      */
     public KeywordSearchParams build() {
         checkState(false);
-        return new KeywordSearchParams(createQuery(), thesauriNames, thesauriDomainName, maxResults);
+        return new KeywordSearchParams(createQuery(), thesauriNames, thesauriDomainName, maxResults, this.comparator);
     }
 
     private QueryBuilder<KeywordBean> createQuery() {
@@ -305,6 +329,11 @@ public class KeywordSearchParamsBuilder {
         this.searchClauses.add(new URISearchClause(keywordURI));
         return this;
     }
+    public KeywordSearchParamsBuilder uri(String keywordURI, KeywordSearchType searchType, boolean ignoreCase) {
+        this.searchClauses.add(new URISearchClause(searchType, keywordURI, ignoreCase));
+        return this;
+    }
+
     public void relationship(String relatedId, KeywordRelation relation, KeywordSearchType searchType, boolean ignoreCase) {
         this.selectClauses.add(Selectors.BROADER);
         this.searchClauses.add(new RelationShipClause(relation, relatedId, searchType, ignoreCase));
@@ -313,5 +342,9 @@ public class KeywordSearchParamsBuilder {
     public void requireBoundedBy(boolean require) {
         this.requireBoundedBy  = require;
         
+    }
+
+    public void setComparator(Comparator<KeywordBean> comparator) {
+        this.comparator = comparator;
     }
 }

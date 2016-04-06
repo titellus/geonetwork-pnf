@@ -1,30 +1,54 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.kernel;
 
-import jeeves.xlink.Processor;
-import org.springframework.test.context.ContextConfiguration;
-
-
-
+import com.google.common.collect.Lists;
 import jeeves.server.UserSession;
 import jeeves.server.context.ServiceContext;
 import jeeves.server.dispatchers.ServiceManager;
 import jeeves.server.sources.ServiceRequest;
+import jeeves.xlink.Processor;
 import org.fao.geonet.AbstractCoreIntegrationTest;
 import org.fao.geonet.domain.ISODate;
 import org.fao.geonet.domain.MetadataType;
 import org.fao.geonet.domain.ReservedGroup;
 import org.fao.geonet.kernel.setting.SettingManager;
 import org.fao.geonet.utils.Xml;
+import org.jdom.Content;
 import org.jdom.Element;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 
 import static org.fao.geonet.constants.Geonet.Namespaces.GCO;
 import static org.fao.geonet.constants.Geonet.Namespaces.GMD;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 /**
  * Test local:// xlinks.
  *
@@ -63,14 +87,18 @@ public class LocalXLinksInMetadataIntegrationTest extends AbstractCoreIntegratio
               + "    </gmd:identificationInfo>\n"
               + "</gmd:MD_Metadata>";
 
-        final Element metadata = Xml.loadString(xml, false);
+        final List content = Lists.newArrayList(Xml.loadString(xml, false).getContent());
+        for (Object o : content) {
+            ((Content)o).detach();
+        }
+        final Element metadata = getSampleMetadataXml().setContent(content);
 
         ServiceContext context = createServiceContext();
         context.setAsThreadLocal();
         loginAsAdmin(context);
         _settingManager.setValue(SettingManager.SYSTEM_XLINKRESOLVER_ENABLE, true);
 
-        String schema = "iso19139";
+        String schema = _dataManager.autodetectSchema(metadata);
         String uuid = UUID.randomUUID().toString();
         int owner = context.getUserSession().getUserIdAsInt();
         String groupOwner = "" + ReservedGroup.intranet.getId();
@@ -93,15 +121,15 @@ public class LocalXLinksInMetadataIntegrationTest extends AbstractCoreIntegratio
         assertEquals(1, _serviceManager.getNumberOfCalls());
         final Element loadedMetadataKeepXLinkAttributesNotEdit = _dataManager.getMetadata(context, id, false, false, true);
         assertEqualsText(keyword1, loadedMetadataKeepXLinkAttributesNotEdit, xpath, GCO, GMD);
-        assertEquals(1, _serviceManager.getNumberOfCalls());
+        assertEquals(2, _serviceManager.getNumberOfCalls());
 
         final Element loadedMetadataNoXLinkAttributesEdit = _dataManager.getMetadata(context, id, false, true, false);
         assertEqualsText(keyword1, loadedMetadataNoXLinkAttributesEdit, xpath, GCO, GMD);
-        assertEquals(1, _serviceManager.getNumberOfCalls());
+        assertEquals(3, _serviceManager.getNumberOfCalls());
 
         final Element loadedMetadataKeepXLinkAttributesEdit = _dataManager.getMetadata(context, id, false, true, true);
         assertEqualsText(keyword1, loadedMetadataKeepXLinkAttributesEdit, xpath, GCO, GMD);
-        assertEquals(1, _serviceManager.getNumberOfCalls());
+        assertEquals(4, _serviceManager.getNumberOfCalls());
 
         Processor.clearCache();
         final String keyword2 = "Other Word";
@@ -109,7 +137,7 @@ public class LocalXLinksInMetadataIntegrationTest extends AbstractCoreIntegratio
 
         final Element newLoad = _dataManager.getMetadata(context, id, false, true, true);
         assertEqualsText(keyword2, newLoad, xpath, GCO, GMD);
-        assertEquals(2, _serviceManager.getNumberOfCalls());
+        assertEquals(5, _serviceManager.getNumberOfCalls());
 
 
     }

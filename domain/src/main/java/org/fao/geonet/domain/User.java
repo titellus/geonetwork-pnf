@@ -1,9 +1,35 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.domain;
 
+import org.apache.commons.lang.StringUtils;
 import org.fao.geonet.entitylistener.UserEntityListenerManager;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.keygen.KeyGenerators;
+import org.springframework.security.crypto.keygen.StringKeyGenerator;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -38,6 +64,7 @@ public class User extends GeonetEntity implements UserDetails {
     private Profile _profile = Profile.RegisteredUser;
     private UserSecurity _security = new UserSecurity();
     private String _lastLoginDate;
+    private Boolean _isEnabled;
 
     /**
      * Get the userid.   This is a generated value and as such new instances should not have this set as it will simply be ignored
@@ -333,7 +360,7 @@ public class User extends GeonetEntity implements UserDetails {
 
     @Transient
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
+    public Collection<GrantedAuthority> getAuthorities() {
         ArrayList<GrantedAuthority> auths = new ArrayList<GrantedAuthority>();
         final String nodeId = getSecurity().getNodeId();
         if (nodeId != null) {
@@ -366,10 +393,17 @@ public class User extends GeonetEntity implements UserDetails {
         return true;
     }
 
-    @Override
-    @Transient
+    @Column
     public boolean isEnabled() {
-        return true;
+        if (_isEnabled == null) {
+            this._isEnabled = true;
+        }
+        return _isEnabled;
+    }
+
+    public User setEnabled(Boolean enabled) {
+        this._isEnabled = enabled;
+        return this;
     }
 
     /**
@@ -379,50 +413,53 @@ public class User extends GeonetEntity implements UserDetails {
      * @param mergeNullData if true then also set null values from other user. If false then only merge non-null data
      */
     public void mergeUser(User otherUser, boolean mergeNullData) {
-        if (mergeNullData || otherUser.getUsername() != null) {
+        if (mergeNullData || StringUtils.isNotBlank(otherUser.getUsername())) {
             setUsername(otherUser.getUsername());
         }
-        if (mergeNullData || otherUser.getSurname() != null) {
+        if (mergeNullData || StringUtils.isNotBlank(otherUser.getSurname())) {
             setSurname(otherUser.getSurname());
         }
-        if (mergeNullData || otherUser.getName() != null) {
+        if (mergeNullData || StringUtils.isNotBlank(otherUser.getName())) {
             setName(otherUser.getName());
         }
-        if (mergeNullData || otherUser.getOrganisation() != null) {
+        if (mergeNullData || StringUtils.isNotBlank(otherUser.getOrganisation())) {
             setOrganisation(otherUser.getOrganisation());
         }
-        if (mergeNullData || otherUser.getKind() != null) {
+        if (mergeNullData || StringUtils.isNotBlank(otherUser.getKind())) {
             setKind(otherUser.getKind());
         }
-        if (mergeNullData || otherUser.getProfile() != null) {
+        if (mergeNullData || StringUtils.isNotBlank(otherUser.getProfile().name())) {
             setProfile(otherUser.getProfile());
         }
 
-        _email.clear();
-        _email.addAll(otherUser.getEmailAddresses());
-
-        ArrayList<Address> otherAddresses = new ArrayList<Address>(otherUser.getAddresses());
-
-        for (Iterator<Address> iterator = _addresses.iterator(); iterator.hasNext(); ) {
-            Address address = iterator.next();
-            boolean found = false;
-
-            for (Iterator<Address> iterator2 = otherAddresses.iterator(); iterator.hasNext(); ) {
-                Address otherAddress = iterator2.next();
-                if (otherAddress.getId() == address.getId()) {
-                    address.mergeAddress(otherAddress, mergeNullData);
-                    found = true;
-                    iterator2.remove();
-                    break;
-                }
-            }
-
-            if (!found) {
-                iterator.remove();
-            }
+        if (mergeNullData || !otherUser.getEmailAddresses().isEmpty()) {
+            _email.clear();
+            _email.addAll(otherUser.getEmailAddresses());
         }
 
-        _addresses.addAll(otherAddresses);
+        ArrayList<Address> otherAddresses = new ArrayList<Address>(otherUser.getAddresses());
+        if (mergeNullData || !otherAddresses.isEmpty()) {
+            for (Iterator<Address> iterator = _addresses.iterator(); iterator.hasNext(); ) {
+                Address address = iterator.next();
+                boolean found = false;
+
+                for (Iterator<Address> iterator2 = otherAddresses.iterator(); iterator.hasNext(); ) {
+                    Address otherAddress = iterator2.next();
+                    if (otherAddress.getId() == address.getId()) {
+                        address.mergeAddress(otherAddress, mergeNullData);
+                        found = true;
+                        iterator2.remove();
+                        break;
+                    }
+                }
+
+                if (!found) {
+                    iterator.remove();
+                }
+            }
+            _addresses.addAll(otherAddresses);
+        }
+
         getSecurity().mergeSecurity(otherUser.getSecurity(), mergeNullData);
     }
 
@@ -451,6 +488,12 @@ public class User extends GeonetEntity implements UserDetails {
         if (_lastLoginDate != null ? !_lastLoginDate.equals(user._lastLoginDate) : user._lastLoginDate != null) return false;
 
         return true;
+    }
+
+
+    public static String getRandomPassword() {
+        StringKeyGenerator generator = KeyGenerators.string();
+        return generator.generateKey().substring(0, 8);
     }
 
     @Override

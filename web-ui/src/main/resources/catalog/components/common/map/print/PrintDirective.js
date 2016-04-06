@@ -1,3 +1,26 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 (function() {
   goog.provide('ga_print_directive');
 
@@ -78,7 +101,9 @@
 
       var refreshComp = function() {
         updatePrintRectanglePixels($scope.scale);
-        $scope.map.render();
+        if ($scope.map) {
+          $scope.map.render();
+        }
       };
 
       // Compose events
@@ -90,8 +115,8 @@
       var handlePostCompose = function(evt) {
         var ctx = evt.context;
         var size = $scope.map.getSize();
-        var height = size[1] * ol.BrowserFeature.DEVICE_PIXEL_RATIO;
-        var width = size[0] * ol.BrowserFeature.DEVICE_PIXEL_RATIO;
+        var height = size[1] * ol.has.DEVICE_PIXEL_RATIO;
+        var width = size[0] * ol.has.DEVICE_PIXEL_RATIO;
 
         var minx, miny, maxx, maxy;
         minx = printRectangle[0], miny = printRectangle[1],
@@ -475,7 +500,10 @@
               type: 'OSM',
               baseURL: 'http://a.tile.openstreetmap.org/',
               extension: 'png',
-              maxExtent: layer.getSource().getExtent(),
+              // Hack to return an extent for the base
+              // layer in case of undefined
+              maxExtent: layer.getExtent() ||
+                  [-20037508.34, -20037508.34, 20037508.34, 20037508.34],
               resolutions: layer.getSource().tileGrid.getResolutions(),
               tileSize: [
                 layer.getSource().tileGrid.getTileSize(),
@@ -493,7 +521,7 @@
               type: 'WMTS',
               baseURL: location.protocol + '//wmts.geo.admin.ch', // FIXME
               layer: config.serverLayerName,
-              maxExtent: source.getExtent(),
+              maxExtent: layer.getExtent(),
               tileOrigin: tileGrid.getOrigin(),
               tileSize: [tileGrid.getTileSize(), tileGrid.getTileSize()],
               resolutions: tileGrid.getResolutions(),
@@ -658,8 +686,8 @@
         var height = printRectangle[3] - printRectangle[1];
         var center = [bottomLeft[0] + width / 2, bottomLeft[1] + height / 2];
         // convert back to map display size
-        var mapPixelCenter = [center[0] / ol.BrowserFeature.DEVICE_PIXEL_RATIO,
-          center[1] / ol.BrowserFeature.DEVICE_PIXEL_RATIO];
+        var mapPixelCenter = [center[0] / ol.has.DEVICE_PIXEL_RATIO,
+          center[1] / ol.has.DEVICE_PIXEL_RATIO];
         return $scope.map.getCoordinateFromPixel(mapPixelCenter);
       };
 
@@ -703,8 +731,8 @@
         var w = size.width / DPI * MM_PER_INCHES / 1000.0 * s / resolution;
         var h = size.height / DPI * MM_PER_INCHES / 1000.0 * s / resolution;
         var mapSize = $scope.map.getSize();
-        var center = [mapSize[0] * ol.BrowserFeature.DEVICE_PIXEL_RATIO / 2 ,
-          mapSize[1] * ol.BrowserFeature.DEVICE_PIXEL_RATIO / 2];
+        var center = [mapSize[0] * ol.has.DEVICE_PIXEL_RATIO / 2 ,
+          mapSize[1] * ol.has.DEVICE_PIXEL_RATIO / 2];
 
         var minx, miny, maxx, maxy;
 
@@ -719,7 +747,7 @@
         if (newVal === 'thumbnailMaker') {
           activate();
         } else {
-          //        deactivate();
+          deactivate();
         }
       });
     }]);

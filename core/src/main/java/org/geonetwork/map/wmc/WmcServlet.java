@@ -1,3 +1,26 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.geonetwork.map.wmc;
 
 import org.apache.commons.fileupload.FileItem;
@@ -8,17 +31,24 @@ import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.fao.geonet.Constants;
 import org.geonetwork.http.proxy.util.RequestUtil;
-import org.pvalsecc.misc.FileUtilities;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.io.Writer;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 
 public class WmcServlet extends HttpServlet {
@@ -236,7 +266,7 @@ public class WmcServlet extends HttpServlet {
             final OutputStream response = httpServletResponse.getOutputStream();
             httpServletResponse.setContentType(WMC_CONTENT_TYPE);
             httpServletResponse.setHeader("Content-disposition", "attachment; filename=" + tempFile.getName());
-            FileUtilities.copyStream(pdf, response);
+            IOUtils.copy(pdf, response);
             response.close();
         } finally {
             if(pdf != null) {

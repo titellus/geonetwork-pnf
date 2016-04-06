@@ -1,3 +1,26 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.util;
 
 import java.io.IOException;
@@ -7,21 +30,31 @@ import java.net.URLConnection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import jeeves.component.ProfileManager;
+import javax.annotation.Nonnull;
 
+import jeeves.component.ProfileManager;
 import jeeves.server.ServiceConfig;
 import jeeves.server.context.ServiceContext;
+
 import org.fao.geonet.GeonetContext;
+import org.fao.geonet.constants.Geonet;
+import org.fao.geonet.domain.User;
 import org.fao.geonet.kernel.SchemaManager;
 import org.fao.geonet.kernel.search.CodeListTranslator;
+import org.fao.geonet.kernel.search.LuceneSearcher;
 import org.fao.geonet.kernel.search.Translator;
+import org.fao.geonet.kernel.setting.SettingInfo;
+import org.fao.geonet.kernel.setting.SettingManager;
+import org.fao.geonet.languages.IsoLanguagesMapper;
+import org.fao.geonet.repository.UserRepository;
+import org.fao.geonet.schema.iso19139.ISO19139Namespaces;
 import org.fao.geonet.utils.Log;
 import org.fao.geonet.utils.Xml;
-import org.fao.geonet.constants.Geonet;
-import org.fao.geonet.kernel.search.LuceneSearcher;
-import org.fao.geonet.languages.IsoLanguagesMapper;
-
-import javax.annotation.Nonnull;
+import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.referencing.CRS;
+import org.jdom.Element;
+import org.jdom.Namespace;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * These are all extension methods for calling from xsl docs.  Note:  All
@@ -97,6 +130,30 @@ public final class XslUtil
         return "";
     }
 
+    /**
+     * Get a setting value
+     * @param key
+     * @return
+     */
+    public static String getSettingValue(String key) {
+        if (key == null) {
+            return "";
+        }
+
+        final ServiceContext serviceContext = ServiceContext.get();
+        if (serviceContext != null) {
+            SettingManager settingsMan = serviceContext.getBean(SettingManager.class);
+            if (settingsMan != null) {
+                String value = settingsMan.getValue(key);
+                if (value != null) {
+                    return value;
+                } else {
+                    return "";
+                }
+            }
+        }
+        return "";
+    }
     /** 
 	 * Check if bean is defined in the context
 	 * 
@@ -280,7 +337,10 @@ public final class XslUtil
                         (String) codelist);
                 translation = t.translate(codeListValue);
             } catch (Exception e) {
-                Log.error(Geonet.GEONETWORK, "Failed to translate codelist " + e.getMessage());
+                Log.error(
+                    Geonet.GEONETWORK,
+                    String.format("Failed to translate codelist value '%s' in language '%s'. Error is %s",
+                            codeListValue, langCode, e.getMessage()));
             }
             return translation;
         } else {
@@ -295,8 +355,17 @@ public final class XslUtil
      * @return The related 3 iso lang code
      */
     public static @Nonnull String twoCharLangCode(String iso3LangCode) {
-    	if(iso3LangCode==null || iso3LangCode.length() == 0) {
-    		return Geonet.DEFAULT_LANGUAGE;
+        return twoCharLangCode(iso3LangCode, twoCharLangCode(Geonet.DEFAULT_LANGUAGE, null));
+    }
+    /**
+     * Return 2 iso lang code from a 3 iso lang code. If any error occurs return "".
+     *
+     * @param iso3LangCode   The 2 iso lang code
+     * @return The related 3 iso lang code
+     */
+    public static @Nonnull String twoCharLangCode(String iso3LangCode, String defaultValue) {
+        if(iso3LangCode==null || iso3LangCode.length() == 0) {
+    		return twoCharLangCode(Geonet.DEFAULT_LANGUAGE);
     	} else {
             String iso2LangCode = null;
 
@@ -394,5 +463,79 @@ public final class XslUtil
     }
     public static boolean allowScripting() {
         return allowScripting.get() == null || allowScripting.get();
+    }
+
+    public static String getUserDetails(Object contactIdentifier) {
+        String contactDetails = "";
+        int contactId = Integer.parseInt((String) contactIdentifier);
+        final ServiceContext serviceContext = ServiceContext.get();
+        User user= serviceContext.getBean(UserRepository.class).findOne(contactId);
+        if (user != null) {
+            contactDetails = Xml.getString(user.asXml());
+        }
+        return contactDetails;
+    }
+
+	public static String reprojectCoords(Object minx, Object miny, Object maxx,
+			Object maxy, Object fromEpsg) {
+		String ret = "";
+		try {
+			Double minxf = new Double((String) minx);
+			Double minyf = new Double((String) miny);
+			Double maxxf = new Double((String) maxx);
+			Double maxyf = new Double((String) maxy);
+			CoordinateReferenceSystem fromCrs = CRS.decode((String) fromEpsg);
+			CoordinateReferenceSystem toCrs = CRS.decode("EPSG:4326");
+
+			ReferencedEnvelope env = new ReferencedEnvelope(minxf, maxxf, minyf, maxyf, fromCrs);
+			ReferencedEnvelope reprojected = env.transform(toCrs, true);
+
+			ret = reprojected.getMinX() + "," + reprojected.getMinY() + "," + reprojected.getMaxX() + "," + reprojected.getMaxY();
+
+			Element elemRet = new Element("EX_GeographicBoundingBox", ISO19139Namespaces.GMD);
+
+			boolean forceXY = Boolean.getBoolean(System.getProperty("org.geotools.referencing.forceXY", "false"));
+			Element elemminx, elemmaxx, elemminy, elemmaxy;
+			if (forceXY) {
+				elemminx = new Element("westBoundLongitude", ISO19139Namespaces.GMD)
+						.addContent(new Element("Decimal", ISO19139Namespaces.GCO).setText("" + reprojected.getMinX()));
+				elemmaxx = new Element("eastBoundLongitude", ISO19139Namespaces.GMD)
+						.addContent(new Element("Decimal", ISO19139Namespaces.GCO).setText("" + reprojected.getMaxX()));
+				elemminy = new Element("southBoundLatitude", ISO19139Namespaces.GMD)
+						.addContent(new Element("Decimal", ISO19139Namespaces.GCO).setText("" + reprojected.getMinY()));
+				elemmaxy = new Element("northBoundLatitude", ISO19139Namespaces.GMD)
+						.addContent(new Element("Decimal", ISO19139Namespaces.GCO).setText("" + reprojected.getMaxY()));
+			} else {
+				elemminx = new Element("westBoundLongitude", ISO19139Namespaces.GMD)
+						.addContent(new Element("Decimal", ISO19139Namespaces.GCO).setText("" + reprojected.getMinY()));
+				elemmaxx = new Element("eastBoundLongitude", ISO19139Namespaces.GMD)
+						.addContent(new Element("Decimal", ISO19139Namespaces.GCO).setText("" + reprojected.getMaxY()));
+				elemminy = new Element("southBoundLatitude", ISO19139Namespaces.GMD)
+						.addContent(new Element("Decimal", ISO19139Namespaces.GCO).setText("" + reprojected.getMinX()));
+				elemmaxy = new Element("northBoundLatitude", ISO19139Namespaces.GMD)
+						.addContent(new Element("Decimal", ISO19139Namespaces.GCO).setText("" + reprojected.getMaxX()));
+			}
+			elemRet.addContent(elemminx);
+			elemRet.addContent(elemmaxx);
+			elemRet.addContent(elemminy);
+			elemRet.addContent(elemmaxy);
+
+			ret = Xml.getString(elemRet);
+
+		} catch (Throwable e) {
+		}
+
+		return ret;
+	}
+
+    public static String getSiteUrl() {
+        ServiceContext context = ServiceContext.get();
+        SettingInfo si = new SettingInfo();
+        return si.getSiteUrl() + "/" + context.getBaseUrl();
+    }
+
+    public static String getLanguage() {
+        ServiceContext context = ServiceContext.get();
+        return context.getLanguage();
     }
 }

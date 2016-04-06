@@ -24,12 +24,9 @@
 package org.fao.geonet.services.publisher;
 
 
-import javax.servlet.ServletContext;
-
 import jeeves.interfaces.Service;
 import jeeves.server.ServiceConfig;
 import jeeves.server.context.ServiceContext;
-import jeeves.server.overrides.ConfigurationOverrides;
 import org.fao.geonet.domain.MapServer;
 import org.fao.geonet.repository.MapServerRepository;
 import org.fao.geonet.utils.GeonetHttpRequestFactory;
@@ -41,10 +38,10 @@ import org.fao.geonet.constants.Geonet;
 import org.fao.geonet.kernel.setting.SettingManager;
 import org.fao.geonet.lib.Lib;
 import org.jdom.Element;
-import org.jdom.JDOMException;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.Collection;
 import java.util.HashMap;
 
@@ -120,7 +117,7 @@ public class Do implements Service {
 	 * new nodes, restart is needed.
 	 * 
 	 */
-	public void init(String appPath, ServiceConfig params) throws Exception {
+	public void init(Path appPath, ServiceConfig params) throws Exception {
 		Log.createLogger(MODULE);
 	}
 
@@ -153,7 +150,8 @@ public class Do implements Service {
                     .setUsername(Util.getParam(params, "username", ""))
                     .setPassword(Util.getParam(params, "password", ""))
                     .setNamespace(Util.getParam(params, "namespace", ""))
-                    .setNamespacePrefix(Util.getParam(params, "namespaceprefix", ""));
+                    .setNamespacePrefix(Util.getParam(params, "namespaceprefix", ""))
+                    .setPushStyleInWorkspace(Util.getParam(params, "pushstyleinworkspace", false));
             context.getBean(MapServerRepository.class).save(m);
             return new Element(action.toString())
                         .setText("ok")
@@ -175,7 +173,8 @@ public class Do implements Service {
                     .setWcsurl(Util.getParam(params, "wcsurl", ""))
                     .setStylerurl(Util.getParam(params, "stylerurl", ""))
                     .setNamespace(Util.getParam(params, "namespace", ""))
-                    .setNamespacePrefix(Util.getParam(params, "namespaceprefix", ""));
+                    .setNamespacePrefix(Util.getParam(params, "namespaceprefix", ""))
+                    .setPushStyleInWorkspace(Util.getParam(params, "pushstyleinworkspace", false));
                 repo.save(m);
             }
             return new Element(action.toString()).setText("ok");
@@ -204,7 +203,7 @@ public class Do implements Service {
             final GeonetHttpRequestFactory requestFactory = context.getBean(GeonetHttpRequestFactory.class);
             GeoServerRest gs = new GeoServerRest(requestFactory, g.getUrl(),
                     g.getUsername(), g.getUserpassword(),
-                    g.getNamespacePrefix(), baseUrl);
+                    g.getNamespacePrefix(), baseUrl, m.pushStyleInWorkspace());
     
     		String file = Util.getParam(params, "file");
     		String access = Util.getParam(params, "access");
@@ -233,9 +232,7 @@ public class Do implements Service {
     		        return addExternalFile(action, gs, file, metadataUuid, metadataTitle, metadataAbstract);
     		    } else {
     		        // Get ZIP file from data directory
-                    File dir = new File(Lib.resource
-                            .getDir(context, access, metadataId));
-                    File f = new File(dir, file);
+                    Path f = Lib.resource.getDir(context, access, metadataId).resolve(file);
                     return addZipFile(action, gs, f, file, metadataUuid, metadataTitle, metadataAbstract);
     		    }
     		}
@@ -266,6 +263,10 @@ public class Do implements Service {
                 node.addContent(new Element("wfsUrl").setText(m.getWfsurl()));
                 node.addContent(new Element("wcsUrl").setText(m.getWcsurl()));
                 node.addContent(new Element("stylerUrl").setText(m.getStylerurl()));
+                if (m.pushStyleInWorkspace())
+                    node.addContent(new Element("pushStyleInWorkspace").setText("true"));
+                else
+                    node.addContent(new Element("pushStyleInWorkspace").setText("false"));
                 geoserverConfig.addContent(node);
             }
         }
@@ -310,8 +311,10 @@ public class Do implements Service {
 				// TODO : check datastore already exist
 				if (!g.createDatabaseDatastore(db, host, port, db, user, password, dbType, ns))
 					report.append("Datastore: ").append(g.getStatus());
-				if (!g.createFeatureType(db, table, true, metadataUuid, metadataTitle, metadataAbstract))
+				if (!g.createFeatureType(db, table, metadataUuid, metadataTitle, metadataAbstract))
 					report.append("Feature type: ").append(g.getStatus());
+				if (!g.createStyle(db, table))
+					report.append("Style: ").append(g.getStatus());
 //				Publication of Datastore and feature type may failed if already exist
 //				if (report.length() > 0) {
 //					setErrorCode(report.toString());
@@ -353,47 +356,48 @@ public class Do implements Service {
 	 * 
 	 * @param action
 	 * @param gs
-	 * @param file
-	 * @return
+	 * @param f
+     *@param file  @return
 	 * @throws java.io.IOException
 	 */
-	private Element addZipFile(ACTION action, GeoServerRest gs, File f, String file, String metadataUuid, String metadataTitle, String metadataAbstract)
+	private Element addZipFile(ACTION action, GeoServerRest gs, Path f, String file, String metadataUuid, String metadataTitle, String metadataAbstract)
 			throws IOException {
 		if (f == null) {
 			return report(EXCEPTION, null,
 					"Could not find dataset file. Invalid zip file parameters: "
 							+ file + ".");
 		}
-
-		// Handle multiple geofile.
-		GeoFile gf = new GeoFile(f);
-
 		Collection<String> rasterLayers, vectorLayers;
 
-		try {
-			vectorLayers = gf.getVectorLayers(true);
-			if (vectorLayers.size() > 0) {
-				if (publishVector(f, gs, action, metadataUuid, metadataTitle, metadataAbstract)) {
-					return report(SUCCESS, VECTOR, getReport());
-				} else {
-					return report(EXCEPTION, VECTOR, getErrorCode());
-				}
-			}
-		} catch (IllegalArgumentException e) {
-			return report(EXCEPTION, VECTOR, e.getMessage());
-		}
+		// Handle multiple geofile.
+		try (GeoFile gf = new GeoFile(f)) {
 
-		try {
-			rasterLayers = gf.getRasterLayers();
-			if (rasterLayers.size() > 0) {
-				if (publishRaster(f, gs, action, metadataUuid, metadataTitle, metadataAbstract)) {
-					return report(SUCCESS, RASTER, getReport());
-				} else {
-					return report(EXCEPTION, RASTER, getErrorCode());
+
+			try {
+				vectorLayers = gf.getVectorLayers(true);
+				if (vectorLayers.size() > 0) {
+					if (publishVector(f, gf, gs, action, metadataUuid, metadataTitle, metadataAbstract)) {
+						return report(SUCCESS, VECTOR, getReport());
+					} else {
+						return report(EXCEPTION, VECTOR, getErrorCode());
+					}
 				}
+			} catch (IllegalArgumentException e) {
+				return report(EXCEPTION, VECTOR, e.getMessage());
 			}
-		} catch (IllegalArgumentException e) {
-			return report(EXCEPTION, RASTER, e.getMessage());
+
+			try {
+				rasterLayers = gf.getRasterLayers();
+				if (rasterLayers.size() > 0) {
+					if (publishRaster(f, gs, action, metadataUuid, metadataTitle, metadataAbstract)) {
+						return report(SUCCESS, RASTER, getReport());
+					} else {
+						return report(EXCEPTION, RASTER, getErrorCode());
+					}
+				}
+			} catch (IllegalArgumentException e) {
+				return report(EXCEPTION, RASTER, e.getMessage());
+			}
 		}
 
 		if (vectorLayers.size() == 0 && rasterLayers.size() == 0) {
@@ -430,17 +434,21 @@ public class Do implements Service {
 		return report;
 	}
 
-	private boolean publishVector(File f, GeoServerRest g, ACTION action, String metadataUuid, String metadataTitle, String metadataAbstract) {
+	private boolean publishVector(Path f, GeoFile gf, GeoServerRest g, ACTION action, String metadataUuid, String metadataTitle, String metadataAbstract) {
 
-		String ds = f.getName();
+		String ds = f.getFileName().toString();
 		String dsName = ds.substring(0, ds.lastIndexOf("."));
 		try {
 			if (action.equals(ACTION.CREATE)) {
-				g.createDatastore(dsName, f, true);
-				g.createFeatureType(dsName, dsName, false, metadataUuid, metadataTitle, metadataAbstract);
+				g.createDatastore(dsName, f);
+				if (gf.containsSld())
+					g.createStyle(g.getDefaultWorkspace(), dsName, gf.getSld());
+				else
+					g.createStyle(g.getDefaultWorkspace(), dsName);
+				g.createFeatureType(dsName, dsName, metadataUuid, metadataTitle, metadataAbstract);
 			} else if (action.equals(ACTION.UPDATE)) {
-				g.createDatastore(dsName, f, false);
-				g.createFeatureType(dsName, dsName, false, metadataUuid, metadataTitle, metadataAbstract);
+				g.createDatastore(dsName, f);
+				g.createFeatureType(dsName, dsName, metadataUuid, metadataTitle, metadataAbstract);
 			} else if (action.equals(ACTION.DELETE)) {
 				String report = "";
 				if (!g.deleteLayer(dsName))
@@ -480,13 +488,14 @@ public class Do implements Service {
                 if (isRaster) {
                 	g.createCoverage(dsName, file, metadataUuid, metadataTitle, metadataAbstract);
                 } else {
-                    g.createDatastore(dsName, file, true);
+                    g.createDatastore(dsName, file);
+                    g.createStyle(dsName);
                 }
             } else if (action.equals(ACTION.UPDATE)) {
                 if (isRaster) {
                 	g.createCoverage(dsName, file, metadataUuid, metadataTitle, metadataAbstract);
                 } else {
-                    g.createDatastore(dsName, file, false);
+                    g.createDatastore(dsName, file);
                 }
             } else if (action.equals(ACTION.DELETE)) {
                 String report = "";
@@ -519,8 +528,8 @@ public class Do implements Service {
         }
         return false;
     }
-	private boolean publishRaster(File f, GeoServerRest g, ACTION action, String metadataUuid, String metadataTitle, String metadataAbstract) {
-		String cs = f.getName();
+	private boolean publishRaster(Path f, GeoServerRest g, ACTION action, String metadataUuid, String metadataTitle, String metadataAbstract) {
+		String cs = f.getFileName().toString();
 		String csName = cs.substring(0, cs.lastIndexOf("."));
 		try {
 			if (action.equals(ACTION.CREATE)) {

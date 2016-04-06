@@ -1,3 +1,26 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.utils;
 
 import com.google.common.base.Function;
@@ -8,6 +31,7 @@ import org.apache.http.NameValuePair;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.AuthCache;
+import org.apache.http.client.CookieStore;
 import org.apache.http.client.config.CookieSpecs;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpGet;
@@ -22,20 +46,21 @@ import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.LaxRedirectStrategy;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.protocol.HttpContext;
 import org.fao.geonet.exceptions.BadSoapResponseEx;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.Namespace;
 import org.springframework.http.client.ClientHttpResponse;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
  * Super class for classes that encapsulate requests.
@@ -62,6 +87,7 @@ public class AbstractHttpRequest {
     private String postData;
     private boolean preemptiveBasicAuth;
     private HttpClientContext httpClientContext;
+    private CookieStore cookieStore;
     private UsernamePasswordCredentials credentials;
     private UsernamePasswordCredentials proxyCredentials;
     private String fragment;
@@ -106,6 +132,9 @@ public class AbstractHttpRequest {
     }
 
     public void setAddress(String address) {
+        if (!address.startsWith("/")) {
+            throw new IllegalArgumentException("address must start with /");
+        }
         this.address = address;
     }
 
@@ -115,7 +144,7 @@ public class AbstractHttpRequest {
 
     public void setUrl(URL url) {
         host = url.getHost();
-        port = (url.getPort() == -1) ? url.getDefaultPort() : url.getPort();
+        port = url.getPort();
         protocol = url.getProtocol();
         address = url.getPath();
         query = url.getQuery();
@@ -279,7 +308,7 @@ public class AbstractHttpRequest {
             }
         }
 
-        if (host == null || port < 0 || protocol == null) {
+        if (host == null || protocol == null) {
             throw new IllegalStateException(String.format(getClass().getSimpleName()+" is not ready to be executed: \n\tprotocol: '%s' " +
                                             "\n\tuserinfo: '%s'\n\thost: '%s' \n\tport: '%s' \n\taddress: '%s'\n\tquery '%s'" +
                                             "\n\tfragment: '%s'", protocol, userInfo, host, port, address, query, fragment));
@@ -398,6 +427,19 @@ public class AbstractHttpRequest {
 
     public String getQuery() {
         return query;
+    }
+
+    public CookieStore getCookieStore() {
+        return cookieStore;
+    }
+
+    public void setCookieStore(CookieStore cookieStore) {
+        this.cookieStore = cookieStore;
+        HttpContext context = getHttpClientContext();
+        if (context == null) {
+            httpClientContext = HttpClientContext.create();
+        }
+        httpClientContext.setAttribute(HttpClientContext.COOKIE_STORE, cookieStore);
     }
 
     public enum Method {GET, POST}

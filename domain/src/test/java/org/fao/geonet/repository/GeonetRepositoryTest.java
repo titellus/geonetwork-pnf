@@ -1,18 +1,44 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.repository;
 
 import org.fao.geonet.domain.Metadata;
 import org.fao.geonet.domain.MetadataSourceInfo_;
 import org.fao.geonet.domain.Metadata_;
 import org.fao.geonet.repository.statistic.PathSpec;
+import org.fao.geonet.utils.Xml;
+import org.jdom.Element;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
 
 import javax.annotation.Nullable;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Root;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import static junit.framework.Assert.assertNull;
 import static org.fao.geonet.repository.specification.MetadataSpecs.hasMetadataId;
@@ -125,5 +151,56 @@ public class GeonetRepositoryTest extends AbstractSpringDataTest {
         assertNull(_repo.findOne(md3.getId()));
 
         assertEquals(md.getId(), _repo.findAll().get(0).getId());
+    }
+
+    @Test
+    public void testFindAllAsXmlSpec() throws Exception {
+        Metadata md = _repo.save(MetadataRepositoryTest.newMetadata(_inc));
+        Metadata md2 = _repo.save(MetadataRepositoryTest.newMetadata(_inc));
+        Metadata md3 = _repo.save(MetadataRepositoryTest.newMetadata(_inc));
+
+
+        final Specifications<Metadata> spec = where(hasMetadataId(md2.getId())).or(hasMetadataId(md3.getId()));
+
+        Element xmlResponse = _repo.findAllAsXml();
+        assertEquals(3, Xml.selectNodes(xmlResponse, "record").size());
+
+        xmlResponse = _repo.findAllAsXml(spec);
+        assertEquals(2, Xml.selectNodes(xmlResponse, "record").size());
+        assertNotNull(Xml.selectElement(xmlResponse, "record[id='" + md2.getId() + "']"));
+        assertNotNull(Xml.selectElement(xmlResponse, "record[id='" + md3.getId() + "']"));
+
+        Sort sort = new Sort(new Sort.Order(Sort.Direction.DESC, SortUtils.createPath(Metadata_.id)));
+        xmlResponse = _repo.findAllAsXml(sort);
+        assertEquals(3, Xml.selectNodes(xmlResponse, "record").size());
+        assertEquals("" + md3.getId(), Xml.selectElement(xmlResponse, "record[1]/id").getText());
+        assertEquals("" + md2.getId(), Xml.selectElement(xmlResponse, "record[2]/id").getText());
+        assertEquals("" + md.getId(), Xml.selectElement(xmlResponse, "record[3]/id").getText());
+
+        xmlResponse = _repo.findAllAsXml(spec, sort);
+        assertEquals(2, Xml.selectNodes(xmlResponse, "record").size());
+        assertEquals("" + md3.getId(), Xml.selectElement(xmlResponse, "record[1]/id").getText());
+        assertEquals("" + md2.getId(), Xml.selectElement(xmlResponse, "record[2]/id").getText());
+
+        final PageRequest pageRequest = new PageRequest(0, 2, sort);
+        xmlResponse = _repo.findAllAsXml(pageRequest);
+        assertEquals(2, Xml.selectNodes(xmlResponse, "record").size());
+        assertEquals("" + md3.getId(), Xml.selectElement(xmlResponse, "record[1]/id").getText());
+        assertEquals("" + md2.getId(), Xml.selectElement(xmlResponse, "record[2]/id").getText());
+
+        xmlResponse = _repo.findAllAsXml(pageRequest.next());
+        assertEquals(1, Xml.selectNodes(xmlResponse, "record").size());
+        assertEquals("" + md.getId(), Xml.selectElement(xmlResponse, "record[1]/id").getText());
+
+        xmlResponse = _repo.findAllAsXml(pageRequest.next().next());
+        assertEquals(0, Xml.selectNodes(xmlResponse, "record").size());
+
+        xmlResponse = _repo.findAllAsXml(spec, pageRequest);
+        assertEquals(2, Xml.selectNodes(xmlResponse, "record").size());
+        assertEquals("" + md3.getId(), Xml.selectElement(xmlResponse, "record[1]/id").getText());
+        assertEquals("" + md2.getId(), Xml.selectElement(xmlResponse, "record[2]/id").getText());
+
+        xmlResponse = _repo.findAllAsXml(spec, pageRequest.next());
+        assertEquals(0, Xml.selectNodes(xmlResponse, "record").size());
     }
 }
