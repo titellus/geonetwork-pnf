@@ -73,7 +73,7 @@
         </init-param>
         <init-param>
             <param-name>trustedHost</param-name>
-            <param-value>localhost,extranet.parcnational.fr,5.149.184.97</param-value>
+            <param-value>localhost,extranet.parcnational.fr,5.149.184.97,catalogue.parcnational.fr</param-value>
         </init-param>
     </filter>
  
